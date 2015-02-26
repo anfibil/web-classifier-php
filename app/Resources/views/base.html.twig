@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Welcome!{% endblock %}</title>
-    {% stylesheets '@bootstrap_css' %}
+    {% stylesheets
+        'css/bootstrap.css'%}
         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
     {% endstylesheets %}
     {% block stylesheets %}{% endblock %}
     {%  block scripts %}
-        {% javascripts '@jquery' '@bootstrap_js' %}
+        {% javascripts 'js/jquery-2.1.1.js' 'js/bootstrap.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
