@@ -1,24 +1,25 @@
 Running on DEV vs. PROD modes:
 ------------------------------
-
 1) http://127.0.0.1:8000/app_dev.php/hello/Everaldo -> Opens the page in dev mode
 2) http://127.0.0.1:8000/app.php/hello/Everaldo -> Opens the same page in production mode
 3) http://127.0.0.1:8000/hello/Reid -> Default is to open dev mode
 
 Symfony 2 plug-in for phpstorm (really helpful!):
 -------------------------------------------------
-
 http://goo.gl/KKdjSV
 http://symfony2-plugin.espend.de/
 
 Templating:
 -----------
-
 Look at page 38 of symfony book "Optional Step 3: Create the Template"
 
 
 Seeing changes on prod environment:
 -----------------------------------
-
 php app/console --env=prod cache:clear
 php app/console cache clear (clears the dev env)
+
+
+Create bundles using symfony wizard is much simpler:
+----------------------------------------------------
+php app/console generate:bundle --> Follow instructions
