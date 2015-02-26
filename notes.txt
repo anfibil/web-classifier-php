@@ -15,3 +15,10 @@ Templating:
 -----------
 
 Look at page 38 of symfony book "Optional Step 3: Create the Template"
+
+
+Seeing changes on prod environment:
+-----------------------------------
+
+php app/console --env=prod cache:clear
+php app/console cache clear (clears the dev env)
