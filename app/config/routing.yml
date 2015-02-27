@@ -9,7 +9,3 @@ app:
 homepage:
     path:      /
     defaults:  { _controller: AppBundle:Default:index }
-
-hellopage:
-    path:     /hello/{name}
-    defaults:  { _controller: AppBundle:Default:hello }

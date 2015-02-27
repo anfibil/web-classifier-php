@@ -20,6 +20,12 @@ php app/console --env=prod cache:clear
 php app/console cache clear (clears the dev env)
 
 
-Create bundles using symfony wizard is much simpler:
+Create bundles using symfony console is much simpler:
 ----------------------------------------------------
 php app/console generate:bundle --> Follow instructions
+
+
+To create user database, create a table called symfony and run:
+---------------------------------------------------------------
+
+php app/console doctrine:schema:update --force
