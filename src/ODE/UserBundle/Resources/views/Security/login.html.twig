@@ -1,0 +1,52 @@
+{% extends "@ODEUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+    {{ parent() }}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>This is a Login form <small>And guess what? It actually works.</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">Sign in</h3>
+                            <form action="{{ path("fos_user_security_check") }}" method="post">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+                                <label for="username">{{ 'security.login.username'|trans }}</label>
+                                <div class="form-group"><input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Enter username" class="form-control"/></div>
+
+                                <label for="password">{{ 'security.login.password'|trans }}</label>
+                                <div class="form-group"> <input type="password" id="password" name="_password" required="required" placeholder="Password" class="form-control"/></div>
+
+                                <div>
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"><strong>Log in</strong></button>
+                                    <input type="checkbox" class="i-checks" id="remember_me" name="_remember_me" value="on"/>
+                                    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6"><h4>Not a member?</h4>
+                            <p>You can create an account:</p>
+                            <p class="text-center">
+                                <a href="/register"><i class="fa fa-sign-in big-icon"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>.
+    </div>
+{% endblock %}

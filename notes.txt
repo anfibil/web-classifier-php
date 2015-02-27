@@ -29,3 +29,6 @@ To create user database, create a table called symfony and run:
 ---------------------------------------------------------------
 
 php app/console doctrine:schema:update --force
+
+
+TODO next: Stylize register form
