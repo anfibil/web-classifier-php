@@ -1,4 +1,6 @@
+# src/ODE/UserBundle/Resources/config/services.yml
 services:
-#    ode_user.example:
-#        class: ODE\UserBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    acme_user.registration.form.type:
+        class: ODE\UserBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: ode_user_registration }

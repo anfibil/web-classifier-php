@@ -27,8 +27,11 @@ php app/console generate:bundle --> Follow instructions
 
 To create user database, create a table called symfony and run:
 ---------------------------------------------------------------
-
 php app/console doctrine:schema:update --force
+
+*Note that when extending forms, db was not being updated with new fields,
+which required removing the file src/ODE/UserBundle/Resources/config/doctrine/User.orm.yml
+
 
 
 TODO next: Stylize register form

@@ -46,8 +46,3 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
-
-fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: ODE\UserBundle\Entity\User
