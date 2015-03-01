@@ -48,6 +48,20 @@ class User extends BaseUser
      */
     protected $lastname;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please enter your affiliation.", groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=3,
+     *     max="255",
+     *     minMessage="The affiliation name is too short.",
+     *     maxMessage="The affiliation name is too long.",
+     *     groups={"Registration", "Profile"}
+     * )
+     */
+    protected $affiliation;
+
     public function getFirstname()
     {
         return $this->firstname;
@@ -56,6 +70,11 @@ class User extends BaseUser
     public function getLastname()
     {
         return $this->lastname;
+    }
+
+    public function getAffiliation()
+    {
+        return $this->affiliation;
     }
 
     public function  setFirstname($firstname)
@@ -67,6 +86,12 @@ class User extends BaseUser
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
+        return $this;
+    }
+
+    public function setAffiliation($affiliation)
+    {
+        $this->affiliation = $affiliation;
         return $this;
     }
 
