@@ -62,6 +62,7 @@ class User extends BaseUser
      */
     protected $affiliation;
 
+
     public function getFirstname()
     {
         return $this->firstname;
@@ -76,6 +77,7 @@ class User extends BaseUser
     {
         return $this->affiliation;
     }
+
 
     public function  setFirstname($firstname)
     {
@@ -98,6 +100,5 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
     }
 }

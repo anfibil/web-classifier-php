@@ -49,7 +49,7 @@
                             <li><a href="contacts.html">Contacts</a></li>
                             <li><a href="mailbox.html">Mailbox</a></li>
                             <li class="divider"></li>
-                            <li><a href="login.html">Logout</a></li>
+                            <li><a href="/logout">Logout</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -95,9 +95,15 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <a href="/logout">
-                            <i class="fa fa-sign-out"></i> Log out
-                        </a>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <a href="/logout">
+                                <i class="fa fa-sign-out" style="color:#FF6666"></i> Log out
+                            </a>
+                        {% else %}
+                            <a href="/login">
+                                <i class="fa fa-sign-in" style="color:#00CC66"></i> Log in
+                            </a>
+                        {% endif %}
                     </li>
                 </ul>
 

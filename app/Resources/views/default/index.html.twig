@@ -1,15 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block welcome %}
-    <script type="text/javascript">
-        function welcome() {
-            toastr.success('Welcome to ODE!');
-        }
-        window.onload = welcome;
-    </script>
+    {% if greet == 1 %}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <script type="text/javascript">
+                function welcome() {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'slideDown',
+                        timeOut: 4000
+                    };
+                    toastr.success('Hi, ' + '{{ app.user.firstname }}'+'! Welcome to ODE.');
+                }
+                window.onload = welcome;
+            </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}
-
-{# TODO: Check when user logs in or logs out and display toaster accordingly #}
 
 {% block body %}
     <div class="wrapper wrapper-content animated fadeInRight">

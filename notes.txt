@@ -34,4 +34,4 @@ which required removing the file src/ODE/UserBundle/Resources/config/doctrine/Us
 
 
 
-TODO next: Stylize register form
+TODO next: User profile picture update for each user
