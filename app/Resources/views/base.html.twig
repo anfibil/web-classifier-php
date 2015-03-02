@@ -13,9 +13,12 @@
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.min.css') }}" rel="stylesheet">
 
+    <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet">
+
     {%  block scripts %}
         {% javascripts
         'assets/js/jquery-2.1.1.js'
+        'assets/js/toastr.js'
         'assets/js/bootstrap.min.js'
         'assets/js/plugins/metisMenu/jquery.metisMenu.js'
         'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
@@ -24,6 +27,8 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
+
+    {% block welcome %}{% endblock %}
 
 </head>
 
@@ -90,7 +95,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <a href="#">
+                        <a href="/logout">
                             <i class="fa fa-sign-out"></i> Log out
                         </a>
                     </li>
@@ -113,6 +118,7 @@
 
     </div>
 </div>
+
 </body>
 
 </html>
