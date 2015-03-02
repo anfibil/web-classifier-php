@@ -7,18 +7,18 @@
     <title>{% block title %}iCeNSA | Classification Tool!{% endblock %}</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/icensa_ico.png') }}" type="image/png" />
 
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet">
 
     {%  block scripts %}
         {% javascripts
         'assets/js/jquery-2.1.1.js'
-        'assets/js/toastr.js'
+        'assets/js/toastr.min.js'
         'assets/js/bootstrap.min.js'
         'assets/js/plugins/metisMenu/jquery.metisMenu.js'
         'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
@@ -40,21 +40,34 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <span><img alt="image" class="img-circle" src="{{ asset('assets/img/kfeld.jpg') }}" width="50" height="50"/> </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Keith Feltman</strong>
-                             </span> <span class="text-muted text-xs block">Hair Stylist <b class="caret"></b></span> </span> </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">Profile</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="mailbox.html">Mailbox</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout">Logout</a></li>
-                        </ul>
-                    </div>
-                    <div class="logo-element">
-                        iC+
-                    </div>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <span><img alt="image" class="img-circle" src="/assets/img/{{app.user.username}}.jpg" width="50" height="50"/> </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{app.user.firstname}} {{app.user.lastname}}</strong>
+                             </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="profile.html">Profile</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="mailbox.html">Mailbox</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <span><img alt="image" class="img-circle" src="{{ asset('assets/img/anonymous.jpg') }}" width="50" height="50"/> </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Anonymous User</strong>
+                             </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="/login">Log in</a></li>
+                                <li><a href="/register">Register</a></li>
+                            </ul>
+                        {% endif %}
+
+
+                </div>
+                <div class="logo-element">
+                    iC+
+                </div>
                 </li>
                 <li>
                     <a href="/"><i class="fa fa-home"></i> <span class="nav-label">Homepage</span></a>
@@ -94,17 +107,24 @@
                     </form>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li>
-                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li>
                             <a href="/logout">
                                 <i class="fa fa-sign-out" style="color:#FF6666"></i> Log out
                             </a>
-                        {% else %}
+                        </li>
+                    {% else %}
+                        <li>
                             <a href="/login">
-                                <i class="fa fa-sign-in" style="color:#00CC66"></i> Log in
+                                <i class="fa fa-sign-in" style="color:#1ab394"></i> Log in
                             </a>
-                        {% endif %}
-                    </li>
+                        </li>
+                        <li>
+                            <a href="/register">
+                                <i class="fa fa-user-plus" style="color:#97A0A8"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
 
             </nav>
