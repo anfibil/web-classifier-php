@@ -41,7 +41,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><img alt="image" class="img-circle" src="/assets/img/{{app.user.username}}.jpg" width="50" height="50"/> </span>
+                            <span><img alt="image" class="img-circle" src="{{ asset_if("/assets/img/#{app.user.username}.jpg","assets/img/anonymous.jpg") }}" width="50" height="50"/> </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{app.user.firstname}} {{app.user.lastname}}</strong>
                              </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>

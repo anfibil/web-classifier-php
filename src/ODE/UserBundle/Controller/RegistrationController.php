@@ -137,11 +137,6 @@ class RegistrationController extends Controller
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        //TODO: Create symlink to defauly profile picture for every new account
-        //$prof_pic = '/assets/img/'.$user->getUsername().'.jpg';
-        //$prof_default ='/assets/img/anonymous.jpg';
-        //symlink($prof_pic,$prof_default);
-
         return $this->render('FOSUserBundle:Registration:confirmed.html.twig', array(
             'user' => $user,
         ));
