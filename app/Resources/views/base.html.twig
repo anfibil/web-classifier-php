@@ -53,14 +53,14 @@
                                             <h4 class="modal-title">Profile picture</h4>
                                             <small>Use the options below to upload and edit your profile picture.</small>
                                         </div>
-                                        <div class="modal-body">
-                                            <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                                remaining essentially unchanged.</p>
+                                        <div class="modal-body" style="text-align: center">
+                                            <form action="upload.php" method="post" enctype="multipart/form-data">
+                                                <input type="file" name="photo" id="profile-picture">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -169,5 +169,15 @@
 </div>
 
 </body>
+
+<script type="text/javascript">
+    $(function() {
+        $('#profile-picture').picEdit({
+            formSubmitted: function(response){
+                alert('Form submitted!');
+            }
+        });
+    });
+</script>
 
 </html>
