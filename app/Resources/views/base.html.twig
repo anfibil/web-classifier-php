@@ -14,11 +14,13 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/picedit.min.css') }}" rel="stylesheet">
 
     {%  block scripts %}
         {% javascripts
         'assets/js/jquery-2.1.1.js'
         'assets/js/toastr.min.js'
+        'assets/js/picedit.min.js'
         'assets/js/bootstrap.min.js'
         'assets/js/plugins/metisMenu/jquery.metisMenu.js'
         'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
@@ -41,7 +43,28 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><img alt="image" class="img-circle" src="{{ asset_if("/assets/img/#{app.user.username}.jpg","assets/img/anonymous.jpg") }}" width="50" height="50"/> </span>
+                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ asset_if("/assets/img/#{app.user.username}.jpg","assets/img/anonymous.jpg") }}" width="60" height="60"/> </span>
+                            <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content animated fadeIn">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <i class="fa fa-upload modal-icon"></i>
+                                            <h4 class="modal-title">Profile picture</h4>
+                                            <small>Use the options below to upload and edit your profile picture.</small>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+                                                printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+                                                remaining essentially unchanged.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{app.user.firstname}} {{app.user.lastname}}</strong>
                              </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
@@ -53,7 +76,7 @@
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
                         {% else %}
-                            <span><img alt="image" class="img-circle" src="{{ asset('assets/img/anonymous.jpg') }}" width="50" height="50"/> </span>
+                            <span><img alt="image" class="img-circle" src="{{ asset('assets/img/anonymous.jpg') }}" width="60" height="60"/> </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Anonymous User</strong>
                              </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
