@@ -7,5 +7,5 @@ fos_user:
 
 upload_profile_image:
     path:     /upload-profile-image
-    defaults: { _controller: ODEUserBundle:Profile:uploadProfilePicture }
+    defaults: { _controller: ODEUserBundle:Default:uploadProfilePicture }
     methods: [POST]

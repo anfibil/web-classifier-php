@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="modal-body" style="text-align: center">
                                             <form action="{{ path('upload_profile_image') }}" method="post" id="avatarUploadForm" name="avatarUploadForm" enctype="multipart/form-data">
-                                                <input type="file" name="avatarImage" id="avatarImage">
+                                                <input type="file" name="profilePictureFile" id="profilePictureFile">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -172,7 +172,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#avatarImage').picEdit({
+        $('#profilePictureFile').picEdit({
             formSubmitted: function(response){
                 console.log(response);
             }

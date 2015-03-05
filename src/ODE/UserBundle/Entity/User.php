@@ -71,7 +71,7 @@ class User extends BaseUser
     protected $lastEdited;
 
     /**
-     * @Assert\File(maxSize="2048k")
+     * @Assert\File(maxSize="8192k")
      * @Assert\Image(mimeTypesMessage="Please upload a valid image.")
      */
     protected $profilePictureFile;
@@ -121,53 +121,16 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * Asks whether the user is granted a particular role
-     *
-     * @return boolean
-     */
-    public function isGranted($role)
-    {
-        return in_array($role, $this->getRoles());
-    }
-
-    /**
-     * Sets the file used for profile picture uploads
-     *
-     * @param UploadedFile $file
-     * @return object
-     */
     public function setProfilePictureFile(UploadedFile $file = null) {
-        // set the value of the holder
-        $this->profilePictureFile       =   $file;
-        // check if we have an old image path
-        if (isset($this->profilePicturePath)) {
-            // store the old name to delete after the update
-            $this->tempProfilePicturePath = $this->profilePicturePath;
-            $this->profilePicturePath = null;
-        } else {
-            $this->profilePicturePath = 'initial';
-        }
-
-        return $this;
+        $this->profilePictureFile = $file;
+        return this;
     }
 
-    /**
-     * Get the file used for profile picture uploads
-     *
-     * @return UploadedFile
-     */
     public function getProfilePictureFile() {
 
         return $this->profilePictureFile;
     }
 
-    /**
-     * Set profilePicturePath
-     *
-     * @param string $profilePicturePath
-     * @return User
-     */
     public function setProfilePicturePath($profilePicturePath)
     {
         $this->profilePicturePath = $profilePicturePath;
@@ -175,135 +138,64 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * Get profilePicturePath
-     *
-     * @return string
-     */
     public function getProfilePicturePath()
     {
         return $this->profilePicturePath;
     }
 
-    /**
-     * Get the absolute path of the profilePicturePath
-     */
-    public function getProfilePictureAbsolutePath() {
+    public function getAbsolutePath()
+    {
         return null === $this->profilePicturePath
             ? null
             : $this->getUploadRootDir().'/'.$this->profilePicturePath;
     }
 
-    /**
-     * Get root directory for file uploads
-     *
-     * @return string
-     */
-    protected function getUploadRootDir($type='profilePicture') {
+    public function getWebPath()
+    {
+        return null === $this->profilePicturePath
+            ? null
+            : $this->getUploadDir().'/'.$this->profilePicturePath;
+    }
+
+    protected function getUploadRootDir()
+    {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir($type);
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
-    /**
-     * Specifies where in the /web directory profile pic uploads are stored
-     *
-     * @return string
-     */
-    protected function getUploadDir($type='profilePicture') {
-        // the type param is to change these methods at a later date for more file uploads
+    protected function getUploadDir()
+    {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'asset/img';
+        return '/assets/img/';
     }
 
-    /**
-     * Get the web path for the user
-     *
-     * @return string
-     */
-    public function getWebProfilePicturePath() {
-
-        return '/'.$this->getUploadDir().'/'.$this->getProfilePicturePath();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUploadProfilePicture() {
-        if (null !== $this->getProfilePictureFile()) {
-            // a file was uploaded
-            // generate a unique filename
-            $filename = $this->generateRandomProfilePictureFilename();
-            $this->setProfilePicturePath($filename.'.'.$this->getProfilePictureFile()->guessExtension());
-        }
-    }
-
-    /**
-     * Generates a 32 char long random filename
-     *
-     * @return string
-     */
-    public function generateRandomProfilePictureFilename() {
-        $count                  =   0;
-        do {
-            $generator = new SecureRandom();
-            $random = $generator->nextBytes(16);
-            $randomString = bin2hex($random);
-            $count++;
-        }
-        while(file_exists($this->getUploadRootDir().'/'.$randomString.'.'.$this->getProfilePictureFile()->guessExtension()) && $count < 50);
-
-        return $randomString;
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     *
-     * Upload the profile picture
-     *
-     * @return mixed
-     */
-    public function uploadProfilePicture() {
-        // check there is a profile pic to upload
-        if ($this->getProfilePictureFile() === null) {
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getProfilePictureFile()) {
             return;
         }
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
-        $this->getProfilePictureFile()->move($this->getUploadRootDir(), $this->getProfilePicturePath());
 
-        // check if we have an old image
-        if (isset($this->tempProfilePicturePath) && file_exists($this->getUploadRootDir().'/'.$this->tempProfilePicturePath)) {
-            // delete the old image
-            unlink($this->getUploadRootDir().'/'.$this->tempProfilePicturePath);
-            // clear the temp image path
-            $this->tempProfilePicturePath = null;
-        }
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+        $uniqueFileName = uniqid().$this->getProfilePictureFile()->getClientOriginalName();
+        // move takes the target directory and then the
+        // target filename to move to
+        $this->getProfilePictureFile()->move(
+            $this->getUploadRootDir(),
+            $uniqueFileName
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->profilePicturePath = $this->getUploadDir().$uniqueFileName;
+
+        // clean up the file property as you won't need it anymore
         $this->profilePictureFile = null;
     }
 
-    /**
-     * @ORM\PostRemove()
-     */
-    public function removeProfilePictureFile()
-    {
-        if ($file = $this->getProfilePictureAbsolutePath() && file_exists($this->getProfilePictureAbsolutePath())) {
-            unlink($file);
-        }
-    }
 
-
-
-    /**
-     * Set lastEdited
-     *
-     * @param \DateTime $lastEdited
-     * @return User
-     */
     public function setLastEdited($lastEdited)
     {
         $this->lastEdited = $lastEdited;
@@ -311,11 +203,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * Get lastEdited
-     *
-     * @return \DateTime
-     */
     public function getLastEdited()
     {
         return $this->lastEdited;
