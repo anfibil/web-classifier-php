@@ -332,6 +332,6 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->path = "/assets/img/anonymous.jpg";
+        $this->profilePicturePath = "/assets/img/anonymous.jpg";
     }
 }
