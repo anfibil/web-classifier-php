@@ -20,7 +20,7 @@
         {% javascripts
         'assets/js/jquery-2.1.1.js'
         'assets/js/toastr.min.js'
-        'assets/js/picedit.min.js'
+        'assets/js/picedit.js'
         'assets/js/bootstrap.min.js'
         'assets/js/plugins/metisMenu/jquery.metisMenu.js'
         'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
@@ -43,7 +43,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ asset_if("/assets/img/#{app.user.username}.jpg","assets/img/anonymous.jpg") }}" width="60" height="60"/> </span>
+                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" width="60" height="60"/> </span>
                             <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
@@ -54,12 +54,12 @@
                                             <small>Use the options below to upload and edit your profile picture.</small>
                                         </div>
                                         <div class="modal-body" style="text-align: center">
-                                            <form action="upload.php" method="post" enctype="multipart/form-data">
-                                                <input type="file" name="photo" id="profile-picture">
+                                            <form action="{{ path('upload_profile_image') }}" method="post" id="avatarUploadForm" name="avatarUploadForm" enctype="multipart/form-data">
+                                                <input type="file" name="avatarImage" id="avatarImage">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                            <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" id="uploadButton" name="uploadButton" class="btn btn-primary">Upload Picture</button>
                                             </form>
                                         </div>
                                     </div>
@@ -172,9 +172,9 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#profile-picture').picEdit({
+        $('#avatarImage').picEdit({
             formSubmitted: function(response){
-                alert('Form submitted!');
+                console.log(response);
             }
         });
     });

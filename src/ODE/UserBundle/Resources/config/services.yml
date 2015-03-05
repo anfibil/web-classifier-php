@@ -4,9 +4,3 @@ services:
         class: ODE\UserBundle\Form\Type\RegistrationFormType
         tags:
             - { name: form.type, alias: ode_user_registration }
-
-    ode.twig.asset_if_extension:
-        class: ODE\UserBundle\Services\Extension\ConditionalAssetExtension
-        arguments: ['@service_container']
-        tags:
-          - { name: twig.extension }

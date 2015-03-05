@@ -4,3 +4,8 @@ ode_user_homepage:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+upload_profile_image:
+    path:     /upload-profile-image
+    defaults: { _controller: ODEUserBundle:Profile:uploadProfilePicture }
+    methods: [POST]

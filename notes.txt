@@ -34,4 +34,5 @@ which required removing the file src/ODE/UserBundle/Resources/config/doctrine/Us
 
 
 
-TODO next: User profile picture update for each user
+TODO next: Prof pic upload fails. Look into user entity, profilecontroller and try to figure it out.
+If not possible, look at http://knpbundles.com/1up-lab/OneupUploaderBundle
