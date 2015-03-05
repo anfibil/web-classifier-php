@@ -123,7 +123,7 @@ class User extends BaseUser
 
     public function setProfilePictureFile(UploadedFile $file = null) {
         $this->profilePictureFile = $file;
-        return this;
+        return $this;
     }
 
     public function getProfilePictureFile() {
