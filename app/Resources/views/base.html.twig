@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}iCeNSA | Classification Tool!{% endblock %}</title>
+    <title>{% block title %}iCeNSA@ND | Data Analytics Portal{% endblock %}</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/icensa_ico.png') }}" type="image/png" />
 
     <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
@@ -43,7 +43,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/> </span>
+                            <span data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/></span>
                             <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
@@ -53,22 +53,22 @@
                                             <h4 class="modal-title">Profile picture</h4>
                                             <small>Use the options below to upload and edit your profile picture.</small>
                                         </div>
+                                        <form action="{{ path('upload_profile_image') }}" method="post" id="avatarUploadForm" name="avatarUploadForm" enctype="multipart/form-data">
                                         <div class="modal-body" style="text-align: center">
-                                            <form action="{{ path('upload_profile_image') }}" method="post" id="avatarUploadForm" name="avatarUploadForm" enctype="multipart/form-data">
                                                 <input type="file" name="profilePictureFile" id="profilePictureFile">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                                             <button type="submit" id="uploadButton" name="uploadButton" class="btn btn-primary">Upload Picture</button>
-                                            </form>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{app.user.firstname}} {{app.user.lastname}}</strong>
                              </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <ul class="dropdown-menu animated{# fadeInRight#} fadeIn m-t-xs">
                                 <li><a href="profile.html">Profile</a></li>
                                 <li><a href="contacts.html">Contacts</a></li>
                                 <li><a href="mailbox.html">Mailbox</a></li>
@@ -80,7 +80,7 @@
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Anonymous User</strong>
                              </span> <span class="text-muted text-xs block">Options<b class="caret"></b></span> </span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <ul class="dropdown-menu animated{# fadeInRight#}fadeIn m-t-xs">
                                 <li><a href="/login">Log in</a></li>
                                 <li><a href="/register">Register</a></li>
                             </ul>
@@ -133,13 +133,13 @@
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <li>
                             <a href="/logout">
-                                <i class="fa fa-sign-out" style="color:#FF6666"></i> Log out
+                                <i class="fa fa-sign-out" style="color:#FF6666"></i> Logout
                             </a>
                         </li>
                     {% else %}
                         <li>
                             <a href="/login">
-                                <i class="fa fa-sign-in" style="color:#1ab394"></i> Log in
+                                <i class="fa fa-sign-in" style="color:#1ab394"></i> Login
                             </a>
                         </li>
                         <li>
@@ -158,10 +158,10 @@
 
         <div class="footer">
             <div class="pull-right">
-                Developed by <strong><a href="http://www3.nd.edu/~eaguiar/">Everaldo Aguiar</a></strong> and <strong><a href="http://www3.nd.edu/~rjohns15/">Reid Johnson</a></strong>.
+                Developed by <strong><a href="http://www3.nd.edu/~eaguiar/" target="_blank">Everaldo Aguiar</a></strong> and <strong><a href="http://www3.nd.edu/~rjohns15/" target="_blank">Reid Johnson</a></strong>.
             </div>
             <div>
-                <strong>Copyright</strong> iCeNSA &copy; 2015
+                <!--<strong>Copyright</strong> -->&copy; 2015 University of Notre Dame
             </div>
         </div>
 

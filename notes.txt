@@ -1,37 +1,43 @@
-Running on DEV vs. PROD modes:
-------------------------------
-1) http://127.0.0.1:8000/app_dev.php/hello/Everaldo -> Opens the page in dev mode
-2) http://127.0.0.1:8000/app.php/hello/Everaldo -> Opens the same page in production mode
-3) http://127.0.0.1:8000/hello/Reid -> Default is to open dev mode
+Running on dev vs. prod modes:
+----------------------------------------------------------------------
+1) http://127.0.0.1:8000/app_dev.php/hello/Everaldo -> Opens the page in development mode.
+2) http://127.0.0.1:8000/app.php/hello/Everaldo -> Opens the same page in production mode.
+3) http://127.0.0.1:8000/hello/Reid -> Default is to open in development mode.
 
-Symfony 2 plug-in for phpstorm (really helpful!):
--------------------------------------------------
+
+Symfony2 plugin for PhpStorm (really helpful!):
+----------------------------------------------------------------------
 http://goo.gl/KKdjSV
 http://symfony2-plugin.espend.de/
 
-Templating:
------------
-Look at page 38 of symfony book "Optional Step 3: Create the Template"
+
+For templating:
+----------------------------------------------------------------------
+Look at page 38 of the Symfony book "Optional Step 3: Create the Template".
 
 
-Seeing changes on prod environment:
------------------------------------
+To see changes on the production ("prod") environment:
+----------------------------------------------------------------------
 php app/console --env=prod cache:clear
 php app/console cache clear (clears the dev env)
 
 
-Create bundles using symfony console is much simpler:
-----------------------------------------------------
-php app/console generate:bundle --> Follow instructions
+To create bundles using the Symfony console:
+----------------------------------------------------------------------
+php app/console generate:bundle -> Follow the instructions.
 
 
-To create user database, create a table called symfony and run:
----------------------------------------------------------------
+For the user database, create a table named symfony (via SQL) and run:
+----------------------------------------------------------------------
 php app/console doctrine:schema:update --force
 
-*Note that when extending forms, db was not being updated with new fields,
+*Note that when extending forms, the database was not being updated with new fields,
 which required removing the file src/ODE/UserBundle/Resources/config/doctrine/User.orm.yml
 
 
+To run the app:
+----------------------------------------------------------------------
+php app/console server:run
 
-TODO next: error check profile picture upload thing
+
+TODO next: error check profile picture upload thingy.

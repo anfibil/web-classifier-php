@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 
 /**
- * Controller managing the registration
+ * Controller managing the registration.
  *
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
@@ -76,7 +76,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Tell the user to check his email provider
+     * Tell the user to check his email provider.
      */
     public function checkEmailAction()
     {
@@ -85,7 +85,7 @@ class RegistrationController extends Controller
         $user = $this->get('fos_user.user_manager')->findUserByEmail($email);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist', $email));
+            throw new NotFoundHttpException(sprintf('The user with email "%s" does not exist.', $email));
         }
 
         return $this->render('FOSUserBundle:Registration:checkEmail.html.twig', array(
@@ -94,7 +94,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Receive the confirmation token from user email provider, login the user
+     * Receive the confirmation token from user email provider, login the user.
      */
     public function confirmAction(Request $request, $token)
     {
@@ -104,7 +104,7 @@ class RegistrationController extends Controller
         $user = $userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
+            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist.', $token));
         }
 
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
@@ -128,7 +128,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Tell the user his account is now confirmed
+     * Tell the user his/her account is now confirmed.
      */
     public function confirmedAction()
     {

@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        // Checks if user saw homepage more than once and makes sure to greet new user only a single time after login/registration
+        // Checks whether the user has seen the homepage, ensures a new user is greeted only a single time after login/registration.
         // TODO: Debug this further
         if (!isset($_SESSION['greet'])){ $_SESSION['greet'] = 0; }
 
@@ -19,7 +19,6 @@ class DefaultController extends Controller
         } else {
             $_SESSION['greet'] = 0;
         }
-
 
         return $this->render('default/index.html.twig', array('greet' => $_SESSION['greet']));
     }

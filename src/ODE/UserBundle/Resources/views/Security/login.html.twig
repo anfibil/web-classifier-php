@@ -7,7 +7,7 @@
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content animated{# fadeInRight#} fadeIn">
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
             <div class="ibox float-e-margins">
