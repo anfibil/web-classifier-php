@@ -43,7 +43,7 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" width="60" height="60"/> </span>
+                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/> </span>
                             <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
@@ -174,7 +174,11 @@
     $(function() {
         $('#profilePictureFile').picEdit({
             formSubmitted: function(response){
-                console.log(response);
+                window.setTimeout(function() {
+                    $('#upProfPic').modal('hide'); }, 1200);
+                d = new Date();
+                $("#avatar").attr("src", "{{ app.user.profilePicturePath }}"+"?"+d.getTime())
+                console.log("{{ app.user.profilePicturePath }}"+"?"+d.getTime())
             }
         });
     });
