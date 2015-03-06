@@ -169,7 +169,7 @@
 </div>
 
 </body>
-
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 <script type="text/javascript">
     $(function() {
         $('#profilePictureFile').picEdit({
@@ -183,5 +183,5 @@
         });
     });
 </script>
-
+{% endif %}
 </html>

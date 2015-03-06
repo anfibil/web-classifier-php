@@ -177,7 +177,6 @@ class User extends BaseUser
 
         // use the original file name here but you should
         // sanitize it at least to avoid any security issues
-        //$uniqueFileName = uniqid().$this->getProfilePictureFile()->getClientOriginalName();
         //$uniqueFileName = md5($this->username).".".pathinfo($this->getProfilePictureFile()->getClientOriginalName(), PATHINFO_EXTENSION);
         $uniqueFileName = md5($this->username);
         // move takes the target directory and then the
