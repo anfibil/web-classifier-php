@@ -1,6 +1,6 @@
 <?php
 
-namespace DatasetBundle\Tests\Controller;
+namespace ODE\DatasetsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

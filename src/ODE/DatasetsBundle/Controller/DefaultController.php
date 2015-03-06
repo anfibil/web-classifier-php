@@ -1,6 +1,6 @@
 <?php
 
-namespace DatasetBundle\Controller;
+namespace ODE\DatasetsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction($name)
     {
-        return $this->render('DatasetBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('ODEDatasetsBundle:Default:index.html.twig', array('name' => $name));
     }
 }
