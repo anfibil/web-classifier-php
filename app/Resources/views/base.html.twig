@@ -184,8 +184,8 @@
                     $('#upProfPic').modal('hide'); }, 1200);
                 d = new Date();
                 $("#avatar").attr("src", "{{ app.user.profilePicturePath }}"+"?"+d.getTime())
-                console.log("{{ app.user.profilePicturePath }}"+"?"+d.getTime())
-            }
+            },
+            defaultImage:"{{ app.user.profilePicturePath }}"+"?"+"d.getTime()"
         });
     });
 </script>

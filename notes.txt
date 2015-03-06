@@ -44,4 +44,6 @@ Cheat Sheet
 http://www.symfony2cheatsheet.com/
 
 
-TODO next: error check profile picture upload thingy.
+TODO: Error check profile picture upload thingy.
+TODO: Check why profile picture upload fails with large pictures
+TODO: Compress and resize profile pictures before storing them
