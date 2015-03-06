@@ -165,7 +165,7 @@ class User extends BaseUser
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return '/assets/img/';
+        return '/assets/profilepictures/';
     }
 
     public function upload()
@@ -178,7 +178,8 @@ class User extends BaseUser
         // use the original file name here but you should
         // sanitize it at least to avoid any security issues
         //$uniqueFileName = uniqid().$this->getProfilePictureFile()->getClientOriginalName();
-        $uniqueFileName = md5($this->username).".".pathinfo($this->getProfilePictureFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        //$uniqueFileName = md5($this->username).".".pathinfo($this->getProfilePictureFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        $uniqueFileName = md5($this->username);
         // move takes the target directory and then the
         // target filename to move to
         $this->getProfilePictureFile()->move(
