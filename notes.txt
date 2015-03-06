@@ -39,5 +39,9 @@ To run the app:
 ----------------------------------------------------------------------
 php app/console server:run
 
+Cheat Sheet
+------------
+http://www.symfony2cheatsheet.com/
+
 
 TODO next: error check profile picture upload thingy.
