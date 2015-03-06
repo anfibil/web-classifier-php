@@ -76,9 +76,6 @@ class User extends BaseUser
      */
     protected $profilePictureFile;
 
-    // for temporary storage
-    private $tempProfilePicturePath;
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -181,7 +178,7 @@ class User extends BaseUser
         // use the original file name here but you should
         // sanitize it at least to avoid any security issues
         //$uniqueFileName = uniqid().$this->getProfilePictureFile()->getClientOriginalName();
-        $uniqueFileName = md5($this->username);
+        $uniqueFileName = md5($this->username).".".pathinfo($this->getProfilePictureFile()->getClientOriginalName(), PATHINFO_EXTENSION);
         // move takes the target directory and then the
         // target filename to move to
         $this->getProfilePictureFile()->move(
