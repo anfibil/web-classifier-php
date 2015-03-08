@@ -45,5 +45,5 @@ http://www.symfony2cheatsheet.com/
 
 
 TODO: Error check profile picture upload thingy.
-TODO: Check why profile picture upload fails with large pictures
+TODO: Check why profile picture upload fails with large pictures (picEdit issue not uploading data)
 TODO: Compress and resize profile pictures before storing them
