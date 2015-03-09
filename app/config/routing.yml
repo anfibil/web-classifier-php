@@ -1,6 +1,6 @@
-ode_datasets:
-    resource: "@ODEDatasetsBundle/Resources/config/routing.yml"
-    prefix:   /datasets/
+ode_dataset:
+    resource: "@ODEDatasetBundle/Resources/config/routing.yml"
+    prefix:   /
 
 ode_user:
     resource: "@ODEUserBundle/Resources/config/routing.yml"
