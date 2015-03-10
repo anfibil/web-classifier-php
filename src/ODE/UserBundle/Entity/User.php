@@ -175,12 +175,10 @@ class User extends BaseUser
             return;
         }
 
-        // use the original file name here but you should
-        // sanitize it at least to avoid any security issues
-        //$uniqueFileName = md5($this->username).".".pathinfo($this->getProfilePictureFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        // Create unique filename for this user
         $uniqueFileName = md5($this->username);
-        // move takes the target directory and then the
-        // target filename to move to
+
+        // Move file to where it needs to go
         $this->getProfilePictureFile()->move(
             $this->getUploadRootDir(),
             $uniqueFileName
@@ -206,6 +204,10 @@ class User extends BaseUser
         return $this->lastEdited;
     }
 
+    // --------------------//
+    // Lifecycle Callbacks //
+    // --------------------//
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -214,9 +216,16 @@ class User extends BaseUser
         $this->setLastEdited(new \DateTime());
     }
 
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setDefaultProfilePicture(){
+        $this->profilePicturePath = '/assets/profilepictures/'.md5($this->username);
+        copy(__DIR__.'/../../../../web/assets/img/anonymous.jpg',__DIR__.'/../../../../web'.$this->profilePicturePath);
+    }
+
     public function __construct()
     {
         parent::__construct();
-        $this->profilePicturePath = "/assets/img/anonymous.jpg";
     }
 }
