@@ -181,8 +181,9 @@
         $('#profilePictureFile').picEdit({
             formSubmitted: function(){
                 window.setTimeout(function() {
-                    $('#upProfPic').modal('hide'); }, 1200);
-                d = new Date();
+                    $('#upProfPic').modal('hide');
+                }, 1200);
+                var d = new Date();
                 $("#avatar").attr("src", "{{ app.user.profilePicturePath }}"+"?"+d.getTime());
                 console.log("{{ app.user.profilePicturePath }}"+"?"+d.getTime())
             }

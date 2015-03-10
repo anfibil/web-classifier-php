@@ -5,7 +5,7 @@ namespace ODE\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Util\SecureRandom;
+//use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -156,38 +156,42 @@ class User extends BaseUser
 
     protected function getUploadRootDir()
     {
-        // the absolute directory path where uploaded
-        // documents should be saved
+        // The absolute directory path where uploaded
+        // documents should be saved.
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
     protected function getUploadDir()
     {
-        // get rid of the __DIR__ so it doesn't screw up
-        // when displaying uploaded doc/image in the view.
+        // Remove the __DIR__ so the uploaded doc/image
+        // displays correctly.
         return '/assets/profilepictures/';
     }
 
     public function upload()
     {
-        // the file property can be empty if the field is not required
+        // The file property can be empty if the field is not required.
         if (null === $this->getProfilePictureFile()) {
             return;
         }
 
-        // Create unique filename for this user
+        // Create unique filename for this user.
         $uniqueFileName = md5($this->username);
 
-        // Move file to where it needs to go
-        $this->getProfilePictureFile()->move(
+        // Get the profile picture file.
+        $file = $this->getProfilePictureFile();
+
+        // Move and name the file.
+        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+        $file->move(
             $this->getUploadRootDir(),
             $uniqueFileName
         );
 
-        // set the path property to the filename where you've saved the file
+        // Set the path property to the filename where you've saved the file.
         $this->profilePicturePath = $this->getUploadDir().$uniqueFileName;
 
-        // clean up the file property as you won't need it anymore
+        // Clean up the file property, as no longer needed.
         $this->profilePictureFile = null;
     }
 
