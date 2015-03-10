@@ -1,0 +1,3 @@
+ode_dataset_homepage:
+    path:     /datasets/
+    defaults: { _controller: ODEDatasetBundle:Default:index }

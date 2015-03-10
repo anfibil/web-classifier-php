@@ -1,0 +1,11 @@
+ODE\DatasetBundle\Entity\Dataset:
+    type: entity
+    table: null
+    repositoryClass: ODE\DatasetBundle\Entity\DatasetRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    lifecycleCallbacks: {  }
