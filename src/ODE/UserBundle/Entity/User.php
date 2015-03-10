@@ -217,6 +217,7 @@ class User extends BaseUser
      * @ORM\PreUpdate()
      */
     public function setLastEditedValueAsNow() {
+        //TODO: This does not seem to be updating the database
         $this->setLastEdited(new \DateTime());
     }
 

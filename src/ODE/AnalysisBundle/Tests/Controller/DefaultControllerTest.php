@@ -1,6 +1,6 @@
 <?php
 
-namespace ODE\Bundle\UserBundle\Tests\Controller;
+namespace ODE\AnalysisBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

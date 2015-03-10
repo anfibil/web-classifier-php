@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new ODE\UserBundle\ODEUserBundle(),
             new ODE\DatasetBundle\ODEDatasetBundle(),
+            new ODE\AnalysisBundle\ODEAnalysisBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

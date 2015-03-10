@@ -1,3 +1,7 @@
+ode_analysis:
+    resource: "@ODEAnalysisBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ode_dataset:
     resource: "@ODEDatasetBundle/Resources/config/routing.yml"
     prefix:   /

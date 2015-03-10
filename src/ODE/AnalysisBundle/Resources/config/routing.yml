@@ -1,0 +1,3 @@
+ode_analysis_homepage:
+    path:     /analysis
+    defaults: { _controller: ODEAnalysisBundle:Default:index }

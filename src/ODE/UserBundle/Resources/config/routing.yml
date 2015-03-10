@@ -1,11 +1,7 @@
-ode_user_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: ODEUserBundle:Default:index }
-
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-upload_profile_image:
+ode_upload_profile_image:
     path:     /upload-profile-image
     defaults: { _controller: ODEUserBundle:Default:uploadProfilePicture }
     methods: [POST]
