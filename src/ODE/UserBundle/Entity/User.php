@@ -80,9 +80,24 @@ class User extends BaseUser
      */
     protected $profilePicturePath;
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     // --------------------//
     // Getters and Setters //
     // --------------------//
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getFirstname()
     {
@@ -224,22 +239,8 @@ class User extends BaseUser
      * @ORM\PrePersist()
      */
     public function setDefaultProfilePicture(){
+        // Create a default profile picture for new users based on anonymous.jpg file
         $this->profilePicturePath = '/assets/profilepictures/'.md5($this->username);
         copy(__DIR__.'/../../../../web/assets/img/anonymous.jpg',__DIR__.'/../../../../web'.$this->profilePicturePath);
-    }
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }
