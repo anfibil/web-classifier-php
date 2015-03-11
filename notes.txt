@@ -36,12 +36,20 @@ which required removing the file src/ODE/UserBundle/Resources/config/doctrine/Us
 
 
 To run the app:
-----------------------------------------------------------------------
+---------------
 php app/console server:run
+
 
 Cheat Sheet
 ------------
 http://www.symfony2cheatsheet.com/
+
+
+Doctrine data types for entity fields
+-------------------------------------
+http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
+
+
 
 
 TODO: Error check profile picture upload feature.
@@ -50,9 +58,10 @@ TODO: When user is using webcam and clicks "Upload picture" before the check tic
 TODO: Compress and resize profile pictures before storing them
 
 TODO: Setup for running experiments (as suggested by someone that actually knows what they are doing):
- 1) Create a page with a form to collects all experiment parameters. This page will send that information via POST to a "processing" page.
- 2) In the processing page, call exec(), add this experiment to an "Experiment table" in the database with a value of "False" in the "finished_running" column. Redirect user to a "waiting for results" page using header("location") and call exit.
- 3) In the waiting page, continuously check the database to see if the experiment finished running. While that is not true, keep refreshing the page or have one of those moving icon things displayed. The python script will update the database when it finishes running.
- 4) When the experiment is done, redirect user to the "results page". Create a template to display the results. This will accept an experiment_id, search for it in the database and display the results.
+✓ 1) Create a page with a form to collects all experiment parameters. This page will send that information via POST to a "processing" page.
+✓ 2) In the processing page, call exec(), add this experiment to an "Experiment table" in the database with a value of "False" in the "finished_running" column. Redirect user to a "waiting for results" page using header("location") and call exit.
+✓ 3) In the waiting page, continuously check the database to see if the experiment finished running. While that is not true, keep refreshing the page or have one of those moving icon things displayed. The python script will update the database when it finishes running.
+✓ 4) When the experiment is done, redirect user to the "results page". Create a template to display the results. This will accept an experiment_id, search for it in the database and display the results.
 
+TODO: Improve (4) using ajax or something like that to avoid having to keep refreshing page
 TODO: Once the above is working, improve (2) by directing the exec() call to a different script that forks the execution of multiple experiments to better handle concurrency. 

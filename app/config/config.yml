@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: @ODEUserBundle/Resources/config/services.yml}
+    - { resource: @ODEAnalysisBundle/Resources/config/services.yml}
 
 framework:
     #esi:             ~

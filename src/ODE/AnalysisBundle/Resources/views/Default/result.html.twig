@@ -1,0 +1,27 @@
+{% extends 'base.html.twig'%}
+
+{% block body %}
+    <div class="wrapper wrapper-content animated{# fadeInRight#} fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content text-center p-md">
+                        {% if isFinished(id) == true %}
+                            <h1> Done! Here are the results ↑ </h1>
+                        {% else %}
+                            <h1> Not done running yet. Please wait...</h1>
+
+                            <script>
+                                setTimeout(function(){
+                                    window.location.reload(1);
+                                }, 5000);
+                            </script>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

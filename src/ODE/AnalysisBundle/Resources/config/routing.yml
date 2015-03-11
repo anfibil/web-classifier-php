@@ -1,3 +1,7 @@
 ode_analysis_homepage:
     path:     /analysis
-    defaults: { _controller: ODEAnalysisBundle:Default:index }
+    defaults: { _controller: ODEAnalysisBundle:Default:configAnalysis }
+
+ode_analysis_run:
+    path:     /analysis/run/
+    defaults: {_controller: ODEAnalysisBundle:Default:runAnalysis}
