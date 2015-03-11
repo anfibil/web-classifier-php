@@ -8,6 +8,10 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('ODEDatasetBundle:Default:index.html.twig');
+        $datasetRepository = $this->getDoctrine()->getRepository('ODEDatasetBundle:Dataset');
+        $datasets = $datasetRepository->getDatasets();
+        //dump($datasets);
+
+        return $this->render('ODEDatasetBundle:Default:index.html.twig', array('datasets' => $datasets));
     }
 }

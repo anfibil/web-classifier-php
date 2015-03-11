@@ -27,7 +27,7 @@ To create bundles using the Symfony console:
 php app/console generate:bundle -> Follow the instructions.
 
 
-For the user database, create a table named symfony (via SQL) and run:
+For the database, create a table named symfony (via SQL) and run:
 ----------------------------------------------------------------------
 php app/console doctrine:schema:update --force
 

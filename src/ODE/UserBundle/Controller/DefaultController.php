@@ -5,11 +5,11 @@ namespace ODE\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use ODE\UserBundle\Form\RegistrationFormType;
+//use ODE\UserBundle\Form\Type\RegistrationFormType;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
         return $this->render('ODEUserBundle:Default:index.html.twig', array('username' => $this->getUser()));
     }
