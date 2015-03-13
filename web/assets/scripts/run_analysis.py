@@ -2,6 +2,7 @@ import pymysql
 import sys
 import json
 from time import sleep
+import random
 
 analysisID = sys.argv[1]
 
@@ -16,7 +17,7 @@ analysis = cursor.fetchone()
 
 # Get all parameters from 'analysis' and run experiment
 # TODO: Write code for that here
-temp_result = json.dumps({'accuracy' : 0.3215, 'auroc' : 0.62, 'precision' : 0.1})
+temp_result = json.dumps({'accuracy' : random.uniform(0, 1), 'auroc' : random.uniform(0, 1), 'precision' : random.uniform(0, 1), 'fmeasure' : random.uniform(0, 1), 'rmse' : random.uniform(0, 1), 'recall' : random.uniform(0, 1)})
 
 
 # Update the entry in the database to reflect completion

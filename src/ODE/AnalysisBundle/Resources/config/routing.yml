@@ -5,3 +5,7 @@ ode_analysis_homepage:
 ode_analysis_run:
     path:     /analysis/run/
     defaults: {_controller: ODEAnalysisBundle:Default:runAnalysis}
+
+ode_check_result:
+    pattern:  /analysis/finished
+    defaults: { _controller: ODEAnalysisBundle:Default:checkIfAnalysisIsDone}
