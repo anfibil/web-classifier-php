@@ -65,10 +65,10 @@
                         {% for dataset in datasets %}
                         <tr>
                             <td>{{ dataset.getName }}</td>
-                            {#<td>{{ dataset.types }}</td>#}
+                            {#<td>{{ dataset.getTypes }}</td>#}
                             <td>{{ dataset.getNumInstances }}</td>
                             <td class="center">{{ dataset.getNumFeatures }}</td>
-                            {#<td class="center">{{ dataset.date }}</td>#}
+                            {#<td class="center">{{ dataset.getDate }}</td>#}
                             <td class="center">{{ dataset.getFiletype }}</td>
                             <td class="center">{{ dataset.getFilesize }}</td>
                             <td class="center"><a href=&quot;{{ asset("assets/datasets/#{dataset.getFilename}.#{dataset.getFiletype|lower}") }}&quot;>Download</a></td>
