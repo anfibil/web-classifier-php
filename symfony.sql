@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2015 at 10:09 PM
+-- Generation Time: Mar 16, 2015 at 08:07 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -49,6 +49,28 @@ INSERT INTO `ode_dataset` (`id`, `name`, `description`, `num_instances`, `num_fe
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ode_models`
+--
+
+CREATE TABLE IF NOT EXISTS `ode_models` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `parameters` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:json_array)',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ode_models`
+--
+
+INSERT INTO `ode_models` (`id`, `type`, `parameters`, `name`) VALUES
+(1, 'classification', '{"criterion ":["gini","entropy"],"splitter":["best","random"],"max_features":"","max_depth":"","min_samples_split":"","max_leaf_nodes":"","random_sate":""}', 'Decision Tree'),
+(2, 'classification', '{"alpha":"", "fit_prior":"", "class_prior":""}', 'Naive Bayes');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ode_results`
 --
 
@@ -62,23 +84,15 @@ CREATE TABLE IF NOT EXISTS `ode_results` (
   `dataset` int(11) NOT NULL,
   `result` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `ode_results`
---
-
-INSERT INTO `ode_results` (`id`, `algorithm`, `params`, `runtime`, `finished`, `username`, `dataset`, `result`) VALUES
-(1, 'rf', NULL, NULL, 0, 'reid.johnson2', 1, NULL),
-(2, 'lg', NULL, NULL, 1, 'reid.johnson2', 1, '{"auroc": 0.62, "precision": 0.1, "accuracy": 0.3215}');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ode_user`
+-- Table structure for table `ode_users`
 --
 
-CREATE TABLE IF NOT EXISTS `ode_user` (
+CREATE TABLE IF NOT EXISTS `ode_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username_canonical` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -102,17 +116,16 @@ CREATE TABLE IF NOT EXISTS `ode_user` (
   `lastEdited` datetime NOT NULL,
   `profilePicturePath` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_5DBDCA2E92FC23A8` (`username_canonical`),
-  UNIQUE KEY `UNIQ_5DBDCA2EA0D96FBF` (`email_canonical`)
+  UNIQUE KEY `UNIQ_C7857F0E92FC23A8` (`username_canonical`),
+  UNIQUE KEY `UNIQ_C7857F0EA0D96FBF` (`email_canonical`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `ode_user`
+-- Dumping data for table `ode_users`
 --
 
-INSERT INTO `ode_user` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `affiliation`, `lastEdited`, `profilePicturePath`) VALUES
-(1, 'reid.johnson', 'reid.johnson', 'reid.johnson@gmail.com', 'reid.johnson@gmail.com', 1, 'h6egfskoq6o8sgw84kkso04w8woo484', 'EDBESSCGHZzSGt8Rpjp5QeBBIT7pGQyDzCGNtn/WfmQMCqRihqQ5CpLoTbUuU3vFTXXTENsraTn2HrWzTlo5zQ==', '2015-03-04 20:23:15', 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, 'Reid', 'Johnson', 'University of Notre Dame', '0000-00-00 00:00:00', NULL),
-(2, 'reid.johnson2', 'reid.johnson2', 'reid.johnson2@gmail.com', 'reid.johnson2@gmail.com', 1, '7n4ioe1jpf0ogsccw8sg0k0g8wg8s4k', 'N7V6tfZxrxtMzBW4Dhhd/XWF76W6AVRCvcK3jMSB2ZjTcOTGccJb+XYPdIvZGYnS5ZTVU6EGK7mkjlnS0+A+PA==', '2015-03-11 02:16:44', 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, 'Reid', 'Johnson', 'University of Notre Dame', '2015-03-11 02:16:44', '/assets/profilepictures/8d1e883c7aa219a5cef55aa8e2e6442c');
+INSERT INTO `ode_users` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `firstname`, `lastname`, `affiliation`, `lastEdited`, `profilePicturePath`) VALUES
+(2, 'user', 'user', 'user@email.com', 'user@email.com', 1, 'av2sn0ujazkgcok4s004og8o40gss8w', '170IfD1qEs26TVFKqwr3G0tGJxBZgopmNHdMaOkHuy0k8J5E/rffVtWBGQvVH5/g/Gg2mgxpR5lqGRmaMSPitg==', '2015-03-16 08:07:03', 0, 0, NULL, NULL, NULL, 'a:0:{}', 0, NULL, 'FirstName', 'LastName', 'University of Notre Dame', '2015-03-16 08:07:03', '/assets/profilepictures/ee11cbb19052e40b07aac0ca060c23ee');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -21,7 +21,7 @@
                                 function checkIfDone(){
                                     jQuery.ajax({
                                         dataType: "json",
-                                        url: "/analysis/finished?id="+ {{ id }},
+                                        url: "/analysis/check?id="+ {{ id }},
                                         data: "",
                                         success: function(data){
                                             if (data.finished){

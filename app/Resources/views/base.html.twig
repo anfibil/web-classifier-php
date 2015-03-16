@@ -17,6 +17,12 @@
     <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/picedit.min.css') }}" rel="stylesheet">
 
+    {% block stylesheets %}
+        {% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
+        <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+
     {% block scripts %}
         {% javascripts
         'assets/js/jquery-2.1.1.js'

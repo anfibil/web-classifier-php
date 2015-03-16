@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ode_user")
+ * @ORM\Table(name="ode_users")
  * @ORM\HasLifecycleCallbacks
  */
 class User extends BaseUser

@@ -7,6 +7,7 @@ use ODE\AnalysisBundle\Entity\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class DefaultController extends Controller
 {
     public function indexAction()
@@ -15,35 +16,23 @@ class DefaultController extends Controller
         return $this->render('ODEAnalysisBundle:Default:index.html.twig');
     }
 
-    public function configAnalysisAction(Request $request){
+    public function runAnalysisAction(Request $request){
         $username = $this->getUser()->getUsername();
+        $model = $request->query->get('model');
+        $dataset = $request->query->get('dataset');
 
         $result = new Result();
         $result->setusername($username);
+        $result->setAlgorithm($model);
+        $result->setDataset($dataset);
 
-        $form = $this->createFormBuilder($result)
-            ->add('algorithm','choice',array(
-                'choices' => array(
-                    'rf' => 'Random Forest',
-                    'lg' => 'Logistic Regression'),
-                'required' => true,))
-            ->add('save' , 'submit' , array('label' => 'Run Analysis' ))
-            ->getForm();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($result);
+        $em->flush();
+        $this->runAnalysis($result->getId());
 
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($result);
-            $em->flush();
-            $this->runAnalysis($result->getId());
-
-            //TODO: Supress the ?id= from URL somehow
-            return $this->redirect($this->generateUrl('ode_analysis_run', array('id' => $result->getId()),true));
-        }
-
-        return $this->render('ODEAnalysisBundle:Default:index.html.twig',array(
-            'form' => $form->createView(),
-        ));
+        //TODO: Supress the ?id= from URL somehow
+        return $this->redirect($this->generateUrl('ode_wait_result', array('id' => $result->getId()),true));
     }
 
     private function runAnalysis($id){
@@ -59,7 +48,7 @@ class DefaultController extends Controller
             $terminal_output = exec('python '.$script.' '.$id.' &');
         }
     }
-    public function runAnalysisAction(Request $request){
+    public function waitForAnalysisResultAction(Request $request){
         return $this->render('ODEAnalysisBundle:Default:result.html.twig', array('id' => $request->query->get('id')));
     }
 

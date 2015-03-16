@@ -1,11 +1,19 @@
 ode_analysis_homepage:
     path:     /analysis
-    defaults: { _controller: ODEAnalysisBundle:Default:configAnalysis }
+    defaults: { _controller: ODEAnalysisBundle:FormFlow:createAnalysis }
 
-ode_analysis_run:
-    path:     /analysis/run/
-    defaults: {_controller: ODEAnalysisBundle:Default:runAnalysis}
+ode_run_analysis:
+    pattern:  /analysis/run
+    defaults: { _controller: ODEAnalysisBundle:Default:runAnalysis}
+
+ode_wait_result:
+    pattern:  /analysis/result
+    defaults: { _controller: ODEAnalysisBundle:Default:waitForAnalysisResult}
 
 ode_check_result:
-    pattern:  /analysis/finished
+    pattern:  /analysis/check
     defaults: { _controller: ODEAnalysisBundle:Default:checkIfAnalysisIsDone}
+
+ode_get_model_params:
+    pattern:  /analysis/getmodelparams
+    defaults: { _controller: ODEAnalysisBundle:FormFlow:getModelParams}
