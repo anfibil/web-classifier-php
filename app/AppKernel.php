@@ -21,7 +21,6 @@ class AppKernel extends Kernel
             new ODE\UserBundle\ODEUserBundle(),
             new ODE\DatasetBundle\ODEDatasetBundle(),
             new ODE\AnalysisBundle\ODEAnalysisBundle(),
-            new Craue\FormFlowBundle\CraueFormFlowBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
