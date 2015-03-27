@@ -5029,3 +5029,11 @@ body.skin-3 {
     display: none;
   }
 }
+/* Overwrite form wizard style */
+.wizard > .content {
+min-height: 295px !important;
+overflow: auto !important;
+}
+.wizard > .content > .body {
+width: 100% !important;
+}
