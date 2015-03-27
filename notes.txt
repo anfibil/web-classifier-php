@@ -56,4 +56,4 @@ TODO: Check why profile picture upload fails with large pictures (picEdit issue 
 TODO: When user is using webcam and clicks "Upload picture" before the check tick, page gets stuck. Fix that.
 TODO: Compress and resize profile pictures before storing them
 
-TODO: Continue to work on multi-step analysis form
+TODO: Ensure that only logged in users can use analysis form
