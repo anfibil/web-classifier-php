@@ -17,13 +17,11 @@ class FormFlowController extends Controller {
         ));
     }
 
-    public function getModelParamsAction(Request $request){
+    public function getModelFormAction(Request $request){
         $model_id = $request->query->get('modelid');
         $em = $this->getDoctrine()->getManager();
         $model = $em->getRepository('ODEAnalysisBundle:Model')->find($model_id);
 
-        $params = array('params'=> $model->getParameters());
-
-        return new Response(json_encode((object)$params));
+        return new Response($model->getForm());
     }
 }

@@ -1,100 +1,94 @@
 {% extends 'base.html.twig' %}
-
 {% block stylesheets %}
     {% stylesheets
-        'assets/css/plugins/iCheck/custom.css'
-        'assets/css/plugins/steps/jquery.steps.css'
+    'assets/css/plugins/iCheck/custom.css'
+    'assets/css/plugins/steps/jquery.steps.css'
+    'assets/css/plugins/noUiSlider/jquery.nouislider.css'
     %}
-    <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
-
 {% block body %}
-    <br></<br/>
-    <br></<br/>
-    <div class="row">
-        <div class="col-lg-10 col-lg-offset-1">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Analysis</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <h2> Configure Your Analysis Parameters </h2>
-                    <form id="form" action="#" class="wizard-big">
-                        <h1>Dataset</h1>
-                        <fieldset>
-                            <h2>Select the dataset:</h2>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="form-group">
-                                        <select id="dataset" name="dataset" class="form-control required">
-                                            {% for dataset in datasets %}
-                                                <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-lg-offset-1">
-                                    Add dataset description here.
-                                </div>
-                            </div>
-                        </fieldset>
-                        <h1>Model</h1>
-                        <fieldset>
-                            <h2>Select the dataset:</h2>
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <div class="form-group">
-                                        <select id="model" name="model" class="form-control required">
-                                            {% for model in models %}
-                                                <option value={{ model.id|e }}>{{ model.name|e }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-lg-offset-1">
-                                    Add model description here.
-                                </div>
-                            </div>
-                        </fieldset>
-                        <h1>Parameters</h1>
-                        <fieldset>
-                             <div class="form-group">
-                                <div class="text-center" style="margin-top: 120px">
-                                    <h2>You did it Man :-)</h2> </div>
-                             </div>
-                        </fieldset>
-                        <h1>Finish</h1>
-                        <fieldset>
-                            <h2>Terms and Conditions</h2>
-                            <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
-                            <label for="acceptTerms">I agree with the Terms and Conditions.</label>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<br></<br/>
+<br></<br/>
+<div class="row">
+	<div class="col-lg-10 col-lg-offset-1">
+		<div class="ibox">
+			<div class="ibox-title">
+				<h5>Analysis</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link"> <i class="fa fa-chevron-up"></i> </a>
+				</div>
+			</div>
+			<div class="ibox-content">
+				<h2> Configure Your Analysis Parameters </h2>
+				<form id="form" action="#" class="wizard-big">
+					<h1>Dataset</h1>
+					<section>
+						<h2>Select the dataset:</h2>
+						<div class="row">
+							<div class="col-lg-5">
+								<div class="form-group">
+									<select id="dataset" name="dataset" class="form-control required">
+									{% for dataset in datasets %}
+                                        <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
+                                    {% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-5 col-lg-offset-1">
+								Add dataset description here.
+							</div>
+						</div>
+					</section>
+					<h1>Model</h1>
+					<section>
+						<h2>Select the dataset:</h2>
+						<div class="row">
+							<div class="col-lg-5">
+								<div class="form-group">
+									<select id="model" name="model" class="form-control required">
+									{% for model in models %}
+                                        <option value={{ model.id|e }}>{{ model.name|e }}</option>
+                                    {% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-5 col-lg-offset-1">
+								Add model description here.
+							</div>
+						</div>
+					</section>
+					<h1>Parameters</h1>
+					<section data-mode="async">
+					</section>
+					<h1>Finish</h1>
+					<section>
+						<h2>Terms and Conditions</h2>
+						<input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
+						<label for="acceptTerms">I agree with the Terms and Conditions.</label>
+					</section>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
-
 {% block scripts %}
     {{ parent() }}
     {% javascripts
-        'assets/js/plugins/staps/jquery.steps.min.js'
-        'assets/js/plugins/validate/jquery.validate.min.js'
+    'assets/js/plugins/staps/jquery.steps.min.js'
+    'assets/js/plugins/validate/jquery.validate.min.js'
+    'assets/js/plugins/noUiSlider/jquery.nouislider.all.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
     <script>
         // Reference: https://github.com/rstaib/jquery-steps/wiki (lots of options to customize this form)
         $(document).ready(function(){
             $("#wizard").steps();
             $("#form").steps({
-                bodyTag: "fieldset",
+                bodyTag: "section",
                 showFinishButtonAlways: false, // Not working
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
@@ -104,12 +98,13 @@
                         return true;
                     }
 
-                    // Fills in information for second step based on dataset choice
+                    //Fills in information for second step based on dataset choice
                     if (currentIndex === 1) {
                         $("#form").steps("remove", 2);
                         $("#form").steps("insert", 2, {
                             title: "Parameters",
-                            content: getParameters() // TODO: Work on this since content is not updating
+                            contentMode: "async",
+                            contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val() // TODO: Work on this since content is not updating
                         });
                     }
 
@@ -166,17 +161,9 @@
             window.location.href = '/analysis/run?'+params;
         }
 
-        function getParameters(){
-            jQuery.ajax({
-                dataType: "json",
-                url: "/analysis/getmodelparams?modelid="+ $("#model").val(),
-                data: "",
-                success: function(data){
-                    alert( JSON.stringify(data.params));
-                }
-            }).fail(function() {
-                alert("request fail");
-            });
-        }
     </script>
+
+    <!-- iCheck plugin -->
+    <script src="{{ asset('assets/js/plugins/iCheck/icheck.min.js') }}"></script>
+
 {% endblock %}

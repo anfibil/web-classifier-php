@@ -33,7 +33,7 @@ class Model
     /**
      * @var array
      *
-     * @ORM\Column(name="parameters", type="json_array")
+     * @ORM\Column(name="parameters", type="simple_array")
      */
     private $parameters;
 
@@ -43,6 +43,13 @@ class Model
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="form", type="text")
+     */
+    private $form;
 
 
     /**
@@ -122,5 +129,28 @@ class Model
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set form
+     *
+     * @param string $form
+     * @return Model
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Get form
+     *
+     * @return string
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 }
