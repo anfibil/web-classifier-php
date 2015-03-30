@@ -40,7 +40,7 @@
 					</section>
 					<h1>Model</h1>
 					<section>
-						<h2>Select the dataset:</h2>
+						<h2>Select the Model:</h2>
 						<div class="row">
 							<div class="col-lg-5">
 								<div class="form-group">
@@ -51,8 +51,31 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-5 col-lg-offset-1">
-								Add model description here.
+							<div class="col-lg-7">
+							    <div class="ibox float-e-margins">
+							        <div class="description-box ibox-content p-m">
+								        <h4 class="m-b-xxs text-center">Decision Tree Classifier <i class="fa fa-tree"></i></h4>
+								        <p>A decision tree is a decision support tool that uses a tree-like graph or model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility. It is one way to display an algorithm. <a href="http://en.wikipedia.org/wiki/Decision_tree_learning"> [ref]</a> </p>
+                                        <div class="col-xs-6">
+                                            <div>
+                                                <span>Complexity</span>
+                                                <small class="pull-right">5/10</small>
+                                            </div>
+                                            <div class="progress progress-small">
+                                                <div style="width: 50%;" class="progress-bar progress-bar-warning"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <div>
+                                                <span>Interpretability</span>
+                                                <small class="pull-right">9/10</small>
+                                            </div>
+                                            <div class="progress progress-small">
+                                                <div style="width: 90%;" class="progress-bar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 						</div>
 					</section>
@@ -135,9 +158,6 @@
                 onFinished: function (event, currentIndex)
                 {
                     var form = $(this);
-
-                    // Submit form input
-                    //form.submit();
 
                     submitForm(form.serialize());
                 }

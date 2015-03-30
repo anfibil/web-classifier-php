@@ -5037,3 +5037,12 @@ overflow: auto !important;
 .wizard > .content > .body {
 width: 100% !important;
 }
+
+.description-box{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    min-height: 170px;
+
+    box-shadow:3px 3px 5px #939393;
+}
