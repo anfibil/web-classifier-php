@@ -19,9 +19,16 @@ class FormFlowController extends Controller {
 
     public function getModelFormAction(Request $request){
         $model_id = $request->query->get('modelid');
+        $dataset_id = $request->query->get('datasetid');
         $em = $this->getDoctrine()->getManager();
         $model = $em->getRepository('ODEAnalysisBundle:Model')->find($model_id);
+        $dataset = $em->getRepository('ODEDatasetBundle:Dataset')->find($dataset_id);
 
-        return new Response($model->getForm());
+        $model_form = $model->getForm();
+        $values = array("NUM_FEATURES","NUM_INSTANCES");
+        $keys = array($dataset->getNumFeatures(),$dataset->getNumInstances());
+        $model_form_html = str_replace($values, $keys, $model_form);
+
+        return new Response($model_form_html);
     }
 }

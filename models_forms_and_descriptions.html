@@ -1,0 +1,188 @@
+========================================================================================================================================================================================================================
+
+DECISION TREE -- FORM
+
+<div class="row">
+    <div class="col-lg-2">
+        <label>Criterion:</label>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="gini" name="criterion" checked="" class="required"> Gini</label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="entropy" name="criterion" class="required"> Entropy</label>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <label>Splitter:</label>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="best" name="splitter" checked="" class="required"> Best</label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="random" name="splitter" class="required"> Random</label>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+        <label>max_leaf_nodes = <span class="example-val" style="color:#1AB394" id="max_leaf_nodes-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q1"></i></label>
+        <div class="col-lg-10 col-lg-offset-1">
+            <div id="max_leaf_nodes-slider"></div>
+            <input type="hidden" name="max_leaf_nodes" id="max_leaf_nodes" value="">
+            <br/>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+        <label>min_samples_leaf = <span class="example-val" style="color:#1AB394" id="min_samples_leaf-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q2"></i></label>
+        <div class="col-lg-10 col-lg-offset-1">
+            <div id="min_samples_leaf-slider"></div>
+            <input type="hidden" name="min_samples_leaf" id="min_samples_leaf" value="">
+        </div>
+    </div>
+</div>
+<div class="hr-line-dashed"></div>
+<div class="row">
+    <div class="col-lg-4 text-center">
+        <label>max_features = <span class="example-val" style="color:#1AB394" id="max_features-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q3"></i></label>
+        <div class="col-lg-10 col-lg-offset-1">
+            <div id="max_features-slider"></div>
+            <input type="hidden" name="max_features" id="max_features" value="">
+            <br/>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+        <label>min_samples_split = <span class="example-val" style="color:#1AB394" id="min_samples_split-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q4"></i></label>
+        <div class="col-lg-10 col-lg-offset-1">
+            <div id="min_samples_split-slider"></div>
+            <input type="hidden" name="min_samples_split" id="min_samples_split" value="">
+        </div>
+    </div>
+    <div class="col-lg-4 text-center" style="display:inline-block; vertical-align: middle; float: none; margin-right:-4px;">
+        <label>max_depth = <span class="example-val" style="color:#1AB394" id="max_depth-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q5"></i></label>
+        <div class="col-lg-10 col-lg-offset-1">
+            <div id="max_depth-slider"></div>
+            <input type="hidden" name="max_depth" id="max_depth" value="">
+        </div>
+    </div>
+</div>
+<div class="hr-line-dashed"></div>
+<script>
+    $(document).ready(function() {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        $('#max_features-slider').noUiSlider({
+            start: [0],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [0],
+                'max': [NUM_FEATURES]
+            }
+        });
+        $('#max_features-slider').Link('lower').to($('#max_features-value'));
+        $('#max_features-slider').Link('lower').to($('#max_features'));
+        $('#min_samples_split-slider').noUiSlider({
+            start: [0],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [0],
+                'max': [NUM_INSTANCES]
+            }
+        });
+        $('#min_samples_split-slider').Link('lower').to($('#min_samples_split-value'));
+        $('#min_samples_split-slider').Link('lower').to($('#min_samples_split'));
+        $('#max_leaf_nodes-slider').noUiSlider({
+            start: [0],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [0],
+                'max': [20]
+            }
+        });
+        $('#max_leaf_nodes-slider').Link('lower').to($('#max_leaf_nodes-value'));
+        $('#max_leaf_nodes-slider').Link('lower').to($('#max_leaf_nodes'));
+        $('#min_samples_leaf-slider').noUiSlider({
+            start: [0],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [0],
+                'max': [NUM_FEATURES]
+            }
+        });
+        $('#min_samples_leaf-slider').Link('lower').to($('#min_samples_leaf-value'));
+        $('#min_samples_leaf-slider').Link('lower').to($('#min_samples_leaf'));
+        $('#max_depth-slider').noUiSlider({
+            start: [0],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [0],
+                'max': [20]
+            }
+        });
+        $('#max_depth-slider').Link('lower').to($('#max_depth-value'));
+        $('#max_depth-slider').Link('lower').to($('#max_depth'));
+
+        $("#q1").qtip({ 
+                content: {
+                    text: 'Grow a tree with <i>max_leaf_nodes</i> in best-first fashion. Best nodes are defined as relative reduction in impurity. If <strong>0</strong> then unlimited number of leaf nodes. If not <strong>0</strong> then <i>max_depth</i> will be ignored.',
+                    title:'<i>max_leaf_nodes</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q2").qtip({ 
+                content: {
+                    text: 'The minimum number of samples required to be at a leaf node.',
+                    title:'<i>min_samples_leaf</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q3").qtip({ 
+                content: {
+                    text: 'The number of features to consider when looking for the best split.',
+                    title:'<i>max_features</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q4").qtip({ 
+                content: {
+                    text: 'The minimum number of samples required to split an internal node.',
+                    title:'<i>min_samples_split</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q5").qtip({ 
+                content: {
+                    text: 'The maximum depth of the tree. If <strong>0</strong>, then nodes are expanded until all leaves are pure or until all leaves contain less than <i>min_samples_split</i> samples. Ignored if <i>max_leaf_nodes</i> is not <strong>0</strong>.',
+                    title:'<i>max_depth</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        })
+    });
+</script>
+
+========================================================================================================================================================================================================================
+
+DECISION TREE -- DESCRIPTION
+
+<h4 class="m-b-xxs text-center">Decision Tree Classifier <i class="fa fa-tree"></i></h4><p>A decision tree is a decision support tool that uses a tree-like graph ormodel of decisions and their possible consequences, including chance eventoutcomes, resource costs, and utility. It is one way to display an algorithm.<a href="http://en.wikipedia.org/wiki/Decision_tree_learning" target="_blank"> [ref]</a></p><div class="col-xs-6"> <div> <span>Complexity</span> <small class="pull-right">5/10</small> </div> <div class="progress progress-small"> <div class="progress-bar progress-bar-warning" style="width: 50%;"> </div> </div></div><div class="col-xs-6"> <div> <span>Interpretability</span> <small class="pull-right">9/10</small> </div> <div class="progress progress-small"> <div class="progress-bar" style="width: 90%;"> </div> </div></div>
+
+========================================================================================================================================================================================================================
+
+GAUSSIAN NAIVE BAYES -- FORM
+
+<h4><b>There are no configurable parameters for the selected model.</b></h4>
+
+========================================================================================================================================================================================================================
+
+GAUSSIAN NAIVE BAYES -- DESCRIPTION
+
+<h4 class="m-b-xxs text-center">Naive Bayes Classifier <i class="fa fa-bars"></i></h4><p>Naive Bayes methods are a set of supervised learning algorithms based on applying Bayes’ theorem with the “naive” assumption of independence between every pair of features.<a href="http://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank"> [ref]</a></p><div class="col-xs-6"> <div> <span>Complexity</span> <small class="pull-right">3/10</small> </div> <div class="progress progress-small"> <div class="progress-bar" style="width: 30%;"> </div> </div></div><div class="col-xs-6"> <div> <span>Interpretability</span> <small class="pull-right">5/10</small> </div> <div class="progress progress-small"> <div class="progress-bar progress-bar-warning" style="width: 50%;"> </div> </div></div>
+
+========================================================================================================================================================================================================================

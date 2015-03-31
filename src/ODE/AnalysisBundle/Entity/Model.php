@@ -51,6 +51,13 @@ class Model
      */
     private $form;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
 
     /**
      * Get id
@@ -152,5 +159,22 @@ class Model
     public function getForm()
     {
         return $this->form;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get form
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

@@ -5031,7 +5031,7 @@ body.skin-3 {
 }
 /* Overwrite form wizard style */
 .wizard > .content {
-min-height: 295px !important;
+min-height: 300px !important;
 overflow: auto !important;
 }
 .wizard > .content > .body {

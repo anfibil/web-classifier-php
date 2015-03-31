@@ -4,6 +4,7 @@
     'assets/css/plugins/iCheck/custom.css'
     'assets/css/plugins/steps/jquery.steps.css'
     'assets/css/plugins/noUiSlider/jquery.nouislider.css'
+    'assets/css/plugins/qTip/jquery.qtip.css'
     %}
     <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -53,27 +54,12 @@
 							</div>
 							<div class="col-lg-7">
 							    <div class="ibox float-e-margins">
-							        <div class="description-box ibox-content p-m">
-								        <h4 class="m-b-xxs text-center">Decision Tree Classifier <i class="fa fa-tree"></i></h4>
-								        <p>A decision tree is a decision support tool that uses a tree-like graph or model of decisions and their possible consequences, including chance event outcomes, resource costs, and utility. It is one way to display an algorithm. <a href="http://en.wikipedia.org/wiki/Decision_tree_learning"> [ref]</a> </p>
-                                        <div class="col-xs-6">
-                                            <div>
-                                                <span>Complexity</span>
-                                                <small class="pull-right">5/10</small>
-                                            </div>
-                                            <div class="progress progress-small">
-                                                <div style="width: 50%;" class="progress-bar progress-bar-warning"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <div>
-                                                <span>Interpretability</span>
-                                                <small class="pull-right">9/10</small>
-                                            </div>
-                                            <div class="progress progress-small">
-                                                <div style="width: 90%;" class="progress-bar"></div>
-                                            </div>
-                                        </div>
+							        <div class="description-box ibox-content p-m" id="model-description">
+                                        <div id="model-descriptions">
+                                        {% for model in models %}
+                                            <div id="model-description-{{ model.id|e }}" style="display: none"> {{ model.description|raw}}</div>
+                                        {% endfor %}
+                                    </div>
                                     </div>
                                 </div>
 							</div>
@@ -93,6 +79,7 @@
 		</div>
 	</div>
 </div>
+
 {% endblock %}
 {% block scripts %}
     {{ parent() }}
@@ -100,6 +87,7 @@
     'assets/js/plugins/steps/jquery.steps.js'
     'assets/js/plugins/validate/jquery.validate.min.js'
     'assets/js/plugins/noUiSlider/jquery.nouislider.all.js'
+    'assets/js/plugins/qTip/jquery.qtip.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -124,7 +112,7 @@
                         $("#form").steps("insert", 2, {
                             title: "Parameters",
                             contentMode: "async",
-                            contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val() // TODO: Work on this since content is not updating
+                            contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val()+"&datasetid="+$("#dataset").val() // TODO: Work on this since content is not updating
                         });
                     }
 
@@ -172,6 +160,13 @@
                     }
                 }
             });
+
+            $("#model").change(function(){
+                $("#model-description-" + this.value).show().siblings().hide();
+            });
+
+            $("#model").change();
+
         });
 
         function submitForm(params){
@@ -181,6 +176,6 @@
     </script>
 
     <!-- iCheck plugin -->
-    <script src="{{ asset('assets/js/plugins/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/iCheck/icheck.js') }}"></script>
 
 {% endblock %}
