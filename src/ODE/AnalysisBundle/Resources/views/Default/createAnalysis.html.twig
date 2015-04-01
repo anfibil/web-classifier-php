@@ -112,7 +112,7 @@
                         $("#form").steps("insert", 2, {
                             title: "Parameters",
                             contentMode: "async",
-                            contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val()+"&datasetid="+$("#dataset").val() // TODO: Work on this since content is not updating
+                            contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val()+"&datasetid="+$("#dataset").val()
                         });
                     }
 
@@ -153,11 +153,6 @@
                 errorPlacement: function (error, element)
                 {
                     element.before(error);
-                },
-                rules: {
-                    confirm: {
-                        equalTo: "#password"
-                    }
                 }
             });
 

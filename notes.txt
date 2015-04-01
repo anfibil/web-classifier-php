@@ -57,4 +57,3 @@ TODO: When user is using webcam and clicks "Upload picture" before the check tic
 TODO: Compress and resize profile pictures before storing them
 
 TODO: Ensure that only logged in users can use analysis form
-TODO: Add tooltips to describe default values on model parameter forms and what each parameter means
