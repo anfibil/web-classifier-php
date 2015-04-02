@@ -22,9 +22,9 @@ class Result
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="algorithm", type="string", length=255)
+     * @ORM\Column(name="algorithm", type="integer", length=255)
      */
     private $algorithm;
 
@@ -36,9 +36,9 @@ class Result
     private $params;
 
     /**
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="runtime", type="integer", nullable=true)
+     * @ORM\Column(name="runtime", type="float", nullable=true)
      */
     private $runtime;
 
@@ -89,7 +89,7 @@ class Result
     /**
      * Set algorithm
      *
-     * @param string $algorithm
+     * @param integer $algorithm
      * @return Result
      */
     public function setAlgorithm($algorithm)
@@ -102,7 +102,7 @@ class Result
     /**
      * Get algorithm
      *
-     * @return string 
+     * @return integer
      */
     public function getAlgorithm()
     {
@@ -135,7 +135,7 @@ class Result
     /**
      * Set runtime
      *
-     * @param integer $runtime
+     * @param float $runtime
      * @return Result
      */
     public function setRuntime($runtime)
@@ -148,7 +148,7 @@ class Result
     /**
      * Get runtime
      *
-     * @return integer 
+     * @return float
      */
     public function getRuntime()
     {

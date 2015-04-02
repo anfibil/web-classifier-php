@@ -33,7 +33,7 @@ class Model
     /**
      * @var array
      *
-     * @ORM\Column(name="parameters", type="simple_array")
+     * @ORM\Column(name="parameters", type="json_array")
      */
     private $parameters;
 

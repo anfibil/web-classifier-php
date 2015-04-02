@@ -1,4 +1,4 @@
-========================================================================================================================================================================================================================
+===========================================================================================================================================================================================================
 
 DECISION TREE -- FORM
 
@@ -167,22 +167,185 @@ DECISION TREE -- FORM
     });
 </script>
 
-========================================================================================================================================================================================================================
+===========================================================================================================================================================================================================
 
 DECISION TREE -- DESCRIPTION
 
 <h4 class="m-b-xxs text-center">Decision Tree Classifier <i class="fa fa-tree"></i></h4><p>A decision tree is a decision support tool that uses a tree-like graph ormodel of decisions and their possible consequences, including chance eventoutcomes, resource costs, and utility. It is one way to display an algorithm.<a href="http://en.wikipedia.org/wiki/Decision_tree_learning" target="_blank"> [ref]</a></p><div class="col-xs-6"> <div> <span>Complexity</span> <small class="pull-right">5/10</small> </div> <div class="progress progress-small"> <div class="progress-bar progress-bar-warning" style="width: 50%;"> </div> </div></div><div class="col-xs-6"> <div> <span>Interpretability</span> <small class="pull-right">9/10</small> </div> <div class="progress progress-small"> <div class="progress-bar" style="width: 90%;"> </div> </div></div>
 
-========================================================================================================================================================================================================================
+===========================================================================================================================================================================================================
 
 GAUSSIAN NAIVE BAYES -- FORM
 
 <h4><b>There are no configurable parameters for the selected model.</b></h4>
 
-========================================================================================================================================================================================================================
+===========================================================================================================================================================================================================
 
 GAUSSIAN NAIVE BAYES -- DESCRIPTION
 
 <h4 class="m-b-xxs text-center">Naive Bayes Classifier <i class="fa fa-bars"></i></h4><p>Naive Bayes methods are a set of supervised learning algorithms based on applying Bayes’ theorem with the “naive” assumption of independence between every pair of features.<a href="http://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank"> [ref]</a></p><div class="col-xs-6"> <div> <span>Complexity</span> <small class="pull-right">3/10</small> </div> <div class="progress progress-small"> <div class="progress-bar" style="width: 30%;"> </div> </div></div><div class="col-xs-6"> <div> <span>Interpretability</span> <small class="pull-right">5/10</small> </div> <div class="progress progress-small"> <div class="progress-bar progress-bar-warning" style="width: 50%;"> </div> </div></div>
 
-========================================================================================================================================================================================================================
+===========================================================================================================================================================================================================
+
+PERCEPTRON -- DESCRIPTION
+
+<h4 class="m-b-xxs text-center">Perceptron <i class="fa fa-mars-double"></i></h4><p>The perceptron is a type of linear classifier, i.e. a classification algorithm that makes its predictions based on a linear predictor function combining a set of weights with the feature vector. The algorithm allows for online learning, in that it processes elements in the training set one at a time. <a href="http://en.wikipedia.org/wiki/Perceptron" target="_blank"> [ref]</a></p><div class="col-xs-6"> <div> <span>Complexity</span> <small class="pull-right">4/10</small> </div> <div class="progress progress-small"> <div class="progress-bar" style="width: 40%;"> </div> </div></div><div class="col-xs-6"> <div> <span>Interpretability</span> <small class="pull-right">5/10</small> </div> <div class="progress progress-small"> <div class="progress-bar progress-bar-warning" style="width: 50%;"> </div> </div></div>
+
+===========================================================================================================================================================================================================
+
+PERCEPTRON -- FORM
+
+<div class="row">
+    <div class="col-lg-2">
+        <label>Penalty: <i class="fa fa-question-circle" style="color:#676a6c" id="q1"></i></label>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="none" name="penalty" checked=""  class="required"> None</label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="l1" name="penalty" class="required"> L1 </label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="l2" name="penalty" class="required"> L2</label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="elasticnet" name="penalty" class="required"> Elasticnet</label>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <label>fit_intercept: <i class="fa fa-question-circle" style="color:#676a6c" id="q2"></i></label>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="1" name="fit_intercept" checked="" class="required"> True</label>
+        </div>
+        <div class="radio i-checks">
+            <label>
+                <input type="radio" value="0" name="fit_intercept" class="required"> False</label>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>n_iter = <span class="example-val" style="color:#1AB394" id="n_iter-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q3"></i></label>
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="n_iter-slider"></div>
+                <input type="hidden" name="n_iter" id="n_iter" value="">
+            </div>
+        </div>
+
+        <br/>
+        <label>shuffle: <i class="fa fa-question-circle" style="color:#676a6c" id="q4"></i></label>
+        <div class="row">
+            <div class="radio i-checks">
+                <label>
+                    <input type="radio" value="1" name="shuffle" checked="" class="required"> True</label>
+            </div>
+            <div class="radio i-checks">
+                <label>
+                    <input type="radio" value="0" name="shuffle" class="required"> False</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>eta0 = <span class="example-val" style="color:#1AB394" id="eta0-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q5"></i></label>
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="eta0-slider"></div>
+                <input type="hidden" name="eta0" id="eta0" value="">
+            </div>
+        </div>
+        <br/>
+        <label>warm_start : <i class="fa fa-question-circle" style="color:#676a6c" id="q6"></i></label>
+        <div class="row">
+            <div class="radio i-checks">
+                <label>
+                    <input type="radio" value="1" name="warm_start" checked="" class="required"> True</label>
+            </div>
+            <div class="radio i-checks">
+                <label>
+                    <input type="radio" value="0" name="warm_start" class="required"> False</label>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $('#n_iter-slider').noUiSlider({
+            start: [5],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [1],
+                'max': [20]
+            }
+        });
+        $('#n_iter-slider').Link('lower').to($('#n_iter-value'));
+        $('#n_iter-slider').Link('lower').to($('#n_iter'));
+
+        $('#eta0-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
+            connect: "lower",
+            range: {
+                'min': [1],
+                'max': [10]
+            }
+        });
+        $('#eta0-slider').Link('lower').to($('#eta0-value'));
+        $('#eta0-slider').Link('lower').to($('#eta0'));
+
+
+        $("#q1").qtip({
+            content: {
+                text: 'The penalty (aka regularization term) to be used.',
+                title:'<i>penalty</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q2").qtip({
+            content: {
+                text: 'Whether the intercept should be estimated or not. If False, the data is assumed to be already centered.',
+                title:'<i>fit_intercept</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q3").qtip({
+            content: {
+                text: 'The number of passes over the training data (aka epochs).',
+                title:'<i>n_iter</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q4").qtip({
+            content: {
+                text: 'Whether or not the training data should be shuffled after each epoch.',
+                title:'<i>shuffle</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q5").qtip({
+            content: {
+                text: 'Constant by which the updates are multiplied.',
+                title:'<i>eta0</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q6").qtip({
+            content: {
+                text: 'When set to True, reuse the solution of the previous call to fit as initialization, otherwise, just erase the previous solution.',
+                title:'<i>warm_start</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+    });
+</script>
+
+===========================================================================================================================================================================================================
+

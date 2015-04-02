@@ -20,11 +20,28 @@ class DefaultController extends Controller
         $username = $this->getUser()->getUsername();
         $model = $request->query->get('model');
         $dataset = $request->query->get('dataset');
+        $params = $request->query->all();
+        unset($params['dataset'],$params['model'],$params['acceptTerms']);
+
+        $model_params = $this->getDoctrine()
+            ->getRepository('ODEAnalysisBundle:Model')
+            ->find($model)->getParameters();
+
+        foreach (array_keys($params) as $param){
+            if ($model_params[$param] == 'int'){
+                $params[$param] = (int)$params[$param];
+            }elseif (($model_params[$param] == 'float')){
+                $params[$param] = (float)$params[$param];
+            }elseif (($model_params[$param] == 'bool')){
+            $params[$param] = (int)$params[$param];
+        }
+        }
 
         $result = new Result();
         $result->setusername($username);
         $result->setAlgorithm($model);
         $result->setDataset($dataset);
+        $result->setParams($params);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($result);

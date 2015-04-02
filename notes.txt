@@ -50,6 +50,11 @@ Doctrine data types for entity fields
 http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 
 
+Installing xdebug
+-----------------
+http://xdebug.org/wizard.php
+
+
 
 
 TODO: Check why profile picture upload fails with large pictures (picEdit issue not uploading data)
@@ -57,3 +62,4 @@ TODO: When user is using webcam and clicks "Upload picture" before the check tic
 TODO: Compress and resize profile pictures before storing them
 
 TODO: Ensure that only logged in users can use analysis form
+TODO: Naive Bayes parameters list empty, perceptron no predict_proba
