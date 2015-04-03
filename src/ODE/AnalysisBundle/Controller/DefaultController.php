@@ -20,23 +20,35 @@ class DefaultController extends Controller
         $username = $this->getUser()->getUsername();
         $model = $request->query->get('model');
         $dataset = $request->query->get('dataset');
+
+        // Retrieve all GET parameters and remove from the list some that are going to be saved on a different column in the table
         $params = $request->query->all();
         unset($params['dataset'],$params['model'],$params['acceptTerms']);
 
+        // Retrieve from model table a mapping parameter->parameter_type
         $model_params = $this->getDoctrine()
             ->getRepository('ODEAnalysisBundle:Model')
             ->find($model)->getParameters();
 
-        foreach (array_keys($params) as $param){
-            if ($model_params[$param] == 'int'){
-                $params[$param] = (int)$params[$param];
-            }elseif (($model_params[$param] == 'float')){
-                $params[$param] = (float)$params[$param];
-            }elseif (($model_params[$param] == 'bool')){
-            $params[$param] = (int)$params[$param];
+        // Check to see if parameter list is empty (e.g., Naive Bayes)
+        // If so, pass an empty object to represent that
+        if (!count((array)$params)){
+            $params =  (object) null;
         }
+        // Convert string values from GET to actual numbers so that python script won't freak out
+        else{
+            foreach (array_keys($params) as $param){
+                if ($model_params[$param] == 'int'){
+                    $params[$param] = (int)$params[$param];
+                }elseif (($model_params[$param] == 'float')){
+                    $params[$param] = (float)$params[$param];
+                }elseif (($model_params[$param] == 'bool')){
+                    $params[$param] = (int)$params[$param];
+                }
+            }
         }
 
+        // Create an entry with that data in the ode_results table
         $result = new Result();
         $result->setusername($username);
         $result->setAlgorithm($model);
@@ -46,23 +58,27 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($result);
         $em->flush();
+
+        // Once all parameters for the experiment are stored, call python script to actually run it
         $this->runAnalysis($result->getId());
 
-        //TODO: Supress the ?id= from URL somehow
+        // Once script is called, redirect user to "waiting" page
         return $this->redirect($this->generateUrl('ode_wait_result', array('id' => $result->getId()),true));
     }
 
     private function runAnalysis($id){
+        // Python script needs to know the "current_dir" to open data files
         $script = __DIR__.'/../../../../web/assets/scripts/run_analysis.py';
+        $current_dir = __DIR__.'/../../../../web/assets/scripts/';
 
         // To prevent blocking, use the code below when running the python script
         // Note that windows doesn't like '&' so we use pclose() for the time being
         // TODO: Edit this code when deploying to production server
         if (substr(php_uname(), 0, 7) == "Windows"){
-            $terminal_output = pclose(popen('start /B python '.$script.' '.$id, "r"));
+            $terminal_output = pclose(popen('start /B python '.$script.' '.$id.' '.$current_dir, "r"));
         }
         else {
-            $terminal_output = exec('python '.$script.' '.$id.' &');
+            $terminal_output = exec('python '.$script.' '.$id.' '.$current_dir.' &');
         }
     }
     public function waitForAnalysisResultAction(Request $request){
@@ -87,6 +103,8 @@ class DefaultController extends Controller
         return new Response(json_encode(array('result'=> 'still running' ,'finished'=>0)));
     }
 
+    // Return HTML code to display the results
+    // TODO: Try to make this more elegant (if possible) by returning the results json into a twig file that generates a pretty report
     public function generateOutput($results){
         $output = '
             <div class="col-lg-8 col-lg-offset-2">
@@ -94,21 +112,11 @@ class DefaultController extends Controller
                     <thead>
                     <tr>
                         <th class="text-center">AUROC</th>
-                        <th class="text-center">Accuracy</th>
-                        <th class="text-center">Precision</th>
-                        <th class="text-center">Recall</th>
-                        <th class="text-center">F-measure</th>
-                        <th class="text-center">RMSE</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <td>'.$results['auroc'].'</td>
-                        <td>'.$results['accuracy'].'</td>
-                        <td>'.$results['precision'].'</td>
-                        <td>'.$results['recall'].'</td>
-                        <td>'.$results['fmeasure'].'</td>
-                        <td>'.$results['rmse'].'</td>
                     </tr>
                     </tfoot>
                 </table>

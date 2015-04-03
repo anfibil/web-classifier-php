@@ -74,55 +74,55 @@ DECISION TREE -- FORM
             radioClass: 'iradio_square-green',
         });
         $('#max_features-slider').noUiSlider({
-            start: [0],
+            start: [1],
             step: 1,
             connect: "lower",
             range: {
-                'min': [0],
+                'min': [1],
                 'max': [NUM_FEATURES]
             }
         });
         $('#max_features-slider').Link('lower').to($('#max_features-value'));
         $('#max_features-slider').Link('lower').to($('#max_features'));
         $('#min_samples_split-slider').noUiSlider({
-            start: [0],
+            start: [1],
             step: 1,
             connect: "lower",
             range: {
-                'min': [0],
+                'min': [1],
                 'max': [NUM_INSTANCES]
             }
         });
         $('#min_samples_split-slider').Link('lower').to($('#min_samples_split-value'));
         $('#min_samples_split-slider').Link('lower').to($('#min_samples_split'));
         $('#max_leaf_nodes-slider').noUiSlider({
-            start: [0],
+            start: [2],
             step: 1,
             connect: "lower",
             range: {
-                'min': [0],
+                'min': [2],
                 'max': [20]
             }
         });
         $('#max_leaf_nodes-slider').Link('lower').to($('#max_leaf_nodes-value'));
         $('#max_leaf_nodes-slider').Link('lower').to($('#max_leaf_nodes'));
         $('#min_samples_leaf-slider').noUiSlider({
-            start: [0],
+            start: [1],
             step: 1,
             connect: "lower",
             range: {
-                'min': [0],
+                'min': [1],
                 'max': [NUM_FEATURES]
             }
         });
         $('#min_samples_leaf-slider').Link('lower').to($('#min_samples_leaf-value'));
         $('#min_samples_leaf-slider').Link('lower').to($('#min_samples_leaf'));
         $('#max_depth-slider').noUiSlider({
-            start: [0],
+            start: [1],
             step: 1,
             connect: "lower",
             range: {
-                'min': [0],
+                'min': [1],
                 'max': [20]
             }
         });

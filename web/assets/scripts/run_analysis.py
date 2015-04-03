@@ -14,13 +14,14 @@ import timeit
 start = timeit.default_timer()
 
 analysisID = sys.argv[1]
+currentDir = sys.argv[2]
 
 # Connect to the Database
 db = pymysql.connect(host="localhost", user="root", passwd="", db="symfony")
 cursor = db.cursor()
 
 # Find the current analysis object in the results database
-cursor.execute("SELECT * FROM ode_results WHERE id="+str(analysisID))
+cursor.execute("SELECT * FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
 # Find the dataset to be used by the current analysis
@@ -47,10 +48,13 @@ clfs = {
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 
-clf = clfs[analysis[1]].set_params(**ast.literal_eval(analysis[2]))
+if (analysis[2]):
+	clf = clfs[analysis[1]].set_params(**ast.literal_eval(analysis[2]))
+else:
+	clf = clfs[analysis[1]] 
 
 # Read and pre-process data
-df = pd.read_csv('../datasets/'+dataset[7]+'.csv')
+df = pd.read_csv(currentDir+'../datasets/'+dataset[7]+'.csv')
 y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
 X = df.drop(df.columns[df.shape[1]-1], axis=1).values
 
