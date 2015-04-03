@@ -64,3 +64,5 @@ TODO: Compress and resize profile pictures before storing them
 TODO: Ensure that only logged in users can use analysis form
 TODO: Perceptron has no predict_proba
 TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT)
+TODO: Handle categorical features on python script
+TODO: Create a page showing all experiment results ranked
