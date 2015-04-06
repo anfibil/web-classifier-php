@@ -25,7 +25,8 @@
                                         data: "",
                                         success: function(data){
                                             if (data.finished){
-                                                jQuery('#result').html(data.html);
+                                                //jQuery('#result').html(data.html);
+                                                window.location.href = '/analysis/report?id='+{{ id }}
                                             } else {
                                                 setTimeout(checkIfDone,5000);
                                             }

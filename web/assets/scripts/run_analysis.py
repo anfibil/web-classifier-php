@@ -36,7 +36,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import Perceptron
 from sklearn import cross_validation
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import roc_curve, auc, precision_recall_curve
 from sklearn import preprocessing
 from scipy import interp
 
@@ -59,8 +59,11 @@ y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
 X = df.drop(df.columns[df.shape[1]-1], axis=1).values
 
 # Run 10-fold cross validation and compute AUROC
+# Run 10-fold cross validation and compute AUROC
 mean_tpr = 0.0
 mean_fpr = np.linspace(0, 1, 100)
+y_prob = []
+y_original_values = []
 skf = cross_validation.StratifiedKFold(y, n_folds=10)
 
 for train_index, test_index in skf:
@@ -68,20 +71,42 @@ for train_index, test_index in skf:
     
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(y[test_index], probas_[:, 1])
+
     mean_tpr += interp(mean_fpr, fpr, tpr)
     mean_tpr[0] = 0.0
     
+    # Keep track of original y-values and corresponding predicted probabilities
+    y_original_values = np.concatenate((y_original_values,y[test_index]),axis=0)
+    y_prob = np.concatenate((y_prob,probas_[:, 1]),axis=0)
+    
+
+# Compute TPR and AUROC    
 mean_tpr /= len(skf)
 mean_tpr[-1] = 1.0
 mean_auc = auc(mean_fpr, mean_tpr)
 
+# Compute precision,recall curve points and area under PR-curve
+precision, recall, thresholds = precision_recall_curve(y_original_values, y_prob)
+aupr = auc(recall, precision)
+
+# Store xy coordinates of ROC curve points
+roc_points = ''
+for x in zip(mean_fpr,mean_tpr):
+    roc_points += ('[' + str(x[0]) + ',' + str(x[1]) + '],')
+roc_points = roc_points[:-1]
+
+# Store xy coordinates of PR curve points
+prc_points = ''
+for x in zip(recall,precision):
+    prc_points += ('[' + str(x[0]) + ',' + str(x[1]) + '],')
+prc_points = prc_points[:-1]
 
 ##################################
 # Saving Results to the database #
 ##################################
 
 #temp_result = json.dumps({'accuracy' : random.uniform(0, 1), 'auroc' : random.uniform(0, 1), 'precision' : random.uniform(0, 1), 'fmeasure' : random.uniform(0, 1), 'rmse' : random.uniform(0, 1), 'recall' : random.uniform(0, 1)})
-result = json.dumps({'auroc' : mean_auc})
+result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points})
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()

@@ -1,0 +1,196 @@
+{% extends 'base.html.twig'%}
+
+{% block body %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Analysis Report</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a>Analysis</a>
+            </li>
+            <li class="active">
+                <strong>Report</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">AUROC = {{ auroc|number_format(3, '.', ',') }}</span>
+                    <h5>ROC Curve</h5>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <div id="roc_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-warning pull-right">AUPR = {{ aupr|number_format(3, '.', ',') }}</span>
+                    <h5>Precision-Recall Curve</h5>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <div id="pr_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    {% javascripts
+        'assets/js/plugins/highcharts/highcharts.js'
+        'assets/js/plugins/highcharts/exporting.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(function () {
+            $('#roc_curve').highcharts({
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    title: {
+                        text: 'False positive rate'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                yAxis: {
+                    title: {
+                        text: 'True positive rate'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                            stops: [
+                                [0, '#59A595'],
+                                [1, Highcharts.Color('#59A595').setOpacity(0).get('rgba')]                            ]
+                        },
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                tooltip:{
+                    formatter:function(){
+                        console.log(this);
+                        return '<b>FPR: </b>' + this.key + '<br><b>TPR: </b>' + this.y;
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    color: '#127e68',
+                    data: [
+                        {{ roc_points }}
+                    ]
+                }]
+            });
+        });
+
+        $(function () {
+            $('#pr_curve').highcharts({
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    title: {
+                        text: 'Recall'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                yAxis: {
+                    title: {
+                        text: 'Precision'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                            stops: [
+                                [0, '#f8ac59'],
+                                [1, Highcharts.Color('#f8ac59').setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                tooltip:{
+                    formatter:function(){
+                        console.log(this);
+                        return '<b>Recall: </b>' + this.key + '<br><b>Precision: </b>' + this.y;
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    color: '#B68651',
+                    data: [
+                        {{ prc_points }}
+                    ]
+                }]
+            });
+        });
+    </script>
+{% endblock %}

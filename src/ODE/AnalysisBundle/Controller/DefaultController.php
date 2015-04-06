@@ -82,45 +82,31 @@ class DefaultController extends Controller
         }
     }
     public function waitForAnalysisResultAction(Request $request){
-        return $this->render('ODEAnalysisBundle:Default:result.html.twig', array('id' => $request->query->get('id')));
+        return $this->render('@ODEAnalysis/Default/waitResult.html.twig', array('id' => $request->query->get('id')));
     }
-
 
     public function checkIfAnalysisIsDoneAction(Request $request){
         $analysis_id = $request->query->get('id');
         $em = $this->getDoctrine()->getManager();
         $analysis = $em->getRepository('ODEAnalysisBundle:Result')->find($analysis_id);
 
-        // If database has value of '1' on 'finished' column ...
-        if($analysis->getFinished()){
-            // Pass content of 'result' json stored in the database to generateOutput()
-            // That function will generate the appropriate html output
-            $report = array('html'=> $this->generateOutput($analysis->getResult()) ,'finished'=>1);
-
-            return new Response(json_encode((object)$report));
-        }
-
-        return new Response(json_encode(array('result'=> 'still running' ,'finished'=>0)));
+        // Return 0 or 1 from database indicating whether or not analysis finished running
+        return new Response(json_encode(array('finished'=>$analysis->getFinished())));
     }
 
-    // Return HTML code to display the results
-    // TODO: Try to make this more elegant (if possible) by returning the results json into a twig file that generates a pretty report
-    public function generateOutput($results){
-        $output = '
-            <div class="col-lg-8 col-lg-offset-2">
-                <table class="table table-striped table-bordered table-hover dataTables-example" >
-                    <thead>
-                    <tr>
-                        <th class="text-center">AUROC</th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <td>'.$results['auroc'].'</td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>';
-        return $output;
+    public function generateReportAction(Request $request){
+        $analysis_id = $request->query->get('id');
+        $em = $this->getDoctrine()->getManager();
+        $analysis = $em->getRepository('ODEAnalysisBundle:Result')->find($analysis_id);
+
+        $result = $analysis->getResult();
+        return $this->render('@ODEAnalysis/Default/report.html.twig',
+            array(
+                'auroc' => $result['auroc'],
+                'aupr' => $result['aupr'],
+                'roc_points' => $result['roc_points'],
+                'prc_points' => $result['prc_points']
+            )
+        );
     }
 }

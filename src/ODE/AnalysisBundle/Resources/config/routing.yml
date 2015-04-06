@@ -17,3 +17,7 @@ ode_check_result:
 ode_get_model_form:
     pattern:  /analysis/getmodelform
     defaults: { _controller: ODEAnalysisBundle:FormFlow:getModelForm}
+
+ode_report:
+    pattern:  /analysis/report
+    defaults: { _controller: ODEAnalysisBundle:Default:generateReport}
