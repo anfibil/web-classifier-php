@@ -59,7 +59,6 @@ y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
 X = df.drop(df.columns[df.shape[1]-1], axis=1).values
 
 # Run 10-fold cross validation and compute AUROC
-# Run 10-fold cross validation and compute AUROC
 mean_tpr = 0.0
 mean_fpr = np.linspace(0, 1, 100)
 y_prob = []
@@ -92,20 +91,19 @@ aupr = auc(recall, precision)
 # Store xy coordinates of ROC curve points
 roc_points = ''
 for x in zip(mean_fpr,mean_tpr):
-    roc_points += ('[' + str(x[0]) + ',' + str(x[1]) + '],')
+    roc_points += ('[' + str("%.3f" % x[0]) + ',' + str("%.3f" % x[1]) + '],')
 roc_points = roc_points[:-1]
 
 # Store xy coordinates of PR curve points
 prc_points = ''
 for x in zip(recall,precision):
-    prc_points += ('[' + str(x[0]) + ',' + str(x[1]) + '],')
+    prc_points += ('[' + str("%.3f" % x[0]) + ',' + str("%.3f" % x[1]) + '],')
 prc_points = prc_points[:-1]
 
 ##################################
 # Saving Results to the database #
 ##################################
 
-#temp_result = json.dumps({'accuracy' : random.uniform(0, 1), 'auroc' : random.uniform(0, 1), 'precision' : random.uniform(0, 1), 'fmeasure' : random.uniform(0, 1), 'rmse' : random.uniform(0, 1), 'recall' : random.uniform(0, 1)})
 result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points})
 
 # Update the entry in the database to reflect completion
