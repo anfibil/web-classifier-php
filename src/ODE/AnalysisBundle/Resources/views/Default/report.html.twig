@@ -47,6 +47,39 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Confusion Matrix  </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <td style="border-left-color: #FFFFFF;border-top-color: #FFFFFF;" colspan="2" rowspan="2"></td>
+                            <td colspan="2" class="table-cell-dark"><b>Predicted</b></td>
+                        </tr>
+                        <tr>
+                            <td class="table-cell-bright"><b>Class A</b></td>
+                            <td class="table-cell-bright"><b>Class B</b></td>
+                        </tr>
+                        <tr>
+                            <td class="table-cell-dark" rowspan="2" style="vertical-align: middle"><b>Actual</b></td>
+                            <td class="table-cell-bright"><b>Class A</b></td>
+                            <td>{{ confusion_matrix[0] }}</td>
+                            <td>{{ confusion_matrix[1] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="table-cell-bright"><b>Class B</b></th>
+                            <td>{{ confusion_matrix[2] }}</td>
+                            <td>{{ confusion_matrix[3] }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

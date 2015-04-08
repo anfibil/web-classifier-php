@@ -105,7 +105,8 @@ class DefaultController extends Controller
                 'auroc' => $result['auroc'],
                 'aupr' => $result['aupr'],
                 'roc_points' => $result['roc_points'],
-                'prc_points' => $result['prc_points']
+                'prc_points' => $result['prc_points'],
+                'confusion_matrix' => explode(",",$result['confusion_matrix'])
             )
         );
     }

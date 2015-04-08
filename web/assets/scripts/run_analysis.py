@@ -6,6 +6,7 @@ import random
 import pandas as pd
 import numpy as np
 import timeit
+import re
 
 #################################
 # Retrieving data from database #
@@ -36,7 +37,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import Perceptron
 from sklearn import cross_validation
-from sklearn.metrics import roc_curve, auc, precision_recall_curve
+from sklearn.metrics import roc_curve, auc, precision_recall_curve, confusion_matrix, classification_report
 from sklearn import preprocessing
 from scipy import interp
 
@@ -62,11 +63,13 @@ X = df.drop(df.columns[df.shape[1]-1], axis=1).values
 mean_tpr = 0.0
 mean_fpr = np.linspace(0, 1, 100)
 y_prob = []
+y_pred = []
 y_original_values = []
 skf = cross_validation.StratifiedKFold(y, n_folds=10)
 
 for train_index, test_index in skf:
     probas_ = clf.fit(X[train_index], y[train_index]).predict_proba(X[test_index])
+    preds_ = clf.fit(X[train_index], y[train_index]).predict(X[test_index])
     
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(y[test_index], probas_[:, 1])
@@ -74,9 +77,10 @@ for train_index, test_index in skf:
     mean_tpr += interp(mean_fpr, fpr, tpr)
     mean_tpr[0] = 0.0
     
-    # Keep track of original y-values and corresponding predicted probabilities
+    # Keep track of original y-values and corresponding predicted probabilities and values
     y_original_values = np.concatenate((y_original_values,y[test_index]),axis=0)
     y_prob = np.concatenate((y_prob,probas_[:, 1]),axis=0)
+    y_pred = np.concatenate((y_pred,preds_),axis=0)
     
 
 # Compute TPR and AUROC    
@@ -100,11 +104,17 @@ for x in zip(recall,precision):
     prc_points += ('[' + str("%.3f" % x[0]) + ',' + str("%.3f" % x[1]) + '],')
 prc_points = prc_points[:-1]
 
+# Store confusion matrix as a string with values separated by commas
+confusion_matrix = str(confusion_matrix(y_original_values, y_pred).tolist()).replace(']',"").replace('[',"")
+
+# Store a list of the numeric values returned by classification_report()
+clf_report = re.sub(r'[^\d.]+', ', ', classification_report(y_original_values, y_pred))[5:-2]
+
 ##################################
 # Saving Results to the database #
 ##################################
 
-result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points})
+result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points, 'confusion_matrix':confusion_matrix, 'classification_report':clf_report})
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()

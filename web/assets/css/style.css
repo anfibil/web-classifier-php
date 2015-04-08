@@ -5046,3 +5046,11 @@ width: 100% !important;
 
     box-shadow:3px 3px 5px #939393;
 }
+
+.table-cell-dark{
+    background-color: #E6E6E6;
+}
+
+.table-cell-bright{
+    background-color: #F5F5F5;
+}
