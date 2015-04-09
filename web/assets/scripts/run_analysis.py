@@ -64,6 +64,7 @@ mean_tpr = 0.0
 mean_fpr = np.linspace(0, 1, 100)
 y_prob = []
 y_pred = []
+indexes = []
 y_original_values = []
 skf = cross_validation.StratifiedKFold(y, n_folds=10)
 
@@ -81,6 +82,7 @@ for train_index, test_index in skf:
     y_original_values = np.concatenate((y_original_values,y[test_index]),axis=0)
     y_prob = np.concatenate((y_prob,probas_[:, 1]),axis=0)
     y_pred = np.concatenate((y_pred,preds_),axis=0)
+    indexes = np.concatenate((indexes,test_index),axis=0)
     
 
 # Compute TPR and AUROC    
@@ -91,6 +93,9 @@ mean_auc = auc(mean_fpr, mean_tpr)
 # Compute precision,recall curve points and area under PR-curve
 precision, recall, thresholds = precision_recall_curve(y_original_values, y_prob)
 aupr = auc(recall, precision)
+
+# Store a flag for mispredictions
+errors = np.logical_xor(y_pred,y_original_values).astype(int)
 
 # Store xy coordinates of ROC curve points
 roc_points = ''
@@ -110,11 +115,19 @@ confusion_matrix = str(confusion_matrix(y_original_values, y_pred).tolist()).rep
 # Store a list of the numeric values returned by classification_report()
 clf_report = re.sub(r'[^\d.]+', ', ', classification_report(y_original_values, y_pred))[5:-2]
 
+# Sort everything by instance number
+sorted_ix = np.argsort(indexes)
+indexes = ','.join(str(e) for e in indexes[sorted_ix].astype(int))
+y_original_values = ','.join(str(e) for e in y_original_values[sorted_ix].astype(int))
+y_pred = ','.join(str(e) for e in y_pred[sorted_ix].astype(int))
+errors = ','.join(str(e) for e in errors[sorted_ix]).replace('0'," ").replace('1',"&#x2717;")
+y_prob = ','.join(str(e) for e in np.around(y_prob[sorted_ix], decimals=4))
+
 ##################################
 # Saving Results to the database #
 ##################################
 
-result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points, 'confusion_matrix':confusion_matrix, 'classification_report':clf_report})
+result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points, 'confusion_matrix':confusion_matrix, 'classification_report':clf_report, 'indexes':indexes, 'y_original_values':y_original_values, 'y_pred':y_pred, 'y_prob':y_prob,'errors':errors})
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()

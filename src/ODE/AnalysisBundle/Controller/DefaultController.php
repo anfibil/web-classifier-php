@@ -106,7 +106,15 @@ class DefaultController extends Controller
                 'aupr' => $result['aupr'],
                 'roc_points' => $result['roc_points'],
                 'prc_points' => $result['prc_points'],
-                'confusion_matrix' => explode(",",$result['confusion_matrix'])
+                'confusion_matrix' => explode(",",$result['confusion_matrix']),
+                'classification_report' => explode(",",$result['classification_report']),
+                //TODO: Combine the next 5 variables into a single object if needed
+                'indexes' => explode(",",$result['indexes']),
+                'y_original_values' => explode(",",$result['y_original_values']),
+                'y_pred' => explode(",",$result['y_pred']),
+                'errors' => explode(",",$result['errors']),
+                'y_prob' => explode(",",$result['y_prob'])
+
             )
         );
     }
