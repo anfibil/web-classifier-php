@@ -16,7 +16,7 @@
                     <div class="ibox-content text-center p-md">
                         <div class="row" id="result" >
                             <h2>Please wait while your analysis is running.</h2>
-                            <h1><i class="fa fa-spinner fa-pulse"></i></h1>
+                            <h1><i class="fa fa-spinner fa-pulse"></i></h1> <!-- TODO: https://github.com/tobiasahlin/SpinKit these are prettier -->
                             <script>
                                 function checkIfDone(){
                                     jQuery.ajax({
@@ -25,7 +25,6 @@
                                         data: "",
                                         success: function(data){
                                             if (data.finished){
-                                                //jQuery('#result').html(data.html);
                                                 window.location.href = '/analysis/report?id='+{{ id }}
                                             } else {
                                                 setTimeout(checkIfDone,5000);

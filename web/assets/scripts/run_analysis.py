@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import timeit
 import re
+import patsy
 
 #################################
 # Retrieving data from database #
@@ -26,7 +27,8 @@ cursor.execute("SELECT * FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
 # Find the dataset to be used by the current analysis
-cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[6]))
+print analysis
+cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[5]))
 dataset = cursor.fetchone()
 
 ######################
@@ -49,15 +51,17 @@ clfs = {
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 
-if (analysis[2]):
-	clf = clfs[analysis[1]].set_params(**ast.literal_eval(analysis[2]))
+if (analysis[1]):
+	clf = clfs[analysis[7]].set_params(**ast.literal_eval(analysis[1]))
 else:
-	clf = clfs[analysis[1]] 
+	clf = clfs[analysis[7]] 
 
 # Read and pre-process data
 df = pd.read_csv(currentDir+'../datasets/'+dataset[7]+'.csv')
 y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
-X = df.drop(df.columns[df.shape[1]-1], axis=1).values
+X = df.drop(df.columns[df.shape[1]-1], axis=1)
+s = ' + '.join(X.columns) + ' -1' 
+X = patsy.dmatrix(s, X, return_type='dataframe').values
 
 # Run 10-fold cross validation and compute AUROC
 mean_tpr = 0.0
@@ -115,13 +119,16 @@ confusion_matrix = str(confusion_matrix(y_original_values, y_pred).tolist()).rep
 # Store a list of the numeric values returned by classification_report()
 clf_report = re.sub(r'[^\d.]+', ', ', classification_report(y_original_values, y_pred))[5:-2]
 
+# Limit the number of instances saved to DB so report won't crash
+LAST_INDEX = 1000 if (len(indexes)>1000) else len(indexes)
+
 # Sort everything by instance number
 sorted_ix = np.argsort(indexes)
-indexes = ','.join(str(e) for e in indexes[sorted_ix].astype(int))
-y_original_values = ','.join(str(e) for e in y_original_values[sorted_ix].astype(int))
-y_pred = ','.join(str(e) for e in y_pred[sorted_ix].astype(int))
-errors = ','.join(str(e) for e in errors[sorted_ix]).replace('0'," ").replace('1',"&#x2717;")
-y_prob = ','.join(str(e) for e in np.around(y_prob[sorted_ix], decimals=4))
+indexes = ','.join(str(e) for e in indexes[sorted_ix][:LAST_INDEX].astype(int))
+y_original_values = ','.join(str(e) for e in y_original_values[sorted_ix][:LAST_INDEX].astype(int))
+y_pred = ','.join(str(e) for e in y_pred[sorted_ix][:LAST_INDEX].astype(int))
+errors = ','.join(str(e) for e in errors[sorted_ix][:LAST_INDEX]).replace('0'," ").replace('1',"&#x2717;")
+y_prob = ','.join(str(e) for e in np.around(y_prob[sorted_ix][:LAST_INDEX], decimals=4))
 
 ##################################
 # Saving Results to the database #
@@ -131,7 +138,7 @@ result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr,
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()
-cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", result=\'"+result+"\' WHERE id="+analysisID)
+cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", result=\'"+result+"\', dataset_name=\'"+dataset[1]+"\' WHERE id="+analysisID)
 db.commit()
 
 # Close connection with the database

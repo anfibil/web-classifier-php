@@ -51,7 +51,7 @@ class DefaultController extends Controller
         // Create an entry with that data in the ode_results table
         $result = new Result();
         $result->setusername($username);
-        $result->setAlgorithm($model);
+        $result->setModel($model);
         $result->setDataset($dataset);
         $result->setParams($params);
 

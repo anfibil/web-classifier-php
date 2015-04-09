@@ -24,9 +24,9 @@ class Result
     /**
      * @var integer
      *
-     * @ORM\Column(name="algorithm", type="integer", length=255)
+     * @ORM\Column(name="model", type="integer", length=255)
      */
-    private $algorithm;
+    private $model;
 
     /**
      * @var array
@@ -64,6 +64,13 @@ class Result
     private $dataset;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dataset_name", type="string", length=255, nullable=true)
+     */
+    private $dataset_name;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="result", type="json_array", nullable=true)
@@ -89,24 +96,24 @@ class Result
     /**
      * Set algorithm
      *
-     * @param integer $algorithm
+     * @param integer $model
      * @return Result
      */
-    public function setAlgorithm($algorithm)
+    public function setModel($model)
     {
-        $this->algorithm = $algorithm;
+        $this->model = $model;
 
         return $this;
     }
 
     /**
-     * Get algorithm
+     * Get model
      *
      * @return integer
      */
-    public function getAlgorithm()
+    public function getModel()
     {
-        return $this->algorithm;
+        return $this->model;
     }
 
     /**
@@ -217,11 +224,34 @@ class Result
     /**
      * Get dataset
      *
-     * @return integer 
+     * @return integer
      */
     public function getDataset()
     {
         return $this->dataset;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $dataset_name
+     * @return Result
+     */
+    public function setDataset_name($dataset_name)
+    {
+        $this->dataset_name = $dataset_name;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getDataset_name()
+    {
+        return $this->dataset_name;
     }
 
     /**
