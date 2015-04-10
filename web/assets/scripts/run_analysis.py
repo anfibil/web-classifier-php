@@ -42,12 +42,14 @@ from sklearn import cross_validation
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, confusion_matrix, classification_report
 from sklearn import preprocessing
 from scipy import interp
+from sklearn.neighbors import KNeighborsClassifier
 
 # Declare all classifiers (note that the keys here map to the keys on ode_models)
 clfs = {
             1 : DecisionTreeClassifier(),
             2 : GaussianNB(),
-            3 : Perceptron()
+            3 : Perceptron(),
+            4 : KNeighborsClassifier(),
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 
