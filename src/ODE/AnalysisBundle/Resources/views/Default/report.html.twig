@@ -32,13 +32,32 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content">
-                    <div class="ibox-content m-b-sm border-bottom" style="padding: 15px 20px 20px 20px;">
-                        <div class="p-xs">
+                    <div class="ibox-content m-b-sm border-bottom" style="padding: 15px 20px 20px 20px; min-height: 100px">
+                        <div class="col-lg-3">
                             <div class="pull-left m-r-md">
                                 <i class="fa fa-cogs mid-icon"></i>
                             </div>
                             <h2>Model Description</h2>
-                            <span>Add some information here on runtime, model parameters, user, etc.</span>
+                            <br><br>
+                        </div>
+                        <div class="col-lg-3">
+                            <dl>
+                                <dt>Dataset</dt>
+                                <dd>{{ dataset_name }}</dd>
+                                <dt>Runtime</dt>
+                                <dd>{{ runtime|number_format(3, '.', ',') }} sec</dd>
+                            </dl>
+                        </div>
+                        <div class="col-lg-4">
+                                <dl>
+                                    <dt>Parameters</dt>
+                                    <dd>
+                                        <script language="javascript">
+                                            user = $.parseJSON('{{ params | raw }}');
+                                        </script>
+                                    </dd>
+                                </dl>
+
                         </div>
                     </div>
                 </div>

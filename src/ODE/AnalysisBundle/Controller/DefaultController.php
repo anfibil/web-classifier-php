@@ -113,8 +113,10 @@ class DefaultController extends Controller
                 'y_original_values' => explode(",",$result['y_original_values']),
                 'y_pred' => explode(",",$result['y_pred']),
                 'errors' => explode(",",$result['errors']),
-                'y_prob' => explode(",",$result['y_prob'])
-
+                'y_prob' => explode(",",$result['y_prob']),
+                'dataset_name' => $analysis->getDataset_name(),
+                'runtime' => $analysis->getRuntime(),
+                'params' => $analysis->getParams()
             )
         );
     }
