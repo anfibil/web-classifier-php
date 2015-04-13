@@ -29,186 +29,212 @@
     </div>
 
     <div class="wrapper wrapper-content">
+        <div class="col-lg-12">
+
+            <div class="wrapper-content">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="widget style1 navy-bg">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-database fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <span> Dataset </span>
+                                    <h3 class="font-bold">{{ dataset_name }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="widget style1 lazur-bg">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-flask fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <span> Model </span>
+                                    <h3 class="font-bold">{{ model }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="widget style1 red-bg">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-cogs fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <span> Runtime </span>
+                                    <h3 class="font-bold">{{ runtime|number_format(3, '.', ',') }} sec</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="widget style1 yellow-bg">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <i class="fa fa-trophy fa-4x"></i>
+                                </div>
+                                <div class="col-xs-10 text-right">
+                                    <span> Rank </span>
+                                    <h3 class="font-bold">11th</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ROC AND PRC Plots #}
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-primary pull-right">AUROC = {{ auroc|number_format(3, '.', ',') }}</span>
+                        <h5>Receiver Operating Characteristic Curve</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <div id="roc_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-warning pull-right">AUPR = {{ aupr|number_format(3, '.', ',') }}</span>
+                        <h5>Precision-Recall Curve</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <div id="pr_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Confusion Matrix #}
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Confusion Matrix</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-bordered text-center">
+                            <tr>
+                                <td style="border-left-color: #FFFFFF;border-top-color: #FFFFFF;" colspan="2" rowspan="2"></td>
+                                <td colspan="2" class="table-cell-dark"><b>Predicted</b></td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell-bright"><b>Class A</b></td>
+                                <td class="table-cell-bright"><b>Class B</b></td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell-dark" rowspan="2" style="vertical-align: middle"><b>Actual</b></td>
+                                <td class="table-cell-bright"><b>Class A</b></td>
+                                <td>{{ confusion_matrix[0] }}</td>
+                                <td>{{ confusion_matrix[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell-bright"><b>Class B</b></td>
+                                <td>{{ confusion_matrix[2] }}</td>
+                                <td>{{ confusion_matrix[3] }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {# Classification Report #}
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Classification Report</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-center">Precision</th>
+                                <th class="text-center">Recall</th>
+                                <th class="text-center">F1-Score</th>
+                                <th class="text-center">Support</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th class="text-right">Class A</th>
+                                <td class="text-center">{{ classification_report[1] }}</td>
+                                <td class="text-center">{{ classification_report[2] }}</td>
+                                <td class="text-center">{{ classification_report[3] }}</td>
+                                <td class="text-center">{{ classification_report[4] }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">Class B</th>
+                                <td class="text-center">{{ classification_report[6] }}</td>
+                                <td class="text-center">{{ classification_report[7] }}</td>
+                                <td class="text-center">{{ classification_report[8] }}</td>
+                                <td class="text-center">{{ classification_report[9] }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">Average / Total</th>
+                                <td class="text-center">{{ classification_report[10] }}</td>
+                                <td class="text-center">{{ classification_report[11] }}</td>
+                                <td class="text-center">{{ classification_report[12] }}</td>
+                                <td class="text-center">{{ classification_report[13] }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Detailed results for 1,000 instances #}
         <div class="row">
             <div class="col-lg-12">
-                <div class="wrapper wrapper-content">
-                    <div class="ibox-content m-b-sm border-bottom" style="padding: 15px 20px 20px 20px; min-height: 100px">
-                        <div class="col-lg-3">
-                            <div class="pull-left m-r-md">
-                                <i class="fa fa-cogs mid-icon"></i>
-                            </div>
-                            <h2>Model Description</h2>
-                            <br><br>
-                        </div>
-                        <div class="col-lg-3">
-                            <dl>
-                                <dt>Dataset</dt>
-                                <dd>{{ dataset_name }}</dd>
-                                <dt>Runtime</dt>
-                                <dd>{{ runtime|number_format(3, '.', ',') }} sec</dd>
-                            </dl>
-                        </div>
-                        <div class="col-lg-4">
-                                <dl>
-                                    <dt>Parameters</dt>
-                                    <dd>
-                                        <script language="javascript">
-                                            user = $.parseJSON('{{ params | raw }}');
-                                        </script>
-                                    </dd>
-                                </dl>
-
-                        </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Prediction Details <i class="fa fa-question-circle" id="q1" style="color:#676a6c"></i> </h5>
                     </div>
-                </div>
-
-
-                <div class="col-lg-6">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <span class="label label-primary pull-right">AUROC = {{ auroc|number_format(3, '.', ',') }}</span>
-                            <h5>Receiver Operating Characteristic Curve</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div>
-                                <div id="roc_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <span class="label label-warning pull-right">AUPR = {{ aupr|number_format(3, '.', ',') }}</span>
-                            <h5>Precision-Recall Curve</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div>
-                                <div id="pr_curve" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Confusion Matrix</h5>
-                        </div>
-                        <div class="ibox-content">
-
-                            <table class="table table-bordered text-center">
+                    <div class="ibox-content">
+                        <table class="table table-striped table-bordered table-hover" id="preditions-table">
+                            <thead>
+                            <tr>
+                                <th>Instance Number</th>
+                                <th>Actual Class</th>
+                                <th>Predicted Class</th>
+                                <th>Probability Score</th>
+                                <th>Error</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for index in indexes %}
                                 <tr>
-                                    <td style="border-left-color: #FFFFFF;border-top-color: #FFFFFF;" colspan="2" rowspan="2"></td>
-                                    <td colspan="2" class="table-cell-dark"><b>Predicted</b></td>
+                                    <td>{{ index }}</td>
+                                    <td>{{ y_original_values[index] }}</td>
+                                    <td>{{ y_pred[index] }}</td>
+                                    <td>{{ y_prob[index] }}</td>
+                                    <td>{{ errors[index]|raw }}</td>
                                 </tr>
-                                <tr>
-                                    <td class="table-cell-bright"><b>Class A</b></td>
-                                    <td class="table-cell-bright"><b>Class B</b></td>
-                                </tr>
-                                <tr>
-                                    <td class="table-cell-dark" rowspan="2" style="vertical-align: middle"><b>Actual</b></td>
-                                    <td class="table-cell-bright"><b>Class A</b></td>
-                                    <td>{{ confusion_matrix[0] }}</td>
-                                    <td>{{ confusion_matrix[1] }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="table-cell-bright"><b>Class B</b></td>
-                                    <td>{{ confusion_matrix[2] }}</td>
-                                    <td>{{ confusion_matrix[3] }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Classification Report</h5>
-                        </div>
-                        <div class="ibox-content">
-
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th class="text-center">Precision</th>
-                                    <th class="text-center">Recall</th>
-                                    <th class="text-center">F1-Score</th>
-                                    <th class="text-center">Support</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th class="text-right">Class A</th>
-                                    <td class="text-center">{{ classification_report[1] }}</td>
-                                    <td class="text-center">{{ classification_report[2] }}</td>
-                                    <td class="text-center">{{ classification_report[3] }}</td>
-                                    <td class="text-center">{{ classification_report[4] }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-right">Class B</th>
-                                    <td class="text-center">{{ classification_report[6] }}</td>
-                                    <td class="text-center">{{ classification_report[7] }}</td>
-                                    <td class="text-center">{{ classification_report[8] }}</td>
-                                    <td class="text-center">{{ classification_report[9] }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="text-right">Average / Total</th>
-                                    <td class="text-center">{{ classification_report[10] }}</td>
-                                    <td class="text-center">{{ classification_report[11] }}</td>
-                                    <td class="text-center">{{ classification_report[12] }}</td>
-                                    <td class="text-center">{{ classification_report[13] }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Prediction Details <i class="fa fa-question-circle" id="q1" style="color:#676a6c"></i> </h5>
-                        </div>
-                        <div class="ibox-content">
-                            <table class="table table-striped table-bordered table-hover" id="preditions-table">
-                                <thead>
-                                <tr>
-                                    <th>Instance Number</th>
-                                    <th>Actual Class</th>
-                                    <th>Predicted Class</th>
-                                    <th>Probability Score</th>
-                                    <th>Error</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for index in indexes %}
-                                    <tr>
-                                        <td>{{ index }}</td>
-                                        <td>{{ y_original_values[index] }}</td>
-                                        <td>{{ y_pred[index] }}</td>
-                                        <td>{{ y_prob[index] }}</td>
-                                        <td>{{ errors[index]|raw }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Instance Number</th>
-                                    <th>Actual Class</th>
-                                    <th>Predicted Class</th>
-                                    <th>Probability Score</th>
-                                    <th>Error</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-
-                        </div>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Instance Number</th>
+                                <th>Actual Class</th>
+                                <th>Predicted Class</th>
+                                <th>Probability Score</th>
+                                <th>Error</th>
+                            </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>

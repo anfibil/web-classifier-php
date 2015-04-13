@@ -114,6 +114,7 @@ class DefaultController extends Controller
                 'y_pred' => explode(",",$result['y_pred']),
                 'errors' => explode(",",$result['errors']),
                 'y_prob' => explode(",",$result['y_prob']),
+                'model' => $em->getRepository('ODEAnalysisBundle:Model')->find($analysis->getModel())->getName(),
                 'dataset_name' => $analysis->getDataset_name(),
                 'runtime' => $analysis->getRuntime(),
                 'params' => $analysis->getParams()
