@@ -5037,3 +5037,14 @@ width: 100% !important;
 .table-cell-bright{
     background-color: #F5F5F5;
 }
+
+
+/** profile picture fix - Renan */
+a.profile-picture{
+    height: 60px;
+    width: 60px;
+    background-size: cover !important;
+    background-position: center center;
+    display: block;
+    border-radius: 60px;
+}

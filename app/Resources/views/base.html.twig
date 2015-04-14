@@ -45,7 +45,12 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <span><a data-toggle="modal" data-target="#upProfPic"><img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/></a></span>
+                            <span>
+                                <a data-toggle="modal" data-target="#upProfPic" class="profile-picture" style="background: url({{ app.user.profilePicturePath }}) no-repeat center center">
+                                    <!-- <img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/> -->
+                                </a>
+
+                            </span>
                             <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
@@ -175,12 +180,15 @@
 <script type="text/javascript">
     $(function() {
         $('#profilePictureFile').picEdit({
+            maxWidth: 530,
+            maxHeight: 'auto',
+            aspectRatio: true,
             formSubmitted: function(){
                 window.setTimeout(function() {
                     $('#upProfPic').modal('hide');
                 }, 1200);
                 var d = new Date();
-                $("#avatar").attr("src", "{{ app.user.profilePicturePath }}"+"?"+d.getTime());
+                $('a.profile-picture').css('background','url({{ app.user.profilePicturePath }}'+"?"+d.getTime()+')');
             }
         });
     });
