@@ -3220,6 +3220,10 @@ table.table-mail tr td {
   background-color: #f8ac59;
   color: #ffffff;
 }
+.dkgray-bg {
+    background-color: #929292;
+    color: #ffffff;
+}
 .red-bg {
   background-color: #ed5565;
   color: #ffffff;

@@ -71,11 +71,32 @@ class Result
     private $dataset_name;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="auroc", type="float", nullable=true)
+     */
+    private $auroc;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="aupr", type="float", nullable=true)
+     */
+    private $aupr;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="accuracy", type="float", nullable=true)
+     */
+    private $accuracy;
+
+    /**
      * @var array
      *
-     * @ORM\Column(name="result", type="json_array", nullable=true)
+     * @ORM\Column(name="report_data", type="json_array", nullable=true)
      */
-    private $result;
+    private $report_data;
 
     function __construct()
     {
@@ -160,6 +181,75 @@ class Result
     public function getRuntime()
     {
         return $this->runtime;
+    }
+
+    /**
+     * Set auroc
+     *
+     * @param float $auroc
+     * @return Result
+     */
+    public function setAuroc($auroc)
+    {
+        $this->auroc = $auroc;
+
+        return $this;
+    }
+
+    /**
+     * Get auroc
+     *
+     * @return float
+     */
+    public function getAuroc()
+    {
+        return $this->auroc;
+    }
+
+    /**
+     * Get aupr
+     *
+     * @return float
+     */
+    public function getAupr()
+    {
+        return $this->aupr;
+    }
+
+    /**
+     * Set aupr
+     *
+     * @param float $aupr
+     * @return Result
+     */
+    public function setAupr($aupr)
+    {
+        $this->aupr = $aupr;
+
+        return $this;
+    }
+
+    /**
+     * Get accuracy
+     *
+     * @return float
+     */
+    public function getAccuracy()
+    {
+        return $this->accuracy;
+    }
+
+    /**
+     * Set accuracy
+     *
+     * @param float $accuracy
+     * @return Result
+     */
+    public function setAccuracy($accuracy)
+    {
+        $this->accuracy = $accuracy;
+
+        return $this;
     }
 
     /**
@@ -255,25 +345,25 @@ class Result
     }
 
     /**
-     * Set result
+     * Set report_data
      *
-     * @param array $result
+     * @param array $report_data
      * @return Result
      */
-    public function setResult($result)
+    public function setReport_data($report_data)
     {
-        $this->result = $result;
+        $this->report_data = $report_data;
 
         return $this;
     }
 
     /**
-     * Get result
+     * Get report_data
      *
      * @return array 
      */
-    public function getResult()
+    public function getReport_data()
     {
-        return $this->result;
+        return $this->report_data;
     }
 }

@@ -99,25 +99,35 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $analysis = $em->getRepository('ODEAnalysisBundle:Result')->find($analysis_id);
 
-        $result = $analysis->getResult();
+        $report_data = $analysis->getReport_data();
+
+        // Get the rank for the current execution based on all accuracies previously obtained for the same dataset
+        // TODO: Chance this syntax to the safer http://doctrine-orm.readthedocs.org/en/latest/reference/native-sql.html
+        $query = "SELECT count(*)+1 as rank from (select accuracy from ode_results WHERE dataset=".$analysis->getDataset()." group by accuracy) as A WHERE A.accuracy > ".$analysis->getAccuracy();
+        $connection = $em->getConnection()->query($query);
+        $connection->execute();
+        $rank = $connection->fetchAll()[0]['rank'];
+
         return $this->render('@ODEAnalysis/Default/report.html.twig',
             array(
-                'auroc' => $result['auroc'],
-                'aupr' => $result['aupr'],
-                'roc_points' => $result['roc_points'],
-                'prc_points' => $result['prc_points'],
-                'confusion_matrix' => explode(",",$result['confusion_matrix']),
-                'classification_report' => explode(",",$result['classification_report']),
-                //TODO: Combine the next 5 variables into a single object if needed
-                'indexes' => explode(",",$result['indexes']),
-                'y_original_values' => explode(",",$result['y_original_values']),
-                'y_pred' => explode(",",$result['y_pred']),
-                'errors' => explode(",",$result['errors']),
-                'y_prob' => explode(",",$result['y_prob']),
+                'auroc' => $analysis->getAuroc(),
+                'aupr' => $analysis->getAupr(),
+                'roc_points' => $report_data['roc_points'],
+                'prc_points' => $report_data['prc_points'],
+                'confusion_matrix' => explode(",",$report_data['confusion_matrix']),
+                'classification_report' => explode(",",$report_data['classification_report']),
+                'indexes' => explode(",",$report_data['indexes']),
+                'y_original_values' => explode(",",$report_data['y_original_values']),
+                'y_pred' => explode(",",$report_data['y_pred']),
+                'errors' => explode(",",$report_data['errors']),
+                'y_prob' => explode(",",$report_data['y_prob']),
                 'model' => $em->getRepository('ODEAnalysisBundle:Model')->find($analysis->getModel())->getName(),
                 'dataset_name' => $analysis->getDataset_name(),
                 'runtime' => $analysis->getRuntime(),
-                'params' => $analysis->getParams()
+                'params' => $analysis->getParams(),
+                'accuracy' => $analysis->getAccuracy(),
+                'user' => $analysis->getUsername(),
+                'rank' => $rank
             )
         );
     }

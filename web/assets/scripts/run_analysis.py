@@ -27,7 +27,6 @@ cursor.execute("SELECT * FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
 # Find the dataset to be used by the current analysis
-print analysis
 cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[5]))
 dataset = cursor.fetchone()
 
@@ -94,7 +93,7 @@ for train_index, test_index in skf:
 # Compute TPR and AUROC    
 mean_tpr /= len(skf)
 mean_tpr[-1] = 1.0
-mean_auc = auc(mean_fpr, mean_tpr)
+auroc = auc(mean_fpr, mean_tpr)
 
 # Compute precision,recall curve points and area under PR-curve
 precision, recall, thresholds = precision_recall_curve(y_original_values, y_prob)
@@ -102,6 +101,9 @@ aupr = auc(recall, precision)
 
 # Store a flag for mispredictions
 errors = np.logical_xor(y_pred,y_original_values).astype(int)
+
+# Compute overall accuracy
+accuracy = 1- (np.sum(errors)/float(len(errors)))
 
 # Store xy coordinates of ROC curve points
 roc_points = ''
@@ -136,11 +138,11 @@ y_prob = ','.join(str(e) for e in np.around(y_prob[sorted_ix][:LAST_INDEX], deci
 # Saving Results to the database #
 ##################################
 
-result = json.dumps({'auroc' : mean_auc, 'roc_points':roc_points, 'aupr' : aupr, 'prc_points':prc_points, 'confusion_matrix':confusion_matrix, 'classification_report':clf_report, 'indexes':indexes, 'y_original_values':y_original_values, 'y_pred':y_pred, 'y_prob':y_prob,'errors':errors})
+report_data = json.dumps({'roc_points':roc_points, 'prc_points':prc_points, 'confusion_matrix':confusion_matrix, 'classification_report':clf_report, 'indexes':indexes, 'y_original_values':y_original_values, 'y_pred':y_pred, 'y_prob':y_prob,'errors':errors})
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()
-cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", result=\'"+result+"\', dataset_name=\'"+dataset[1]+"\' WHERE id="+analysisID)
+cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", aupr="+str(aupr)+", auroc="+str(auroc)+", accuracy="+str(accuracy)+", report_data=\'"+report_data+"\', dataset_name=\'"+dataset[1]+"\' WHERE id="+analysisID)
 db.commit()
 
 # Close connection with the database
