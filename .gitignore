@@ -12,3 +12,4 @@
 /composer.phar
 /.idea/
 /web/assets/profilepictures/*
+!/web/assets/profilepictures/index.html
