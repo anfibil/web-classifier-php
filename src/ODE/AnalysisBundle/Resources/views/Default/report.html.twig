@@ -2,9 +2,10 @@
 
 {% block stylesheets %}
     {% stylesheets
-    'assets/css/plugins/dataTables/dataTables.bootstrap.css'
-    'assets/css/plugins/dataTables/dataTables.tableTools.css'
-    'assets/css/plugins/qTip/jquery.qtip.css'
+        'assets/css/plugins/dataTables/dataTables.bootstrap.css'
+        'assets/css/plugins/dataTables/dataTables.tableTools.css'
+        'assets/css/plugins/dataTables/dataTables.responsive.css'
+        'assets/css/plugins/qTip/jquery.qtip.css'
     %}
     <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -156,9 +157,9 @@
                     <h5>Confusion Matrix</h5>
                 </div>
                 <div class="ibox-content">
-                    <table class="table table-bordered text-center">
+                    <table class="table table-bordered text-center" style="border-left-color: #FFFFFF">
                         <tr>
-                            <td style="border-left-color: #FFFFFF;border-top-color: #FFFFFF;" colspan="2" rowspan="2"></td>
+                            <td colspan="2" rowspan="2" style="border-top-color: #FFFFFF"></td>
                             <td colspan="2" class="table-cell-dark"><b>Predicted</b></td>
                         </tr>
                         <tr>
@@ -274,168 +275,167 @@
 {% endblock %}
 
 {% block scripts %}
-{{ parent() }}
-{% javascripts
-'assets/js/plugins/highcharts/highcharts.js'
-'assets/js/plugins/highcharts/exporting.js'
-'assets/js/plugins/dataTables/jquery.dataTables.js'
-'assets/js/plugins/dataTables/dataTables.bootstrap.js'
-'assets/js/plugins/dataTables/dataTables.tableTools.js'
-'assets/js/plugins/qTip/jquery.qtip.js'
-%}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+    {% javascripts
+        'assets/js/plugins/highcharts/highcharts.js'
+        'assets/js/plugins/highcharts/exporting.js'
+        'assets/js/plugins/dataTables/jquery.dataTables.js'
+        'assets/js/plugins/dataTables/dataTables.bootstrap.js'
+        'assets/js/plugins/dataTables/dataTables.tableTools.js'
+        'assets/js/plugins/qTip/jquery.qtip.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
-<script type="text/javascript">
-    $(function () {
-        $('#roc_curve').highcharts({
-            title: {
-                text: ''
-            },
-            xAxis: {
+    <script type="text/javascript">
+        $(function () {
+            $('#roc_curve').highcharts({
                 title: {
-                    text: 'False positive rate'
+                    text: ''
                 },
-                min: 0,
-                max: 1,
-                tickInterval: 0.1
-            },
-            yAxis: {
-                title: {
-                    text: 'True positive rate'
+                xAxis: {
+                    title: {
+                        text: 'False positive rate'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
                 },
-                min: 0,
-                max: 1,
-                tickInterval: 0.1
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            credits: {
-                enabled: false
-            },
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                        stops: [
-                            [0, '#59A595'],
-                            [1, Highcharts.Color('#59A595').setOpacity(0).get('rgba')]]
+                yAxis: {
+                    title: {
+                        text: 'True positive rate'
                     },
-                    marker: {
-                        enabled: false
-                    },
-                    lineWidth: 1,
-                    states: {
-                        hover: {
-                            lineWidth: 1
-                        }
-                    },
-                    threshold: null
-                }
-            },
-            tooltip:{
-                formatter:function(){
-                    console.log(this);
-                    return '<b>FPR: </b>' + this.key + '<br><b>TPR: </b>' + this.y;
-                }
-            },
-            series: [{
-                type: 'area',
-                color: '#127e68',
-                data: [
-                    {{ roc_points }}
-                ]
-            }]
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                            stops: [
+                                [0, '#59A595'],
+                                [1, Highcharts.Color('#59A595').setOpacity(0).get('rgba')]]
+                        },
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                tooltip:{
+                    formatter:function(){
+                        console.log(this);
+                        return '<b>FPR: </b>' + this.key + '<br><b>TPR: </b>' + this.y;
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    color: '#127e68',
+                    data: [
+                        {{ roc_points }}
+                    ]
+                }]
+            });
         });
-    });
 
-    $(function () {
-        $('#pr_curve').highcharts({
-            title: {
-                text: ''
-            },
-            xAxis: {
+        $(function () {
+            $('#pr_curve').highcharts({
                 title: {
-                    text: 'Recall'
+                    text: ''
                 },
-                min: 0,
-                max: 1,
-                tickInterval: 0.1
-            },
-            yAxis: {
-                title: {
-                    text: 'Precision'
+                xAxis: {
+                    title: {
+                        text: 'Recall'
+                    },
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
                 },
-                min: 0,
-                max: 1,
-                tickInterval: 0.1
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            credits: {
-                enabled: false
-            },
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                        stops: [
-                            [0, '#f8ac59'],
-                            [1, Highcharts.Color('#f8ac59').setOpacity(0).get('rgba')]
-                        ]
+                yAxis: {
+                    title: {
+                        text: 'Precision'
                     },
-                    marker: {
-                        enabled: false
-                    },
-                    lineWidth: 1,
-                    states: {
-                        hover: {
-                            lineWidth: 1
-                        }
-                    },
-                    threshold: null
-                }
-            },
-            tooltip:{
-                formatter:function(){
-                    console.log(this);
-                    return '<b>Recall: </b>' + this.key + '<br><b>Precision: </b>' + this.y;
-                }
-            },
-            series: [{
-                type: 'area',
-                color: '#B68651',
-                data: [
-                    {{ prc_points }}
-                ]
-            }]
+                    min: 0,
+                    max: 1,
+                    tickInterval: 0.1
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                            stops: [
+                                [0, '#f8ac59'],
+                                [1, Highcharts.Color('#f8ac59').setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            enabled: false
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                tooltip:{
+                    formatter:function(){
+                        console.log(this);
+                        return '<b>Recall: </b>' + this.key + '<br><b>Precision: </b>' + this.y;
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    color: '#B68651',
+                    data: [
+                        {{ prc_points }}
+                    ]
+                }]
+            });
         });
-    });
 
-    $(document).ready(function() {
-        $('#preditions-table').dataTable({
-            responsive: true,
-            "searching":false, // TODO: Maybe allow searching? I don't think it's that useful.
-            "dom": 'T<"clear">lfrtip',
-            "tableTools": {
-                "sSwfPath": "../assets/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-            }
+        $(document).ready(function() {
+            $('#preditions-table').dataTable({
+                responsive: true,
+                "searching":false,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "../assets/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+            $("#q1").qtip({
+                content: {
+                    text: 'The results below illustrate the first 1,000 instances in the dataset.',
+                    title:'<i>Note<\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
         });
-        $("#q1").qtip({
-            content: {
-                text: 'The results below illustrate the first 1,000 instances in the dataset.',
-                title:'<i>Note<\/i>'
-            },
-            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
-        });
-    });
-</script>
+    </script>
 {% endblock %}

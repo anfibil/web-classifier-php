@@ -241,6 +241,6 @@ class User extends BaseUser
     public function setDefaultProfilePicture(){
         // Create a default profile picture for new users based on anonymous.jpg file
         $this->profilePicturePath = '/assets/profilepictures/'.md5($this->username);
-        copy(__DIR__.'/../../../../web/assets/img/anonymous.jpg',__DIR__.'/../../../../web'.$this->profilePicturePath);
+        copy(__DIR__.'/../../../../web/assets/images/anonymous.jpg',__DIR__.'/../../../../web'.$this->profilePicturePath);
     }
 }

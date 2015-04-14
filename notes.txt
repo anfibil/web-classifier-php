@@ -18,8 +18,8 @@ Look at page 38 of the Symfony book "Optional Step 3: Create the Template".
 
 To see changes on the production ("prod") environment:
 ----------------------------------------------------------------------
-php app/console --env=prod cache:clear
-php app/console cache clear (clears the dev env)
+php app/console cache:clear --env=prod
+php app/console cache:clear (clears the dev env)
 
 
 To create bundles using the Symfony console:
@@ -30,9 +30,6 @@ php app/console generate:bundle -> Follow the instructions.
 For the database, create a table named symfony (via SQL) and run:
 ----------------------------------------------------------------------
 php app/console doctrine:schema:update --force
-
-*Note that when extending forms, the database was not being updated with new fields,
-which required removing the file src/ODE/UserBundle/Resources/config/doctrine/User.orm.yml
 
 
 To run the app:

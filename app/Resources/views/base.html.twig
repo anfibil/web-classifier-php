@@ -3,34 +3,34 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{% block title %}iCeNSA@ND | Data Analytics Portal{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ asset('assets/img/icensa_ico.png') }}" type="image/png" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/icensa_ico.png') }}" type="image/png" />
 
+    {# TODO: Use assetic for the stylesheets #}
     <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/plugins/toastr/toastr.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/plugins/picedit/picedit.min.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('assets/css/toastr.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/picedit.min.css') }}" rel="stylesheet">
-
-    {% block stylesheets %}{% endblock %}
-
-    {% block scripts %}
-        {% javascripts
+    {% javascripts
         'assets/js/jquery-2.1.3.js'
-        'assets/js/toastr.js'
-        'assets/js/picedit.js'
+        'assets/js/plugins/toastr/toastr.js'
+        'assets/js/plugins/picedit/picedit.js'
         'assets/js/bootstrap.js'
         'assets/js/plugins/metisMenu/jquery.metisMenu.js'
         'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
         'assets/js/inspinia.js'
         'assets/js/plugins/pace/pace.min.js'%}
         <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock %}
+    {% endjavascripts %}
+
+    {# Stylesheets block for pages that need extra css #}
+    {% block stylesheets %}{% endblock %}
+
+    {# Scripts block for pages that need extra css #}
+    {% block scripts %}{% endblock %}
 
     {% block welcome %}{% endblock %}
 
@@ -110,6 +110,9 @@
                 </li>
                 <li>
                     <a href="/analysis"><i class="fa fa-flask"></i><span class="nav-label">Analysis</span></a>
+                </li>
+                <li>
+                    <a href="/ranking"><i class="fa fa-trophy"></i><span class="nav-label">Rankings</span></a>
                 </li>
             </ul>
 

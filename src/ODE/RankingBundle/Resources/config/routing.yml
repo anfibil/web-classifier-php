@@ -1,0 +1,3 @@
+ode_ranking_homepage:
+    path:     /ranking
+    defaults: { _controller: ODERankingBundle:Default:index }

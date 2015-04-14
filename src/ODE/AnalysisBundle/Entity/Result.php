@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="ode_results")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Result
 {
@@ -59,7 +60,7 @@ class Result
     /**
      * @var integer
      *
-     * @ORM\Column(name="dataset", type="integer")
+     * @ORM\Column(name="dataset", type="integer",nullable=true)
      */
     private $dataset;
 
@@ -98,10 +99,24 @@ class Result
      */
     private $report_data;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="created_at", type="string", nullable=true)
+     */
+    private $created_at;
+
     function __construct()
     {
         $this->finished = false;
-        $this->dataset = 1; // Replace this with dataset ID from form selection later
+    }
+
+    /**
+     *  @ORM\PrePersist
+     */
+    public function doOnPrePersist()
+    {
+        $this->created_at = date('Y-m-d H:i:s');
     }
 
     /**
