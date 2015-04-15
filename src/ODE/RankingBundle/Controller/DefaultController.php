@@ -3,7 +3,8 @@
 namespace ODE\RankingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
+//use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -18,12 +19,7 @@ class DefaultController extends Controller
 
     public function getdataAction($dataset_id)
     {
-        return "<tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                </tr>";
+        $return=json_encode("testt");//jscon encode the array
+        return new Response($return,200,array('Content-Type'=>'application/json'));//make sure it has the correct content type
     }
 }
