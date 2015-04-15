@@ -23,11 +23,11 @@ db = pymysql.connect(host="localhost", user="root", passwd="", db="symfony")
 cursor = db.cursor()
 
 # Find the current analysis object in the results database
-cursor.execute("SELECT * FROM ode_results WHERE id="+analysisID)
+cursor.execute("SELECT dataset, params, model  FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
 # Find the dataset to be used by the current analysis
-cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[5]))
+cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[0]))
 dataset = cursor.fetchone()
 
 ######################
@@ -53,9 +53,9 @@ clfs = {
 
 # Grab correct classifier and set the parameters based on what the user specified 
 if (analysis[1]):
-	clf = clfs[analysis[7]].set_params(**ast.literal_eval(analysis[1]))
+	clf = clfs[analysis[2]].set_params(**ast.literal_eval(analysis[1]))
 else:
-	clf = clfs[analysis[7]] 
+	clf = clfs[analysis[2]] 
 
 # Read and pre-process data
 df = pd.read_csv(currentDir+'../datasets/'+dataset[7]+'.csv')
