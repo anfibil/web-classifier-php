@@ -25,6 +25,7 @@ cursor = db.cursor()
 # Find the current analysis object in the results database
 cursor.execute("SELECT dataset, params, model  FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
+print analysis
 
 # Find the dataset to be used by the current analysis
 cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[0]))
@@ -148,3 +149,4 @@ db.commit()
 # Close connection with the database
 cursor.close()
 db.close()
+

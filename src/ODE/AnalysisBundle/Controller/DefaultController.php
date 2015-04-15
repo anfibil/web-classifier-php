@@ -74,10 +74,10 @@ class DefaultController extends Controller
         // To prevent blocking, use the code below when running the python script
         // Note that windows doesn't like '&' so we use pclose() for the time being
         // TODO: Edit this code when deploying to production server
+        //die('start /B python '.$script.' '.$id.' '.$current_dir);
         if (substr(php_uname(), 0, 7) == "Windows"){
             $terminal_output = pclose(popen('start /B python '.$script.' '.$id.' '.$current_dir, "r"));
-        }
-        else {
+        }  else {
             $terminal_output = exec('python '.$script.' '.$id.' '.$current_dir.' &');
         }
     }
