@@ -30,6 +30,13 @@ class Result
     private $model;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="model_name", type="string", nullable=true)
+     */
+    private $model_name;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="params", type="json_array", nullable=true)
@@ -130,7 +137,7 @@ class Result
     }
 
     /**
-     * Set algorithm
+     * Set model
      *
      * @param integer $model
      * @return Result
@@ -150,6 +157,29 @@ class Result
     public function getModel()
     {
         return $this->model;
+    }
+
+    /**
+     * Set model_name
+     *
+     * @param string $model_name
+     * @return Result
+     */
+    public function setModel_name($model_name)
+    {
+        $this->model_name = $model_name;
+
+        return $this;
+    }
+
+    /**
+     * Get model_name
+     *
+     * @return string
+     */
+    public function getModel_name()
+    {
+        return $this->model_name;
     }
 
     /**

@@ -10,12 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
-    {
-
-        return $this->render('ODEAnalysisBundle:Default:index.html.twig');
-    }
-
     public function runAnalysisAction(Request $request){
         $username = $this->getUser()->getUsername();
         $model = $request->query->get('model');
@@ -48,12 +42,18 @@ class DefaultController extends Controller
             }
         }
 
+        // Retrieve the name of the model from model table
+        $model_name = $this->getDoctrine()
+            ->getRepository('ODEAnalysisBundle:Model')
+            ->find($model)->getName();
+
         // Create an entry with that data in the ode_results table
         $result = new Result();
         $result->setusername($username);
         $result->setModel($model);
         $result->setDataset($dataset);
         $result->setParams($params);
+        $result->setModel_name($model_name);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($result);
