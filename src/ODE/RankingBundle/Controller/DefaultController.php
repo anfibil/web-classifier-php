@@ -16,7 +16,7 @@ class DefaultController extends Controller
         ));
     }
 
-    public function getdataAction($dataset_id)
+    public function getTableData($dataset_id)
     {
         return "<tr>
                     <td>1</td>
