@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+
 {% block stylesheets %}
     {% stylesheets
     'assets/css/plugins/iCheck/custom.css'
@@ -9,76 +10,96 @@
     <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 {% endblock %}
+
 {% block body %}
-<br></<br/>
-<br></<br/>
-<div class="row">
-	<div class="col-lg-10 col-lg-offset-1">
-		<div class="ibox">
-			<div class="ibox-title">
-				<h5>Analysis</h5>
-			</div>
-			<div class="ibox-content">
-				<h2> Configure Your Analysis Parameters </h2>
-				<form id="form" action="#" class="wizard-big">
-					<h1>Dataset</h1>
-					<section>
-						<h2>Select the dataset:</h2>
-						<div class="row">
-							<div class="col-lg-5">
-								<div class="form-group">
-									<select id="dataset" name="dataset" class="form-control required">
-									{% for dataset in datasets %}
-                                        <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
-                                    {% endfor %}
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-5 col-lg-offset-1">
-								Add dataset description here.
-							</div>
-						</div>
-					</section>
-					<h1>Model</h1>
-					<section>
-						<h2>Select the Model:</h2>
-						<div class="row">
-							<div class="col-lg-5">
-								<div class="form-group">
-									<select id="model" name="model" class="form-control required">
-									{% for model in models %}
-                                        <option value={{ model.id|e }}>{{ model.name|e }}</option>
-                                    {% endfor %}
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-7">
-							    <div class="ibox float-e-margins">
-							        <div class="description-box ibox-content p-m" id="model-description">
-                                        <div id="model-descriptions">
-                                        {% for model in models %}
-                                            <div id="model-description-{{ model.id|e }}" style="display: none"> {{ model.description|raw}}</div>
-                                        {% endfor %}
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <br></<br/>
+        <br></<br/>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Analysis</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h2> Configure Your Analysis Parameters </h2>
+                        <form id="form" action="#" class="wizard-big">
+                            <h1>Dataset</h1>
+                            <section>
+                                <h2>Select the dataset:</h2>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <select id="dataset" name="dataset" class="form-control required">
+                                            {% for dataset in datasets %}
+                                                <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
+                                    <div class="col-lg-5 col-lg-offset-1">
+                                        Add dataset description here.
                                     </div>
                                 </div>
-							</div>
-						</div>
-					</section>
-					<h1>Parameters</h1>
-					<section data-mode="async">
-					</section>
-					<h1>Finish</h1>
-					<section>
-						<h2>Terms and Conditions</h2>
-						<input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
-						<label for="acceptTerms">I agree with the Terms and Conditions.</label>
-					</section>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+                            </section>
+                            <h1>Model</h1>
+                            <section>
+                                <h2>Select the Model:</h2>
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <select id="model" name="model" class="form-control required">
+                                            {% for model in models %}
+                                                <option value={{ model.id|e }}>{{ model.name|e }}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="ibox float-e-margins">
+                                            <div class="description-box ibox-content p-m" id="model-description">
+                                                <div id="model-descriptions">
+                                                {% for model in models %}
+                                                    <div id="model-description-{{ model.id|e }}" style="display: none"> {{ model.description|raw}}</div>
+                                                {% endfor %}
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <h1>Parameters</h1>
+                            <section data-mode="async">
+                            </section>
+                            <h1>Finish</h1>
+                            <section>
+                                <h2>Terms and Conditions</h2>
+                                <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
+                                <label for="acceptTerms">I agree with the Terms and Conditions.</label>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="wrapper wrapper-content animated fadeIn">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content text-center p-md">
+                            <h2><span>Sorry! You must be logged in to access this area.</span></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <a href="/login" class="btn btn-default btn-sm"><span class="fa fa-sign-in"></span>&nbsp;&nbsp;Login</a>
+                <a href="/register" class="btn btn-default btn-sm"><span class="fa fa-user-plus"></span>&nbsp;&nbsp;Register</a>
+            </div>
+        </div>
+     {% endif %}
 
 {% endblock %}
 {% block scripts %}
