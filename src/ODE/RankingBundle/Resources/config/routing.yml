@@ -1,3 +1,7 @@
 ode_ranking_homepage:
     path:     /ranking
     defaults: { _controller: ODERankingBundle:Default:index }
+
+ode_ranking_get_data:
+    path:    /ranking/{dataset_id}
+    defaults: { _controller: ODERankingBundle:Default:getdata }
