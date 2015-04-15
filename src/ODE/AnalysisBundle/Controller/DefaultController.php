@@ -102,7 +102,7 @@ class DefaultController extends Controller
         $report_data = $analysis->getReport_data();
 
         // Get the rank for the current execution based on all accuracies previously obtained for the same dataset
-        // TODO: Chance this syntax to the safer http://doctrine-orm.readthedocs.org/en/latest/reference/native-sql.html
+        // TODO: Change this syntax to the safer http://doctrine-orm.readthedocs.org/en/latest/reference/native-sql.html
         $query = "SELECT count(*)+1 as rank from (select accuracy from ode_results WHERE dataset=".$analysis->getDataset()." group by accuracy) as A WHERE A.accuracy > ".$analysis->getAccuracy();
         $connection = $em->getConnection()->query($query);
         $connection->execute();
