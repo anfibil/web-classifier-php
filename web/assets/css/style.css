@@ -5048,3 +5048,13 @@ a.profile-picture{
     display: block;
     border-radius: 60px;
 }
+
+#ranking_table tbody tr:nth-child(1){
+    background: #E6F0E6;
+}
+#ranking_table tbody tr:nth-child(2),
+#ranking_table tbody tr:nth-child(3),
+#ranking_table tbody tr:nth-child(4),
+#ranking_table tbody tr:nth-child(5) {
+    background: #E6F0F5;
+}
