@@ -5049,7 +5049,7 @@ a.profile-picture{
     border-radius: 60px;
 }
 
-/** Highlight top 5 ranked results */
+/** Highlight top 5 ranked results
 #ranking_table tbody tr:nth-child(1){
     background: #E6F0E6;
 }
@@ -5067,7 +5067,7 @@ a.profile-picture{
 #ranking_table tbody tr:nth-child(4):hover,
 #ranking_table tbody tr:nth-child(5):hover {
     background: #c7e2f0;
-}
+}*/
 
 #ranking_table img.smalluserpicture {
     width: 25px;

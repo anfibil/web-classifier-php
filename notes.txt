@@ -62,3 +62,4 @@ TODO: Perceptron has no predict_proba
 TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT)
 TODO: Handle categorical features on python script (done -- monitor performance to make sure it won't explode [seems to be a problem with knn at times])
 TODO: Create a page showing all experiment results ranked
+TODO: Add date to rankings
