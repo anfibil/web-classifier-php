@@ -5068,3 +5068,9 @@ a.profile-picture{
 #ranking_table tbody tr:nth-child(5):hover {
     background: #c7e2f0;
 }
+
+#ranking_table img.smalluserpicture {
+    width: 25px;
+    height: 25px;
+    border-radius: 30px;
+}
