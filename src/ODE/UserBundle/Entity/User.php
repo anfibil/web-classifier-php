@@ -195,15 +195,16 @@ class User extends BaseUser
         // Get the profile picture file.
         $file = $this->getProfilePictureFile();
 
+        //Not needed anymore due bug: If you upload a file from a type X, and after a file with type Y, the GUI does not update.
+        //$type = $file->guessExtension(); // Returns the extension based on the mime type. If the mime type is unknown, returns null.
+        //$dstFile =  $uniqueFileName . (!empty($type)? "." . $type : ""); // If possible, Add the file extension
+
         // Move and name the file.
         /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        $file->move(
-            $this->getUploadRootDir(),
-            $uniqueFileName
-        );
+        $file->move( $this->getUploadRootDir(), $dstFile);
 
         // Set the path property to the filename where you've saved the file.
-        $this->profilePicturePath = $this->getUploadDir().$uniqueFileName;
+        $this->profilePicturePath = $this->getUploadDir().$dstFile;
 
         // Clean up the file property, as no longer needed.
         $this->profilePictureFile = null;
