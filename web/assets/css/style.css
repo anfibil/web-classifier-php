@@ -2917,7 +2917,7 @@ body.body-small .footer.fixed {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #e7e7e7;
+  border: 1px solid #dcdcdd;
 }
 .table > thead > tr > th {
   border-bottom: 1px solid #DDDDDD;
@@ -5049,12 +5049,22 @@ a.profile-picture{
     border-radius: 60px;
 }
 
+/** Highlight top 5 ranked results */
 #ranking_table tbody tr:nth-child(1){
     background: #E6F0E6;
+}
+#ranking_table tbody tr:nth-child(1):hover{
+    background: #cbeccb;
 }
 #ranking_table tbody tr:nth-child(2),
 #ranking_table tbody tr:nth-child(3),
 #ranking_table tbody tr:nth-child(4),
 #ranking_table tbody tr:nth-child(5) {
-    background: #E6F0F5;
+     background: #E6F0F5;
+}
+#ranking_table tbody tr:nth-child(2):hover,
+#ranking_table tbody tr:nth-child(3):hover,
+#ranking_table tbody tr:nth-child(4):hover,
+#ranking_table tbody tr:nth-child(5):hover {
+    background: #c7e2f0;
 }
