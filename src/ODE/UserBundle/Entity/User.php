@@ -201,10 +201,10 @@ class User extends BaseUser
 
         // Move and name the file.
         /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        $file->move( $this->getUploadRootDir(), $dstFile);
+        $file->move( $this->getUploadRootDir(), $uniqueFileName);
 
         // Set the path property to the filename where you've saved the file.
-        $this->profilePicturePath = $this->getUploadDir().$dstFile;
+        $this->profilePicturePath = $this->getUploadDir().$uniqueFileName;
 
         // Clean up the file property, as no longer needed.
         $this->profilePictureFile = null;
