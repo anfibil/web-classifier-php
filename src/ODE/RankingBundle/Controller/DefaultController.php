@@ -20,32 +20,32 @@ class DefaultController extends Controller
     public function getTableDataAction(Request $request)
     {
         $dataset_id = $request->query->get('dataset_id');
-        $fields = array('IDENTITY(r.user)', 'IDENTITY(r.model)', 'r.accuracy', 'r.auroc', 'r.aupr', 'r.runtime');
-
+        $fields = array('partial r.{id,user,model,accuracy,auroc,aupr,runtime,date}');
         $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
-        $query = $repository->createQueryBuilder('r')
+        $results = $repository->createQueryBuilder('r')
             ->select($fields)
             ->where('r.dataset = :dataset')
             ->orderBy('r.accuracy', 'DESC')
             ->setFirstResult(0)
             ->setMaxResults(1000)   //Get only the top 1000 rows (this will prevent huge queries in future) - see orderBy
             ->setParameter('dataset', $dataset_id)
-            ->getQuery();
-        $results = $query->getResult();
+            ->getQuery()
+            ->execute();
 
         $data = array();
         foreach ($results as $result){
-            // Try to get user picture (this should be replaced by a left join but we need set the association first)
-            $userRepository = $this->getDoctrine()->getRepository('ODEUserBundle:User');
-            $userQuery = $userRepository->createQueryBuilder('u')
-            ->select(['u.profilePicturePath','u.username'])
-            ->where('u.id = :user_id')
-            ->setParameter('user_id', $result[1]) // Get user ID from index 1 because array is no longer indexed with 'user' because of the IDENTITY()
-            ->getQuery();
-            $user = $userQuery->getSingleResult();
+            // Each $result is an object but serialization throws a CircularReferenceException because of foreign keys
+            // For now, we are setting each variable that is to be displayed in the table individually
+            // Look at http://goo.gl/jEdk6Z for handling instructions. Keep in mind there are 2 foreign keys (model and user)
+            $user = (object) array('picture'=> $result->getUser()->getProfilePicturePath(), 'username'=> $result->getUser()->getUsername());
+            $model = $result->getModel()->getName();
+            $accuracy = $result->getAccuracy();
+            $auroc = $result->getAuroc();
+            $aupr = $result->getAupr();
+            $runtime = $result->getRuntime();
+            $date = $result->getDate();
 
-            // Now that we *probably* have the picture, lets turn the user data in an object. This object will be reformatted before display via JS
-            $result[1] = (object) array('picture'=> $user['profilePicturePath'], 'username'=> $user['username']); //Turn the username in a object
+            $result = array($user,$model,$accuracy,$auroc,$aupr,$runtime,$date);
 
             // Remove keys from array to comply with what datatables expects
             $result = array_values($result);

@@ -92,9 +92,9 @@ class Result
     /**
      * @var string
      *
-     * @ORM\Column(name="created_at", type="string", nullable=true)
+     * @ORM\Column(name="date", type="string", nullable=true)
      */
-    private $created_at;
+    private $date;
 
     // ----------//
     // Construct //
@@ -114,7 +114,7 @@ class Result
      */
     public function doOnPrePersist()
     {
-        $this->created_at = date('Y-m-d H:i:s');
+        $this->date = date('Y-m-d H:i:s');
     }
 
     // --------------------//
@@ -323,5 +323,9 @@ class Result
     public function getDataset()
     {
         return $this->dataset;
+    }
+    public function getDate()
+    {
+        return $this->date;
     }
 }
