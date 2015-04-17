@@ -3,6 +3,7 @@
 namespace ODE\DatasetBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="ODE\DatasetBundle\Entity\DatasetRepository")
@@ -52,6 +53,20 @@ class Dataset
      * @ORM\Column(type="text")
      */
     protected $filename;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ODE\AnalysisBundle\Entity\Result", mappedBy="dataset")
+     */
+    protected $results;
+
+    // ----------//
+    // Construct //
+    // ----------//
+
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
+    }
 
     // --------------------//
     // Getters and Setters //
@@ -226,5 +241,10 @@ class Dataset
     public function getFilename()
     {
         return $this->filename;
+    }
+
+    public function getResults()
+    {
+        return $this->results;
     }
 }
