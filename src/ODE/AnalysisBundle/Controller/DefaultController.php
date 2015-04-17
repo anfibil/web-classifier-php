@@ -11,18 +11,23 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     public function runAnalysisAction(Request $request){
-        $username = $this->getUser()->getUsername();
-        $model = $request->query->get('model');
-        $dataset = $request->query->get('dataset');
+        $model_id = $request->query->get('model');
+        $dataset_id = $request->query->get('dataset');
 
         // Retrieve all GET parameters and remove from the list some that are going to be saved on a different column in the table
         $params = $request->query->all();
         unset($params['dataset'],$params['model'],$params['acceptTerms']);
 
+        $em = $this->getDoctrine()->getManager();
+        $model = $em->getRepository('ODEAnalysisBundle:Model')->find($model_id);
+        $dataset = $em->getRepository('ODEDatasetBundle:Dataset')->find($dataset_id);
+
         // Retrieve from model table a mapping parameter->parameter_type
-        $model_params = $this->getDoctrine()
+        /*$model_params = $this->getDoctrine()
             ->getRepository('ODEAnalysisBundle:Model')
-            ->find($model)->getParameters();
+            ->find($model_id)->getParameters();*/
+
+        $model_params = $model->getParameters();
 
         // Check to see if parameter list is empty (e.g., Naive Bayes)
         // If so, pass an empty object to represent that
@@ -43,19 +48,20 @@ class DefaultController extends Controller
         }
 
         // Retrieve the name of the model from model table
-        $model_name = $this->getDoctrine()
+        /*$model_name = $this->getDoctrine()
             ->getRepository('ODEAnalysisBundle:Model')
-            ->find($model)->getName();
+            ->find($model)->getName();*/
+
+
 
         // Create an entry with that data in the ode_results table
         $result = new Result();
-        $result->setusername($username);
+        $result->setUser($this->getUser());
         $result->setModel($model);
         $result->setDataset($dataset);
         $result->setParams($params);
-        $result->setModel_name($model_name);
+        //$result->setModel_name($model_name);
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($result);
         $em->flush();
 
@@ -85,32 +91,32 @@ class DefaultController extends Controller
     }
 
     public function checkIfAnalysisIsDoneAction(Request $request){
-        $analysis_id = $request->query->get('id');
+        $result_id = $request->query->get('id');
         $em = $this->getDoctrine()->getManager();
-        $analysis = $em->getRepository('ODEAnalysisBundle:Result')->find($analysis_id);
+        $result = $em->getRepository('ODEAnalysisBundle:Result')->find($result_id);
 
         // Return 0 or 1 from database indicating whether or not analysis finished running
-        return new Response(json_encode(array('finished'=>$analysis->getFinished())));
+        return new Response(json_encode(array('finished'=>$result->getFinished())));
     }
 
     public function generateReportAction(Request $request){
-        $analysis_id = $request->query->get('id');
+        $result_id = $request->query->get('id');
         $em = $this->getDoctrine()->getManager();
-        $analysis = $em->getRepository('ODEAnalysisBundle:Result')->find($analysis_id);
+        $result = $em->getRepository('ODEAnalysisBundle:Result')->find($result_id);
 
-        $report_data = $analysis->getReport_data();
+        $report_data = $result->getReport_data();
 
         // Get the rank for the current execution based on all accuracies previously obtained for the same dataset
         // TODO: Change this syntax to the safer http://doctrine-orm.readthedocs.org/en/latest/reference/native-sql.html
-        $query = "SELECT count(*)+1 as rank from (select accuracy from ode_results WHERE dataset=".$analysis->getDataset()." group by accuracy) as A WHERE A.accuracy > ".$analysis->getAccuracy();
+        $query = "SELECT count(*)+1 as rank from (select accuracy from ode_results WHERE dataset_id=".$result->getDataset()->getID()." group by accuracy) as A WHERE A.accuracy > ".$result->getAccuracy();
         $connection = $em->getConnection()->query($query);
         $connection->execute();
         $rank = $connection->fetchAll()[0]['rank'];
 
         return $this->render('@ODEAnalysis/Default/report.html.twig',
             array(
-                'auroc' => $analysis->getAuroc(),
-                'aupr' => $analysis->getAupr(),
+                'auroc' => $result->getAuroc(),
+                'aupr' => $result->getAupr(),
                 'roc_points' => $report_data['roc_points'],
                 'prc_points' => $report_data['prc_points'],
                 'confusion_matrix' => explode(",",$report_data['confusion_matrix']),
@@ -120,12 +126,12 @@ class DefaultController extends Controller
                 'y_pred' => explode(",",$report_data['y_pred']),
                 'errors' => explode(",",$report_data['errors']),
                 'y_prob' => explode(",",$report_data['y_prob']),
-                'model' => $em->getRepository('ODEAnalysisBundle:Model')->find($analysis->getModel())->getName(),
-                'dataset_name' => $analysis->getDataset_name(),
-                'runtime' => $analysis->getRuntime(),
-                'params' => $analysis->getParams(),
-                'accuracy' => $analysis->getAccuracy(),
-                'user' => $analysis->getUsername(),
+                'model' => $em->getRepository('ODEAnalysisBundle:Model')->find($result->getModel())->getName(),
+                'dataset_name' => $result->getDataset()->getName(),
+                'runtime' => $result->getRuntime(),
+                'params' => $result->getParams(),
+                'accuracy' => $result->getAccuracy(),
+                'user' => $result->getUser()->getUsername(),
                 'rank' => $rank
             )
         );

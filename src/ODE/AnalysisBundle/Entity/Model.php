@@ -1,10 +1,11 @@
 <?php
 
-//TODO: Create a python script that adds entries for all models to this table.
+
 
 namespace ODE\AnalysisBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Model
@@ -58,6 +59,23 @@ class Model
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ODE\AnalysisBundle\Entity\Result", mappedBy="model")
+     */
+    protected $results;
+
+    // ----------//
+    // Construct //
+    // ----------//
+
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
+    }
+
+    // --------------------//
+    // Getters and Setters //
+    // --------------------//
 
     /**
      * Get id
@@ -176,5 +194,10 @@ class Model
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getResults()
+    {
+        return $this->results;
     }
 }

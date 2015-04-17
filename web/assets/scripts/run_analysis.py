@@ -23,7 +23,7 @@ db = pymysql.connect(host="localhost", user="root", passwd="", db="symfony")
 cursor = db.cursor()
 
 # Find the current analysis object in the results database
-cursor.execute("SELECT dataset, params, model  FROM ode_results WHERE id="+analysisID)
+cursor.execute("SELECT dataset_id, params, model_id  FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
 # Find the dataset to be used by the current analysis
@@ -142,7 +142,7 @@ report_data = json.dumps({'roc_points':roc_points, 'prc_points':prc_points, 'con
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()
-cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", aupr="+str(aupr)+", auroc="+str(auroc)+", accuracy="+str(accuracy)+", report_data=\'"+report_data+"\', dataset_name=\'"+dataset[1]+"\' WHERE id="+analysisID)
+cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", aupr="+str(aupr)+", auroc="+str(auroc)+", accuracy="+str(accuracy)+", report_data=\'"+report_data+"\' WHERE id="+analysisID)
 db.commit()
 
 # Close connection with the database

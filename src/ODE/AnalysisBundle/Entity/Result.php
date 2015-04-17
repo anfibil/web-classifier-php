@@ -23,18 +23,22 @@ class Result
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="model", type="integer", length=255)
+     * @ORM\ManyToOne(targetEntity="Model", inversedBy="results")
+     * @ORM\JoinColumn(name="model_id", referencedColumnName="id")
      */
     private $model;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="model_name", type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="ODE\DatasetBundle\Entity\Dataset", inversedBy="results")
+     * @ORM\JoinColumn(name="dataset_id", referencedColumnName="id")
      */
-    private $model_name;
+    private $dataset;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ODE\UserBundle\Entity\User", inversedBy="results")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
 
     /**
      * @var array
@@ -56,27 +60,6 @@ class Result
      * @ORM\Column(name="finished", type="boolean")
      */
     private $finished;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=255)
-     */
-    private $username;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="dataset", type="integer",nullable=true)
-     */
-    private $dataset;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dataset_name", type="string", length=255, nullable=true)
-     */
-    private $dataset_name;
 
     /**
      * @var float
@@ -113,10 +96,18 @@ class Result
      */
     private $created_at;
 
+    // ----------//
+    // Construct //
+    // ----------//
+
     function __construct()
     {
         $this->finished = false;
     }
+
+    // --------------------//
+    // Lifecycle Callbacks //
+    // --------------------//
 
     /**
      *  @ORM\PrePersist
@@ -126,6 +117,10 @@ class Result
         $this->created_at = date('Y-m-d H:i:s');
     }
 
+    // --------------------//
+    // Getters and Setters //
+    // --------------------//
+
     /**
      * Get id
      *
@@ -134,52 +129,6 @@ class Result
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set model
-     *
-     * @param integer $model
-     * @return Result
-     */
-    public function setModel($model)
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Get model
-     *
-     * @return integer
-     */
-    public function getModel()
-    {
-        return $this->model;
-    }
-
-    /**
-     * Set model_name
-     *
-     * @param string $model_name
-     * @return Result
-     */
-    public function setModel_name($model_name)
-    {
-        $this->model_name = $model_name;
-
-        return $this;
-    }
-
-    /**
-     * Get model_name
-     *
-     * @return string
-     */
-    public function getModel_name()
-    {
-        return $this->model_name;
     }
 
     /**
@@ -321,75 +270,6 @@ class Result
     }
 
     /**
-     * Set username
-     *
-     * @param string $username
-     * @return Result
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string 
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set dataset
-     *
-     * @param integer $dataset
-     * @return Result
-     */
-    public function setDataset($dataset)
-    {
-        $this->dataset = $dataset;
-
-        return $this;
-    }
-
-    /**
-     * Get dataset
-     *
-     * @return integer
-     */
-    public function getDataset()
-    {
-        return $this->dataset;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $dataset_name
-     * @return Result
-     */
-    public function setDataset_name($dataset_name)
-    {
-        $this->dataset_name = $dataset_name;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getDataset_name()
-    {
-        return $this->dataset_name;
-    }
-
-    /**
      * Set report_data
      *
      * @param array $report_data
@@ -410,5 +290,38 @@ class Result
     public function getReport_data()
     {
         return $this->report_data;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setModel($model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function setDataset($dataset)
+    {
+        $this->dataset = $dataset;
+
+        return $this;
+    }
+    public function getDataset()
+    {
+        return $this->dataset;
     }
 }

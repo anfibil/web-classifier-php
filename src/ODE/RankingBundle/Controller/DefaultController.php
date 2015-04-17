@@ -20,7 +20,7 @@ class DefaultController extends Controller
     public function getTableDataAction(Request $request)
     {
         $dataset_id = $request->query->get('dataset_id');
-        $fields = array('r.username', 'r.model_name', 'r.accuracy', 'r.auroc', 'r.aupr', 'r.runtime');
+        $fields = array('IDENTITY(r.user)', 'IDENTITY(r.model)', 'r.accuracy', 'r.auroc', 'r.aupr', 'r.runtime');
 
         $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
         $query = $repository->createQueryBuilder('r')
@@ -35,18 +35,17 @@ class DefaultController extends Controller
 
         $data = array();
         foreach ($results as $result){
-
             // Try to get user picture (this should be replaced by a left join but we need set the association first)
             $userRepository = $this->getDoctrine()->getRepository('ODEUserBundle:User');
             $userQuery = $userRepository->createQueryBuilder('u')
-            ->select(['u.profilePicturePath'])
-            ->where('u.username = :uname')
-            ->setParameter('uname', $result['username'])
+            ->select(['u.profilePicturePath','u.username'])
+            ->where('u.id = :user_id')
+            ->setParameter('user_id', $result[1]) // Get user ID from index 1 because array is no longer indexed with 'user' because of the IDENTITY()
             ->getQuery();
-            $userProfilePictureUrl = $userQuery->getSingleScalarResult();
+            $user = $userQuery->getSingleResult();
 
             // Now that we *probably* have the picture, lets turn the user data in an object. This object will be reformatted before display via JS
-            $result['username'] = (object) array('picture'=> $userProfilePictureUrl, 'username'=> $result['username']); //Turn the username in a object
+            $result[1] = (object) array('picture'=> $user['profilePicturePath'], 'username'=> $user['username']); //Turn the username in a object
 
             // Remove keys from array to comply with what datatables expects
             $result = array_values($result);

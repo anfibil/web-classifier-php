@@ -4,7 +4,7 @@ namespace ODE\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-//use Symfony\Component\Security\Core\Util\SecureRandom;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -80,9 +80,19 @@ class User extends BaseUser
      */
     protected $profilePicturePath;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ODE\AnalysisBundle\Entity\Result", mappedBy="user")
+     */
+    protected $results;
+
+    // ----------//
+    // Construct //
+    // ----------//
+
     public function __construct()
     {
         parent::__construct();
+        $this->results = new ArrayCollection();
     }
 
     // --------------------//
@@ -97,6 +107,11 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getResults()
+    {
+        return $this->results;
     }
 
     public function getFirstname()
