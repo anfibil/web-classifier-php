@@ -23,10 +23,6 @@ class DefaultController extends Controller
         $dataset = $em->getRepository('ODEDatasetBundle:Dataset')->find($dataset_id);
 
         // Retrieve from model table a mapping parameter->parameter_type
-        /*$model_params = $this->getDoctrine()
-            ->getRepository('ODEAnalysisBundle:Model')
-            ->find($model_id)->getParameters();*/
-
         $model_params = $model->getParameters();
 
         // Check to see if parameter list is empty (e.g., Naive Bayes)
@@ -46,13 +42,6 @@ class DefaultController extends Controller
                 }
             }
         }
-
-        // Retrieve the name of the model from model table
-        /*$model_name = $this->getDoctrine()
-            ->getRepository('ODEAnalysisBundle:Model')
-            ->find($model)->getName();*/
-
-
 
         // Create an entry with that data in the ode_results table
         $result = new Result();
