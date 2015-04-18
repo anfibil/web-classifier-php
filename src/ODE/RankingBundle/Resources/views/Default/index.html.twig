@@ -191,28 +191,50 @@
 
                 function getTop(dataset_id){
                     jQuery.ajax({
+                        async: true,
                         dataType: "json",
                         url: "/ranking/gettop?dataset_id="+dataset_id,
                         data: "",
                         success: function(data){
-                            $('#top_accuracy').text(data.accuracy.top);
-                            $('#top_accuracy_username').text(data.accuracy.username);
+                            if (data.accuracy){
+                                $('#top_accuracy').text(parseFloat(data.accuracy.top).toFixed(4));
+                                $('#top_accuracy_username').text(data.accuracy.username);
+                            } else{
+                                $('#top_accuracy').text("Unavailable");
+                                $('#top_accuracy_username').text("Unavailable");
+                            }
 
-                            $('#top_auroc').text(data.auroc.top);
-                            $('#top_auroc_username').text(data.auroc.username);
+                            if (data.auroc) {
+                                $('#top_auroc').text(parseFloat(data.auroc.top).toFixed(4));
+                                $('#top_auroc_username').text(data.auroc.username);
+                            } else{
+                                $('#top_auroc').text("Unavailable");
+                                $('#top_auroc_username').text("Unavailable");
+                            }
 
-                            $('#top_aupr').text(data.aupr.top);
-                            $('#top_aupr_username').text(data.aupr.username);
+                            if (data.aupr) {
+                                $('#top_aupr').text(parseFloat(data.aupr.top).toFixed(4));
+                                $('#top_aupr_username').text(data.aupr.username);
+                            } else{
+                                $('#top_aupr').text("Unavailable");
+                                $('#top_aupr_username').text("Unavailable");
+                            }
 
-                            $('#top_runtime').text(data.runtime.top);
-                            $('#top_runtime_username').text(data.runtime.username);
+                            if (data.runtime) {
+                                $('#top_runtime').text(parseFloat(data.runtime.top).toFixed(4));
+                                $('#top_runtime_username').text(data.runtime.username);
+                            } else{
+                                $('#top_runtime').text("Unavailable");
+                                $('#top_runtime_username').text("Unavailable");
+                            }
+
                         }
                     }).fail(function() {
-                        alert("Could not retrieve top results.");
+                        alert("Could not retrieve the top results.");
                     });
                 }
 
-                getTop(1);
+                getTop($('#dataset').val());
             });
         </script>
     {% endblock %}

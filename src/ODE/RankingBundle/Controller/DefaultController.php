@@ -67,55 +67,27 @@ class DefaultController extends Controller
 
     public function getTopResultsAction(Request $request)
     {
-        $dataset_id = $request->query->get('dataset_id');
-        $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
+        $dataset_id = (int) $request->query->get('dataset_id'); // Make sure that the dataset_id is an integer
 
-        // TODO: Can the below be done in a single query? Probably :)
-        $accuracy = $repository->createQueryBuilder('r')
-            ->select('partial r.{id,user,accuracy}')
-            ->where('r.dataset = :dataset')
-            ->orderBy('r.accuracy', 'DESC')
-            ->setFirstResult(0)
-            ->setMaxResults(1)
-            ->setParameter('dataset', $dataset_id)
-            ->getQuery()
-            ->execute();
-        $accuracy = array('top' =>  round($accuracy[0]->getAccuracy(),4),'username' => $accuracy[0]->getUser()->getUsername());
+        $entityManager = $this->getDoctrine()->getManager();
 
-        $auroc = $repository->createQueryBuilder('r')
-            ->select('partial r.{id,user,auroc}')
-            ->where('r.dataset = :dataset')
-            ->orderBy('r.auroc', 'DESC')
-            ->setFirstResult(0)
-            ->setMaxResults(1)
-            ->setParameter('dataset', $dataset_id)
-            ->getQuery()
-            ->execute();
-        $auroc = array('top' => round($auroc[0]->getAuroc(),4),'username' => $auroc[0]->getUser()->getUsername());
+        $accuracy = $entityManager->createQuery(
+            'SELECT U.username as username,R.accuracy as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.accuracy DESC'
+        )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
-        $aupr = $repository->createQueryBuilder('r')
-            ->select('partial r.{id,user,aupr}')
-            ->where('r.dataset = :dataset')
-            ->orderBy('r.aupr', 'DESC')
-            ->setFirstResult(0)
-            ->setMaxResults(1)
-            ->setParameter('dataset', $dataset_id)
-            ->getQuery()
-            ->execute();
-        $aupr = array('top' => round($aupr[0]->getAupr(),4),'username' => $aupr[0]->getUser()->getUsername());
+        $auroc = $entityManager->createQuery(
+            'SELECT U.username as username,R.auroc as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.auroc DESC'
+        )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
-        $runtime = $repository->createQueryBuilder('r')
-            ->select('partial r.{id,user,runtime}')
-            ->where('r.dataset = :dataset')
-            ->orderBy('r.runtime')
-            ->setFirstResult(0)
-            ->setMaxResults(1)
-            ->setParameter('dataset', $dataset_id)
-            ->getQuery()
-            ->execute();
-        $runtime = array('top' => round($runtime[0]->getRuntime(),4),'username' => $runtime[0]->getUser()->getUsername());
+        $aupr = $entityManager->createQuery(
+            'SELECT U.username as username,R.aupr as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.aupr DESC'
+        )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
-        $response = json_encode(array('accuracy' => $accuracy,'auroc' => $auroc,'aupr' =>$aupr,'runtime' =>$runtime));
+        $runtime = $entityManager->createQuery(
+            'SELECT U.username as username,R.runtime as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.runtime DESC'
+        )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
+
+        $response = json_encode(array('accuracy' => $accuracy, 'auroc' => $auroc, 'aupr' =>$aupr, 'runtime' =>$runtime));
 
         return new Response($response);
 
