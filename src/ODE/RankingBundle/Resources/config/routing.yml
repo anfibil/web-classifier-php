@@ -5,3 +5,7 @@ ode_ranking_homepage:
 ode_ranking_get_data:
     path:    /ranking/getdata
     defaults: { _controller: ODERankingBundle:Default:getTableData }
+
+ode_ranking_get_top:
+    path:    /ranking/gettop
+    defaults: { _controller: ODERankingBundle:Default:getTopResults }

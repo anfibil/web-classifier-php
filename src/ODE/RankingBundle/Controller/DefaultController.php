@@ -64,4 +64,56 @@ class DefaultController extends Controller
         }
         return $n;
     }
+
+    public function getTopResultsAction(Request $request)
+    {
+        $dataset_id = $request->query->get('dataset_id');
+        $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
+
+        // TODO: Can the below be done in a single query? Probably :)
+        $accuracy = $repository->createQueryBuilder('r')
+            ->select('partial r.{id,user,accuracy}')
+            ->where('r.dataset = :dataset')
+            ->orderBy('r.accuracy', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('dataset', $dataset_id)
+            ->getQuery()
+            ->execute();
+        $accuracy = array('top' =>  round($accuracy[0]->getAccuracy(),4),'username' => $accuracy[0]->getUser()->getUsername());
+
+        $auroc = $repository->createQueryBuilder('r')
+            ->select('partial r.{id,user,auroc}')
+            ->where('r.dataset = :dataset')
+            ->orderBy('r.auroc', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('dataset', $dataset_id)
+            ->getQuery()
+            ->execute();
+        $auroc = array('top' => round($auroc[0]->getAuroc(),4),'username' => $auroc[0]->getUser()->getUsername());
+
+        $aupr = $repository->createQueryBuilder('r')
+            ->select('partial r.{id,user,aupr}')
+            ->where('r.dataset = :dataset')
+            ->orderBy('r.aupr', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('dataset', $dataset_id)
+            ->getQuery()
+            ->execute();
+        $aupr = array('top' => round($aupr[0]->getAupr(),4),'username' => $aupr[0]->getUser()->getUsername());
+
+        $runtime = $repository->createQueryBuilder('r')
+            ->select('partial r.{id,user,runtime}')
+            ->where('r.dataset = :dataset')
+            ->orderBy('r.runtime')
+            ->setMaxResults(1)
+            ->setParameter('dataset', $dataset_id)
+            ->getQuery()
+            ->execute();
+        $runtime = array('top' => round($runtime[0]->getRuntime(),4),'username' => $runtime[0]->getUser()->getUsername());
+
+        $response = json_encode(array('accuracy' => $accuracy,'auroc' => $auroc,'aupr' =>$aupr,'runtime' =>$runtime));
+
+        return new Response($response);
+
+    }
 }
