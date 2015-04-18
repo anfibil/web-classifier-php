@@ -11,7 +11,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $datasets = $em->getRepository('ODEDatasetBundle:Dataset')->findAll();
+        $datasets = $em->getRepository('ODEDatasetBundle:Dataset')->findBy(array(), array('name' => 'ASC'));
         return $this->render('ODERankingBundle:Default:index.html.twig', array(
             'datasets' => $datasets
         ));
