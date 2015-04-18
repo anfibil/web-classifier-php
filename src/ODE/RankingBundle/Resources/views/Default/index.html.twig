@@ -11,19 +11,19 @@
 
 {% block body %}
 <div class="row  border-bottom white-bg dashboard-header">
-    <div class="col-sm-3">
+    <div class="col-sm-12 col-md-3">
         <h2>Select the dataset</h2>
-        <div class="ibox-content">
-            <select id="dataset" name="dataset" class="form-control required">
+        <div class="margin-bottom-20px"> <!-- old class: ibox-content -->
+            <select id="dataset" name="dataset" class="form-control required padding-bottom-20px ">
                 {% for dataset in datasets %}
                     <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
                 {% endfor %}
             </select>
         </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-12 col-md-9">
         <div class="row white-bg">
-            <div class="col-sm-3">
+            <div class="col-xs-6 col-sm-6 col-md-3">
                 <div class="widget style1 navy-bg">
                     <div class="row">
                         <div class="col-sm-2">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-xs-6 col-sm-6 col-md-3">
                 <div class="widget style1 blue-bg">
                     <div class="row">
                         <div class="col-sm-2">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-xs-6 col-sm-6 col-md-3">
                 <div class="widget style1 yellow-bg">
                     <div class="row">
                         <div class="col-sm-2">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-xs-6 col-sm-6 col-md-3">
                 <div class="widget style1 red-bg">
                     <div class="row">
                         <div class="col-sm-2">
@@ -160,8 +160,7 @@
                             "targets": 1
                         },
                         { "orderable": false, "targets": [1,2] },
-                        { "searchable": false, "orderable": false, "targets": 0 },
-                        { "sWidth": "10%", "aTargets": [1,2,3,4] }
+                        { "searchable": false, "orderable": false, "targets": 0 }
                     ],
                     order: [[3, 'desc']],
                     "aoColumns": [
