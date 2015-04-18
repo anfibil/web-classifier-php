@@ -184,7 +184,7 @@
                 $('#ranking_table tbody').on( 'click', 'tr', function () {
                     var result_id = table.row(this).data()[8];
                     if (result_id > 0) {
-                        document.location.href = "/analysis/report?id=" + result_id;
+                        window.location = "/analysis/report?id=" + result_id;
                     }
                 } );
 
