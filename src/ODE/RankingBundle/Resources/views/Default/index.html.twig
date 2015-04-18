@@ -24,7 +24,7 @@
     <div class="col-sm-12 col-md-9">
         <div class="row white-bg">
             <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 navy-bg">
+                <div class="widget style1 navy-bg" id="top_accuracy_container" onclick="open_top_results(this)" data-result-id="0">
                     <div class="row">
                         <div class="col-sm-2">
                             <i class="fa fa-line-chart fa-4x"></i>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 blue-bg">
+                <div class="widget style1 blue-bg" id="top_auroc_container" onclick="open_top_results(this)" data-result-id="0">
                     <div class="row">
                         <div class="col-sm-2">
                             <i class="fa fa-area-chart fa-4x"></i>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 yellow-bg">
+                <div class="widget style1 yellow-bg" id="top_aupr_container" onclick="open_top_results(this)" data-result-id="0">
                     <div class="row">
                         <div class="col-sm-2">
                             <i class="fa fa-area-chart fa-4x"></i>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 red-bg">
+                <div class="widget style1 red-bg" id="top_runtime_container" onclick="open_top_results(this)" data-result-id="0">
                     <div class="row">
                         <div class="col-sm-2">
                             <i class="fa fa-cogs fa-4x"></i>
@@ -176,8 +176,18 @@
                         null
                     ],
                     responsive: true, // TODO: This doesn't seem to be working
-                    "bSortClasses": false
+                    bSortClasses: false
                 } );
+
+
+                //This will make each row act like a link
+                $('#ranking_table tbody').on( 'click', 'tr', function () {
+                    var result_id = table.row(this).data()[8];
+                    if (result_id > 0) {
+                        document.location.href = "/analysis/report?id=" + result_id;
+                    }
+                } );
+
 
                 // TODO: Edit below to reverse ranking if the user sort a column in ascending order
                 // Except maybe for run time where lower is better
@@ -203,33 +213,41 @@
                             if (data.accuracy){
                                 $('#top_accuracy').text(parseFloat(data.accuracy.top).toFixed(4));
                                 $('#top_accuracy_username').text(data.accuracy.username);
+                                $('#top_accuracy_container').attr('data-result-id',data.accuracy.result_id);
                             } else{
                                 $('#top_accuracy').text("Unavailable");
                                 $('#top_accuracy_username').text("Unavailable");
+                                $('#top_accuracy_container').attr('data-result-id',0);
                             }
 
                             if (data.auroc) {
                                 $('#top_auroc').text(parseFloat(data.auroc.top).toFixed(4));
                                 $('#top_auroc_username').text(data.auroc.username);
+                                $('#top_auroc_container').attr('data-result-id',data.auroc.result_id);
                             } else{
                                 $('#top_auroc').text("Unavailable");
                                 $('#top_auroc_username').text("Unavailable");
+                                $('#top_auroc_container').attr('data-result-id',0);
                             }
 
                             if (data.aupr) {
                                 $('#top_aupr').text(parseFloat(data.aupr.top).toFixed(4));
                                 $('#top_aupr_username').text(data.aupr.username);
+                                $('#top_aupr_container').attr('data-result-id',data.aupr.result_id);
                             } else{
                                 $('#top_aupr').text("Unavailable");
                                 $('#top_aupr_username').text("Unavailable");
+                                $('#top_aupr_container').attr('data-result-id',0);
                             }
 
                             if (data.runtime) {
                                 $('#top_runtime').text(parseFloat(data.runtime.top).toFixed(4));
                                 $('#top_runtime_username').text(data.runtime.username);
+                                $('#top_runtime_container').attr('data-result-id',data.runtime.result_id);
                             } else{
                                 $('#top_runtime').text("Unavailable");
                                 $('#top_runtime_username').text("Unavailable");
+                                $('#top_runtime_container').attr('data-result-id',0);
                             }
 
                         }
@@ -272,8 +290,20 @@
                         console.log("Erro when resizing ranking datatable: "+ e);
                     }
                 }
-                setTimeout_resize_table_rankings = false;
                 clearTimeout(setTimeout_resize_table_rankings);
+                setTimeout_resize_table_rankings = false;
+            }
+
+
+            /**
+             * THis function is used to open a top result
+             * @param obj The html tag the user clicked
+             */
+            function open_top_results(obj){
+                var result_id = $(obj).attr('data-result-id');
+                if (result_id > 0){
+                    window.location = "/analysis/report?id="+result_id;
+                }
             }
 
         </script>

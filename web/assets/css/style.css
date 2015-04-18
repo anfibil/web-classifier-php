@@ -5069,12 +5069,31 @@ a.profile-picture{
     background: #c7e2f0;
 }*/
 
+.margin-bottom-20px{
+    margin-bottom: 20px;
+}
+
 #ranking_table img.smalluserpicture {
     width: 25px;
     height: 25px;
     border-radius: 30px;
 }
 
-.margin-bottom-20px{
-    margin-bottom: 20px;
+#top_accuracy_container,#top_auroc_container,#top_aupr_container,#top_runtime_container{
+    cursor:pointer;
 }
+#top_accuracy_container:hover{
+    background-color: #00A685;
+}
+#top_auroc_container:hover{
+    background-color: #006EB3;
+}
+#top_aupr_container:hover{
+    background-color: #F79830;
+}
+#top_runtime_container:hover{
+    background-color: #EF384B;
+}
+#ranking_table tbody tr{
+    cursor: pointer;
+ }
