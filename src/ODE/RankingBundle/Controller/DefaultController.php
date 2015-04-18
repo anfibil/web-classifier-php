@@ -72,19 +72,19 @@ class DefaultController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
 
         $accuracy = $entityManager->createQuery(
-            'SELECT U.username as username,R.accuracy as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.accuracy DESC'
+            'SELECT U.username as username,R.accuracy as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.accuracy DESC, R.id ASC'
         )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
         $auroc = $entityManager->createQuery(
-            'SELECT U.username as username,R.auroc as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.auroc DESC'
+            'SELECT U.username as username,R.auroc as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.auroc DESC, R.id ASC'
         )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
         $aupr = $entityManager->createQuery(
-            'SELECT U.username as username,R.aupr as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.aupr DESC'
+            'SELECT U.username as username,R.aupr as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.aupr DESC, R.id ASC'
         )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
         $runtime = $entityManager->createQuery(
-            'SELECT U.username as username,R.runtime as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.runtime DESC'
+            'SELECT U.username as username,R.runtime as top FROM ODEAnalysisBundle:Result R JOIN R.user U WHERE R.dataset = :dataset ORDER BY R.runtime ASC, R.id ASC'
         )->setParameter('dataset', $dataset_id)->setMaxResults(1)->getOneOrNullResult();
 
         $response = json_encode(array('accuracy' => $accuracy, 'auroc' => $auroc, 'aupr' =>$aupr, 'runtime' =>$runtime));
