@@ -89,7 +89,7 @@
             <div class="ibox-title">
                 <h5>Leaderboard</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ">
                 <div style="width: 100%">
                 <table class="table table-striped table-bordered table-hover table-responsive" id="ranking_table" cellspacing="0" width="100%">
                     <thead>
@@ -140,6 +140,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('#ranking_table').DataTable( {
+                    "processing": true,
                     "ajax": {
                         url: "/ranking/getdata",
                         data: function(d){
@@ -152,15 +153,16 @@
                             "render": function ( data, type, row ) {
                                 var output = "<a href='/user/"+data.username+"'>";
                                 if (data.picture) {
-                                    output += "<img src='" + data.picture + "' alt='" + data.username + "' class='smalluserpicture' /> "; // Do not remove this last space
+                                    output += "<img title='" + data.username + "' src='" + data.picture + "' alt='" + data.username + "' class='smalluserpicture' /> "; // Do not remove this last space
                                 }
-                                output += data.username+"</a>";
+                                output += " <span class='hidden-sm hidden-xs'>"+data.username+"</span></a>";
                                 return output;
                             },
                             "targets": 1
                         },
                         { "orderable": false, "targets": [1,2] },
-                        { "searchable": false, "orderable": false, "targets": 0 }
+                        { "searchable": false, "orderable": false, "targets": 0 },
+
                     ],
                     order: [[3, 'desc']],
                     "aoColumns": [
@@ -239,10 +241,40 @@
                 getTop($('#dataset').val());
 
 
+                //This will appent to the event window resize the function that will resize the datatable
+                $(window).resize(function (evt) {
+                        if (setTimeout_resize_table_rankings !== false) {
+                            clearTimeout(setTimeout_resize_table_rankings);
+                        }
+                        setTimeout_resize_table_rankings = setTimeout(fn_resize_table_rankings, 300); //Time to update in miliseconds
+                });
+
             });
 
+            // Some variables to control the resize events
+            var setTimeout_resize_table_rankings = false;
+            var last_size_resize_table_rankings = false;
 
-
+            /**
+             * This function will hide the colunm based on the window inner width
+             */
+            function fn_resize_table_rankings(){
+                if (window.innerWidth== last_size_resize_table_rankings){
+                    return;
+                }
+                last_size_resize_table_rankings = window.innerWidth;
+                try {
+                        $('#ranking_table').DataTable().column(2).visible(window.innerWidth > 1000, true);
+                        $('#ranking_table').DataTable().column(7).visible(window.innerWidth > 750, true);
+                        $('#ranking_table').DataTable().column(1).visible(window.innerWidth > 600, true);
+                } catch (e) {
+                    if (console && console.log){
+                        console.log("Erro when resizing ranking datatable: "+ e);
+                    }
+                }
+                setTimeout_resize_table_rankings = false;
+                clearTimeout(setTimeout_resize_table_rankings);
+            }
 
         </script>
     {% endblock %}
