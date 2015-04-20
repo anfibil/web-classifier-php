@@ -413,42 +413,51 @@ KNEAREST NEIGHBOR -- FORM
     </div>
 
     <div class="col-lg-2">
-        <label>Solver: <i class="fa fa-question-circle" id="q3" style=
+        <label>Weights: <i class="fa fa-question-circle" id="q2" style=
                 "color:#676a6c"></i></label>
 
         <div class="radio i-checks">
-            <label><input checked class="required" name="solver" type=
-                    "radio" value="uniform"> newton-cg</label>
+            <label><input checked class="required" name="weights" type=
+                    "radio" value="uniform"> Uniform</label>
         </div>
+
         <div class="radio i-checks">
-            <label><input class="required" name="solver" type="radio"
-                          value="distance"> lbfgs</label>
-        </div>
-        <div class="radio i-checks">
-            <label><input class="required" name="solver" type="radio"
-                          value="distance"> linear</label>
+            <label><input class="required" name="weights" type="radio"
+                          value="distance"> Distance</label>
         </div>
     </div>
 
     <div class="col-lg-4 text-center">
         <div class="row text-center">
-            <label>c = <span class="example-val" id=
-                    "c-value" style="color:#1AB394"></span> <i class="fa fa-question-circle" id="q4" style="color:#676a6c"></i></label>
+            <label>n_neighbors = <span class="example-val" id=
+                    "n_neighbors-value" style="color:#1AB394"></span> <i class=
+                                                                                 "fa fa-question-circle" id="q3" style=
+                                                                                 "color:#676a6c"></i></label>
 
             <div class="col-lg-10 col-lg-offset-1">
-                <div id="c-slider"></div><input id="c"
-                                                          name="c" type="hidden" value="">
+                <div id="n_neighbors-slider"></div><input id="n_neighbors"
+                                                          name="n_neighbors" type="hidden" value="">
             </div>
         </div><br>
-        <div class="row text-center">
-            <label>intercept_scaling = <span class="example-val" id=
-                    "intercept_scaling-value" style="color:#1AB394"></span> <i class="fa fa-question-circle" id="q5" style="color:#676a6c"></i></label>
+        <label>metric: <i class="fa fa-question-circle" id="q4" style=
+                "color:#676a6c"></i></label> <select class="form-control required"
+                                                     id="metric" name="metric">
+        <option value="minkowski">
+            Minkowski Distance
+        </option>
 
-            <div class="col-lg-10 col-lg-offset-1">
-                <div id="intercept_scaling-slider"></div><input id="intercept_scaling"
-                                                          name="intercept_scaling" type="hidden" value="">
-            </div>
-        </div>
+        <option value="euclidean">
+            Euclidean Distance
+        </option>
+
+        <option value="manhattan">
+            Manhattan Distance
+        </option>
+
+        <option value="chebyshev">
+            Chebyshev Distance
+        </option>
+    </select>
     </div>
 
     <div class="col-lg-4 text-center">
@@ -472,29 +481,29 @@ KNEAREST NEIGHBOR -- FORM
             radioClass: 'iradio_square-green',
         });
 
-        $('#c-slider').noUiSlider({
-            start: [1],
-            step: 0.1,
+        $('#n_neighbors-slider').noUiSlider({
+            start: [5],
+            step: 1,
             connect: "lower",
             range: {
-                'min': [0.1],
-                'max': [10]
+                'min': [1],
+                'max': [20]
             }
         });
-        $('#c-slider').Link('lower').to($('#c-value'));
-        $('#c-slider').Link('lower').to($('#c'));
+        $('#n_neighbors-slider').Link('lower').to($('#n_neighbors-value'));
+        $('#n_neighbors-slider').Link('lower').to($('#n_neighbors'));
 
-        $('#intercept_scaling-slider').noUiSlider({
-            start: [1],
-            step: 0.1,
+        $('#leaf_size-slider').noUiSlider({
+            start: [30],
+            step: 1,
             connect: "lower",
             range: {
-                'min': [0.1],
-                'max': [10]
+                'min': [1],
+                'max': [50]
             }
         });
-        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling-value'));
-        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling'));
+        $('#leaf_size-slider').Link('lower').to($('#leaf_size-value'));
+        $('#leaf_size-slider').Link('lower').to($('#leaf_size'));
 
 
         $("#q1").qtip({
@@ -513,22 +522,22 @@ KNEAREST NEIGHBOR -- FORM
         });
         $("#q3").qtip({
             content: {
-                text: 'Algorithm to use in the optimization problem.',
-                title:'<i>Solver</i>'
+                text: 'Number of neighbors to use by default for k_neighbors queries.',
+                title:'<i>n_neighbors</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q4").qtip({
             content: {
-                text: 'Inverse of regularization strength; must be a positive float. Like in support vector machines, smaller values specify stronger regularization.',
-                title:'<i>c</i>'
+                text: 'The distance metric to use for computing closest neighbors. The default metric is minkowski, and with p=2 is equivalent to the standard Euclidean metric.',
+                title:'<i>metric</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q5").qtip({
             content: {
-                text: 'Useful only if solver is liblinear. when self.fit_intercept is True, instance vector x becomes [x, self.intercept_scaling], i.e. a “synthetic” feature with constant value equals to intercept_scaling is appended to the instance vector. The intercept becomes intercept_scaling * synthetic feature weight Note! the synthetic feature weight is subject to l1/l2 regularization as all other features. To lessen the effect of regularization on synthetic feature weight (and therefore on the intercept) intercept_scaling has to be increased.',
-                title:'<i>intercept_scaling</i>'
+                text: 'Leaf size passed to BallTree or KDTree. This can affect the speed of the construction and query, as well as the memory required to store the tree. The optimal value depends on the nature of the problem.',
+                title:'<i>leaf_size</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
@@ -585,12 +594,12 @@ LOGISTIC REGRESSION -- FORM
 
         <div class="radio i-checks">
             <label><input checked class="required" name="penalty" type=
-                    "radio" value="auto"> L1</label>
+                    "radio" value="l1"> L1</label>
         </div>
 
         <div class="radio i-checks">
             <label><input class="required" name="penalty" type="radio"
-                          value="ball_tree"> L2</label>
+                          value="l2"> L2</label>
         </div>
 	    <br>
 	    <label>fit_intercept: <i class="fa fa-question-circle" id="q2" style=
@@ -598,73 +607,104 @@ LOGISTIC REGRESSION -- FORM
 
         <div class="radio i-checks">
             <label><input checked class="required" name="fit_intercept" type=
-                    "radio" value="auto"> True</label>
+                    "radio" value="1"> True</label>
         </div>
 
         <div class="radio i-checks">
             <label><input class="required" name="fit_intercept" type="radio"
-                          value="ball_tree"> False</label>
+                          value="0"> False</label>
         </div>
     </div>
 
     <div class="col-lg-2">
-        <label>Weights: <i class="fa fa-question-circle" id="q2" style=
-                "color:#676a6c"></i></label>
+        <label>Solver: <i class="fa fa-question-circle" id="q3" style=
+        "color:#676a6c"></i></label>
 
         <div class="radio i-checks">
-            <label><input checked class="required" name="weights" type=
-                    "radio" value="uniform"> Uniform</label>
+            <label><input checked class="required" name="solver" type="radio"
+            value="newton-cg"> newton-cg</label>
         </div>
 
+
         <div class="radio i-checks">
-            <label><input class="required" name="weights" type="radio"
-                          value="distance"> Distance</label>
+            <label><input class="required" name="solver" type="radio" value=
+            "lbfgs"> lbfgs</label>
+        </div>
+
+
+        <div class="radio i-checks">
+            <label><input class="required" name="solver" type="radio" value=
+            "linear"> linear</label>
         </div>
     </div>
 
     <div class="col-lg-4 text-center">
         <div class="row text-center">
-            <label>c = <span class="example-val" id=
-                    "c-value" style="color:#1AB394"></span> <i class=
-                                                                                 "fa fa-question-circle" id="q3" style=
-                                                                                 "color:#676a6c"></i></label>
+            <label>C = <span class="example-val" id="C-value" style=
+            "color:#1AB394"></span> <i class="fa fa-question-circle" id="q4"
+            style="color:#676a6c"></i></label>
 
             <div class="col-lg-10 col-lg-offset-1">
-                <div id="c-slider"></div><input id="c"
-                                                          name="c" type="hidden" value="">
+                <div id="C-slider">
+                </div>
+                <input id="C" name="C" type="hidden" value="">
             </div>
-        </div><br>
-        <label>metric: <i class="fa fa-question-circle" id="q4" style=
-                "color:#676a6c"></i></label> <select class="form-control required"
-                                                     id="metric" name="metric">
-        <option value="minkowski">
-            Minkowski Distance
-        </option>
+        </div>
+        <br>
 
-        <option value="euclidean">
-            Euclidean Distance
-        </option>
 
-        <option value="manhattan">
-            Manhattan Distance
-        </option>
+        <div class="row text-center">
+            <label>intercept_scaling = <span class="example-val" id=
+            "intercept_scaling-value" style="color:#1AB394"></span> <i class=
+            "fa fa-question-circle" id="q5" style="color:#676a6c"></i></label>
 
-        <option value="chebyshev">
-            Chebyshev Distance
-        </option>
-    </select>
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="intercept_scaling-slider">
+                </div>
+                <input id="intercept_scaling" name="intercept_scaling" type=
+                "hidden" value="">
+            </div>
+        </div>
+        <br>
+
+         <div class="row text-center">
+            <label>max_iter = <span class="example-val" id=
+            "max_iter-value" style="color:#1AB394"></span> <i class=
+            "fa fa-question-circle" id="q6" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="max_iter-slider">
+                </div>
+                <input id="max_iter" name="max_iter" type=
+                "hidden" value="">
+            </div>
+        </div>
     </div>
+
 
     <div class="col-lg-4 text-center">
         <div class="row text-center">
-            <label>leaf_size = <span class="example-val" id=
-                    "leaf_size-value" style="color:#1AB394"></span> <i class=
-                                                                               "fa fa-question-circle" id="q5" style=
-                                                                               "color:#676a6c"></i></label>
+            <label>random_state = <span class="example-val" id="random_state-value"
+            style="color:#1AB394"></span> <i class="fa fa-question-circle" id=
+            "q7" style="color:#676a6c"></i></label>
 
             <div class="col-lg-10 col-lg-offset-1">
-                <div id="leaf_size-slider"></div><input id="leaf_size"
-                                                        name="leaf_size" type="hidden" value="">
+                <div id="random_state-slider">
+                </div>
+                <input id="random_state" name="random_state" type="hidden" value="">
+            </div>
+        </div>
+        <br>
+
+        <div class="row text-center">
+            <label>tol = <span class="example-val" id="tol-value"
+            style="color:#1AB394"></span> <i class="fa fa-question-circle" id=
+            "q8" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="tol-slider">
+                </div>
+                <input id="tol" name="tol" type="hidden" value="">
             </div>
         </div>
     </div>
@@ -676,29 +716,65 @@ LOGISTIC REGRESSION -- FORM
             radioClass: 'iradio_square-green',
         });
 
-        $('#c-slider').noUiSlider({
-            start: [5],
-            step: 1,
+        $('#C-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
             connect: "lower",
             range: {
-                'min': [1],
-                'max': [20]
+                'min': [0.1],
+                'max': [10]
             }
         });
-        $('#c-slider').Link('lower').to($('#c-value'));
-        $('#c-slider').Link('lower').to($('#c'));
+        $('#C-slider').Link('lower').to($('#C-value'));
+        $('#C-slider').Link('lower').to($('#C'));
 
-        $('#leaf_size-slider').noUiSlider({
-            start: [30],
+        $('#intercept_scaling-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
+            connect: "lower",
+            range: {
+                'min': [0.1],
+                'max': [10]
+            }
+        });
+        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling-value'));
+        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling'));
+
+        $('#max_iter-slider').noUiSlider({
+            start: [100],
             step: 1,
             connect: "lower",
             range: {
                 'min': [1],
-                'max': [50]
+                'max': [1000]
             }
         });
-        $('#leaf_size-slider').Link('lower').to($('#leaf_size-value'));
-        $('#leaf_size-slider').Link('lower').to($('#leaf_size'));
+        $('#max_iter-slider').Link('lower').to($('#max_iter-value'));
+        $('#max_iter-slider').Link('lower').to($('#max_iter'));
+
+        $('#random_state-slider').noUiSlider({
+            start: [1],
+            step: 1,
+            connect: "lower",
+            range: {
+                'min': [1],
+                'max': [100]
+            }
+        });
+        $('#random_state-slider').Link('lower').to($('#random_state-value'));
+        $('#random_state-slider').Link('lower').to($('#random_state'));
+
+        $('#tol-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
+            connect: "lower",
+            range: {
+                'min': [0.1],
+                'max': [10]
+            }
+        });
+        $('#tol-slider').Link('lower').to($('#tol-value'));
+        $('#tol-slider').Link('lower').to($('#tol'));
 
 
         $("#q1").qtip({
@@ -717,22 +793,43 @@ LOGISTIC REGRESSION -- FORM
         });
         $("#q3").qtip({
             content: {
-                text: 'Number of neighbors to use by default for k_neighbors queries.',
-                title:'<i>c</i>'
+                text: 'Algorithm to use in the optimization problem.',
+                title:'<i>Solver</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q4").qtip({
             content: {
-                text: 'The distance metric to use for computing closest neighbors. The default metric is minkowski, and with p=2 is equivalent to the standard Euclidean metric.',
-                title:'<i>metric</i>'
+                text: 'Inverse of regularization strength; must be a positive float. Like in support vector machines, smaller values specify stronger regularization.',
+                title:'<i>c</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q5").qtip({
             content: {
-                text: 'Leaf size passed to BallTree or KDTree. This can affect the speed of the construction and query, as well as the memory required to store the tree. The optimal value depends on the nature of the problem.',
-                title:'<i>leaf_size</i>'
+                text: 'Useful only if solver is liblinear. when self.fit_intercept is True, instance vector x becomes [x, self.intercept_scaling], i.e. a “synthetic” feature with constant value equals to intercept_scaling is appended to the instance vector. The intercept becomes intercept_scaling * synthetic feature weight Note! the synthetic feature weight is subject to l1/l2 regularization as all other features. To lessen the effect of regularization on synthetic feature weight (and therefore on the intercept) intercept_scaling has to be increased.',
+                title:'<i>intercept_scaling</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q6").qtip({
+            content: {
+                text: 'Useful only for the newton-cg and lbfgs solvers. Maximum number of iterations taken for the solvers to converge.',
+                title:'<i>max_iter</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q7").qtip({
+            content: {
+                text: 'The seed of the pseudo random number generator to use when shuffling the data.',
+                title:'<i>random_state</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q8").qtip({
+            content: {
+                text: 'Tolerance for stopping criteria.',
+                title:'<i>tol</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
