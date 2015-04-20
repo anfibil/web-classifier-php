@@ -60,4 +60,4 @@ TODO: Compress and resize profile pictures before storing them
 TODO: Perceptron has no predict_proba
 TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT)
 TODO: Handle categorical features on python script (done -- monitor performance to make sure it won't explode [seems to be a problem with knn at times])
-TODO: Add link to report on each result listed on leaderboard
+TODO: On leaderboard, default to anonymous profile picture for users without one

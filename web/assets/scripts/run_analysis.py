@@ -26,6 +26,8 @@ cursor = db.cursor()
 cursor.execute("SELECT dataset_id, params, model_id  FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
 
+print analysis
+
 # Find the dataset to be used by the current analysis
 cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[0]))
 dataset = cursor.fetchone()
@@ -36,7 +38,7 @@ dataset = cursor.fetchone()
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import Perceptron
+from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn import cross_validation
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, confusion_matrix, classification_report
 from sklearn import preprocessing
@@ -49,6 +51,7 @@ clfs = {
             2 : GaussianNB(),
             3 : Perceptron(),
             4 : KNeighborsClassifier(),
+            5 : LogisticRegression()
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 

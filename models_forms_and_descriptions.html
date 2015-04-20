@@ -413,6 +413,201 @@ KNEAREST NEIGHBOR -- FORM
     </div>
 
     <div class="col-lg-2">
+        <label>Solver: <i class="fa fa-question-circle" id="q3" style=
+                "color:#676a6c"></i></label>
+
+        <div class="radio i-checks">
+            <label><input checked class="required" name="solver" type=
+                    "radio" value="uniform"> newton-cg</label>
+        </div>
+        <div class="radio i-checks">
+            <label><input class="required" name="solver" type="radio"
+                          value="distance"> lbfgs</label>
+        </div>
+        <div class="radio i-checks">
+            <label><input class="required" name="solver" type="radio"
+                          value="distance"> linear</label>
+        </div>
+    </div>
+
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>c = <span class="example-val" id=
+                    "c-value" style="color:#1AB394"></span> <i class="fa fa-question-circle" id="q4" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="c-slider"></div><input id="c"
+                                                          name="c" type="hidden" value="">
+            </div>
+        </div><br>
+        <div class="row text-center">
+            <label>intercept_scaling = <span class="example-val" id=
+                    "intercept_scaling-value" style="color:#1AB394"></span> <i class="fa fa-question-circle" id="q5" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="intercept_scaling-slider"></div><input id="intercept_scaling"
+                                                          name="intercept_scaling" type="hidden" value="">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>leaf_size = <span class="example-val" id=
+                    "leaf_size-value" style="color:#1AB394"></span> <i class=
+                                                                               "fa fa-question-circle" id="q5" style=
+                                                                               "color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="leaf_size-slider"></div><input id="leaf_size"
+                                                        name="leaf_size" type="hidden" value="">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $('#c-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
+            connect: "lower",
+            range: {
+                'min': [0.1],
+                'max': [10]
+            }
+        });
+        $('#c-slider').Link('lower').to($('#c-value'));
+        $('#c-slider').Link('lower').to($('#c'));
+
+        $('#intercept_scaling-slider').noUiSlider({
+            start: [1],
+            step: 0.1,
+            connect: "lower",
+            range: {
+                'min': [0.1],
+                'max': [10]
+            }
+        });
+        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling-value'));
+        $('#intercept_scaling-slider').Link('lower').to($('#intercept_scaling'));
+
+
+        $("#q1").qtip({
+            content: {
+                text: 'Algorithm used to compute the nearest neighbors.',
+                title:'<i>algorithm</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q2").qtip({
+            content: {
+                text: 'Weight function used in prediction.',
+                title:'<i>weights</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q3").qtip({
+            content: {
+                text: 'Algorithm to use in the optimization problem.',
+                title:'<i>Solver</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q4").qtip({
+            content: {
+                text: 'Inverse of regularization strength; must be a positive float. Like in support vector machines, smaller values specify stronger regularization.',
+                title:'<i>c</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q5").qtip({
+            content: {
+                text: 'Useful only if solver is liblinear. when self.fit_intercept is True, instance vector x becomes [x, self.intercept_scaling], i.e. a “synthetic” feature with constant value equals to intercept_scaling is appended to the instance vector. The intercept becomes intercept_scaling * synthetic feature weight Note! the synthetic feature weight is subject to l1/l2 regularization as all other features. To lessen the effect of regularization on synthetic feature weight (and therefore on the intercept) intercept_scaling has to be increased.',
+                title:'<i>intercept_scaling</i>'
+            },
+            style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+    });
+</script>
+
+===========================================================================================================================================================================================================
+
+LOGISTIC REGRESSION -- DESCRIPTION
+
+<h4 class="m-b-xxs text-center">Logitic Regression <i class=
+"fa fa-superscript"></i></h4>
+
+
+<p>Logistic regression measures the relationship between the categorical
+dependent variable and one or more independent variables, which are usually
+(but not necessarily) continuous, by estimating probabilities. <a href=
+"http://en.wikipedia.org/wiki/Logistic_regression" target=
+"_blank">[ref]</a></p>
+
+
+<div class="col-xs-6">
+    <div>
+        <span>Complexity</span> <small class="pull-right">4/10</small>
+    </div>
+
+
+    <div class="progress progress-small">
+        <div class="progress-bar progress-bar-warning" style="width: 40%;">
+        </div>
+    </div>
+</div>
+
+
+<div class="col-xs-6">
+    <div>
+        <span>Interpretability</span> <small class="pull-right">8/10</small>
+    </div>
+
+
+    <div class="progress progress-small">
+        <div class="progress-bar" style="width: 80%;">
+        </div>
+    </div>
+</div>
+===========================================================================================================================================================================================================
+
+LOGISTIC REGRESSION -- FORM
+
+<div class="row">
+    <div class="col-lg-2">
+        <label>Penalty: <i class="fa fa-question-circle" id="q1" style=
+                "color:#676a6c"></i></label>
+
+        <div class="radio i-checks">
+            <label><input checked class="required" name="penalty" type=
+                    "radio" value="auto"> L1</label>
+        </div>
+
+        <div class="radio i-checks">
+            <label><input class="required" name="penalty" type="radio"
+                          value="ball_tree"> L2</label>
+        </div>
+	    <br>
+	    <label>fit_intercept: <i class="fa fa-question-circle" id="q2" style=
+                "color:#676a6c"></i></label>
+
+        <div class="radio i-checks">
+            <label><input checked class="required" name="fit_intercept" type=
+                    "radio" value="auto"> True</label>
+        </div>
+
+        <div class="radio i-checks">
+            <label><input class="required" name="fit_intercept" type="radio"
+                          value="ball_tree"> False</label>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
         <label>Weights: <i class="fa fa-question-circle" id="q2" style=
                 "color:#676a6c"></i></label>
 
@@ -429,14 +624,14 @@ KNEAREST NEIGHBOR -- FORM
 
     <div class="col-lg-4 text-center">
         <div class="row text-center">
-            <label>n_neighbors = <span class="example-val" id=
-                    "n_neighbors-value" style="color:#1AB394"></span> <i class=
+            <label>c = <span class="example-val" id=
+                    "c-value" style="color:#1AB394"></span> <i class=
                                                                                  "fa fa-question-circle" id="q3" style=
                                                                                  "color:#676a6c"></i></label>
 
             <div class="col-lg-10 col-lg-offset-1">
-                <div id="n_neighbors-slider"></div><input id="n_neighbors"
-                                                          name="n_neighbors" type="hidden" value="">
+                <div id="c-slider"></div><input id="c"
+                                                          name="c" type="hidden" value="">
             </div>
         </div><br>
         <label>metric: <i class="fa fa-question-circle" id="q4" style=
@@ -481,7 +676,7 @@ KNEAREST NEIGHBOR -- FORM
             radioClass: 'iradio_square-green',
         });
 
-        $('#n_neighbors-slider').noUiSlider({
+        $('#c-slider').noUiSlider({
             start: [5],
             step: 1,
             connect: "lower",
@@ -490,8 +685,8 @@ KNEAREST NEIGHBOR -- FORM
                 'max': [20]
             }
         });
-        $('#n_neighbors-slider').Link('lower').to($('#n_neighbors-value'));
-        $('#n_neighbors-slider').Link('lower').to($('#n_neighbors'));
+        $('#c-slider').Link('lower').to($('#c-value'));
+        $('#c-slider').Link('lower').to($('#c'));
 
         $('#leaf_size-slider').noUiSlider({
             start: [30],
@@ -508,22 +703,22 @@ KNEAREST NEIGHBOR -- FORM
 
         $("#q1").qtip({
             content: {
-                text: 'Algorithm used to compute the nearest neighbors.',
-                title:'<i>algorithm</i>'
+                text: 'Used to specify the norm used in the penalization. The newton-cg and lbfgs solvers support only l2 penalties.',
+                title:'<i>Penalty</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q2").qtip({
             content: {
-                text: 'Weight function used in prediction.',
-                title:'<i>weights</i>'
+                text: 'Specifies if a constant (a.k.a. bias or intercept) should be added the decision function.',
+                title:'<i>fit_intercept</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
         $("#q3").qtip({
             content: {
                 text: 'Number of neighbors to use by default for k_neighbors queries.',
-                title:'<i>n_neighbors</i>'
+                title:'<i>c</i>'
             },
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
@@ -543,5 +738,3 @@ KNEAREST NEIGHBOR -- FORM
         });
     });
 </script>
-
-===========================================================================================================================================================================================================

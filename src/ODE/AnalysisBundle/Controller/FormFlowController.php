@@ -9,8 +9,8 @@ class FormFlowController extends Controller {
 
     public function createAnalysisAction() {
         $em = $this->getDoctrine()->getManager();
-        $datasets = $em->getRepository('ODEDatasetBundle:Dataset')->findAll();
-        $models = $em->getRepository('ODEAnalysisBundle:Model')->findAll();
+        $datasets = $em->getRepository('ODEDatasetBundle:Dataset')->findBy([], ['name' => 'ASC']);
+        $models = $em->getRepository('ODEAnalysisBundle:Model')->findBy([], ['name' => 'ASC']);
         return $this->render('ODEAnalysisBundle:Default:createAnalysis.html.twig', array(
             'datasets' => $datasets,
             'models' => $models,
