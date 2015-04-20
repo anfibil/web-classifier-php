@@ -7,7 +7,7 @@
     'assets/css/plugins/noUiSlider/jquery.nouislider.css'
     'assets/css/plugins/qTip/jquery.qtip.css'
     %}
-    <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
+    <link type="text/css" rel="stylesheet" href="{{ asset_url }}" xmlns="http://www.w3.org/1999/html"/>
     {% endstylesheets %}
 {% endblock %}
 
@@ -31,9 +31,9 @@
                                     <div class="col-lg-5">
                                         <div class="form-group">
                                             <select id="dataset" name="dataset" class="form-control required">
-                                            {% for dataset in datasets %}
-                                                <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
-                                            {% endfor %}
+                                                {% for dataset in datasets %}
+                                                    <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -42,6 +42,36 @@
                                     </div>
                                 </div>
                             </section>
+                            <h1>Pre-processing</h1>
+                            <section>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label>Undersampling: <i class="fa fa-question-circle" id="q1" style="color:#676a6c"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input checked class="required" name="undersampling" type="radio" value="1"> True </label>
+                                        </div>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="undersampling" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <div class="row text-center">
+                                            <label>Undersampling Ratio = <span class="example-val" id="undersampling_ratio-value" style="color:#1AB394"></span>
+                                                <span style="color:#1AB394"> : 1</span> <i class="fa fa-question-circle" id="q2" style="color:#676a6c"></i>
+                                            </label>
+
+                                            <div class="col-lg-10 col-lg-offset-1">
+                                                <div id="undersampling_ratio-slider"></div><input id="undersampling_ratio"name="undersampling_ratio" type="hidden" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-3"></div>
+                                </div>
+
+                            </section>
                             <h1>Model</h1>
                             <section>
                                 <h2>Select the Model:</h2>
@@ -49,9 +79,9 @@
                                     <div class="col-lg-5">
                                         <div class="form-group">
                                             <select id="model" name="model" class="form-control required">
-                                            {% for model in models %}
-                                                <option value={{ model.id|e }}>{{ model.name|e }}</option>
-                                            {% endfor %}
+                                                {% for model in models %}
+                                                    <option value={{ model.id|e }}>{{ model.name|e }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -59,10 +89,10 @@
                                         <div class="ibox float-e-margins">
                                             <div class="description-box ibox-content p-m" id="model-description">
                                                 <div id="model-descriptions">
-                                                {% for model in models %}
-                                                    <div id="model-description-{{ model.id|e }}" style="display: none"> {{ model.description|raw}}</div>
-                                                {% endfor %}
-                                            </div>
+                                                    {% for model in models %}
+                                                        <div id="model-description-{{ model.id|e }}" style="display: none"> {{ model.description|raw}}</div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -98,7 +128,7 @@
                 <a href="/register" class="btn btn-default btn-sm"><span class="fa fa-user-plus"></span>&nbsp;&nbsp;Register</a>
             </div>
         </div>
-     {% endif %}
+    {% endif %}
 
 {% endblock %}
 {% block scripts %}
@@ -110,14 +140,14 @@
     'assets/js/plugins/qTip/jquery.qtip.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+    {% endjavascripts %}
     <script>
         // Reference: https://github.com/rstaib/jquery-steps/wiki (lots of options to customize this form)
         $(document).ready(function(){
             $("#wizard").steps();
             $("#form").steps({
                 bodyTag: "section",
-                showFinishButtonAlways: false, // Not working
+                showFinishButtonAlways: false,
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
                     // Always allow going backward even if the current step contains invalid fields!
@@ -127,9 +157,9 @@
                     }
 
                     //Fills in information for second step based on dataset choice
-                    if (currentIndex === 1) {
-                        $("#form").steps("remove", 2);
-                        $("#form").steps("insert", 2, {
+                    if (currentIndex === 2) {
+                        $("#form").steps("remove", 3);
+                        $("#form").steps("insert", 3, {
                             title: "Parameters",
                             contentMode: "async",
                             contentUrl: "/analysis/getmodelform?modelid="+ $("#model").val()+"&datasetid="+$("#dataset").val()
@@ -181,6 +211,46 @@
             });
 
             $("#model").change();
+
+            // Pre-processing Tab
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('.i-checks').on('ifChanged', function(event){
+                //alert($(this).attr('name'));
+            });
+
+            $('#undersampling_ratio-slider').noUiSlider({
+                start: [1],
+                step: 0.1,
+                connect: "lower",
+                range: {
+                    'min': [0.1],
+                    'max': [5]
+                }
+            });
+
+            $('#undersampling_ratio-slider').Link('lower').to($('#undersampling_ratio-value'));
+            $('#undersampling_ratio-slider').Link('lower').to($('#undersampling_ratio'));
+
+
+            $("#q1").qtip({
+                content: {
+                    text: 'Adjust class distribution by removing instances from the majority class.',
+                    title:'<i>Undersampling<\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q2").qtip({
+                content: {
+                    text: 'The desired ratio between majority : minority class instances.',
+                    title:'<i>Undersampling Ratio<\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
 
         });
 

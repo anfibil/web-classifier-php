@@ -61,3 +61,4 @@ TODO: Perceptron has no predict_proba
 TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT)
 TODO: Handle categorical features on python script (done -- monitor performance to make sure it won't explode [seems to be a problem with knn at times])
 TODO: On leaderboard, default to anonymous profile picture for users without one
+TODO: Profile picture no longer updating automatically when user uploads new image
