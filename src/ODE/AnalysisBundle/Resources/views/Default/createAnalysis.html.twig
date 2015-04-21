@@ -46,27 +46,43 @@
                             <section>
                                 <div class="row">
                                     <div class="col-lg-3">
-                                        <label>Undersampling: <i class="fa fa-question-circle" id="q1" style="color:#676a6c"></i></label>
+                                        <label>Undersampling: <i class="fa fa-question-circle parameter_value_off" id="q1"></i></label>
 
                                         <div class="radio i-checks">
                                             <label><input checked class="required" name="undersampling" type="radio" value="1"> True </label>
-                                        </div>
-
-                                        <div class="radio i-checks">
+                                            <br>
                                             <label><input class="required" name="undersampling" type="radio" value="0"> False </label>
                                         </div>
 
                                         <div class="row text-center">
-                                            <label>Undersampling Ratio = <span class="example-val" id="undersampling_ratio-value" style="color:#1AB394"></span>
-                                                <span style="color:#1AB394"> : 1</span> <i class="fa fa-question-circle" id="q2" style="color:#676a6c"></i>
+                                            <label>Undersampling Rate = <span class="example-val parameter_value" id="undersampling_rate-value"></span>
+                                                <span class="parameter_value" id="undersampling_rate-value2"> %</span>
                                             </label>
 
                                             <div class="col-lg-10 col-lg-offset-1">
-                                                <div id="undersampling_ratio-slider"></div><input id="undersampling_ratio"name="undersampling_ratio" type="hidden" value="">
+                                                <div id="undersampling_rate-slider"></div><input id="undersampling_rate"name="undersampling_rate" type="hidden" value="">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-3">
+                                        <label>Oversampling (SMOTE): <i class="fa fa-question-circle parameter_value_off" id="q2"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input checked class="required" name="oversampling" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input class="required" name="oversampling" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <div class="row text-center">
+                                            <label>SMOTE Percentage = <span class="example-val parameter_value" id="oversampling_percentage-value"></span>
+                                                <span class="parameter_value" id="oversampling_percentage-value2"> %</span>
+                                            </label>
+
+                                            <div class="col-lg-10 col-lg-offset-1">
+                                                <div id="oversampling_percentage-slider"></div><input id="oversampling_percentage" name="oversampling_percentage" type="hidden" value="">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-lg-3"></div>
                                     <div class="col-lg-3"></div>
                                 </div>
@@ -100,12 +116,6 @@
                             </section>
                             <h1>Parameters</h1>
                             <section data-mode="async">
-                            </section>
-                            <h1>Finish</h1>
-                            <section>
-                                <h2>Terms and Conditions</h2>
-                                <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
-                                <label for="acceptTerms">I agree with the Terms and Conditions.</label>
                             </section>
                         </form>
                     </div>
@@ -212,44 +222,83 @@
 
             $("#model").change();
 
+            ///////////////////////////////////
             // Pre-processing Tab
+            ///////////////////////////////////
 
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green'
             });
 
-            $('.i-checks').on('ifChanged', function(event){
-                //alert($(this).attr('name'));
-            });
-
-            $('#undersampling_ratio-slider').noUiSlider({
-                start: [1],
-                step: 0.1,
+            $('#undersampling_rate-slider').noUiSlider({
+                start: [50],
+                step: 1,
                 connect: "lower",
                 range: {
-                    'min': [0.1],
-                    'max': [5]
+                    'min': [1],
+                    'max': [100]
                 }
             });
+            $('#undersampling_rate-slider').Link('lower').to($('#undersampling_rate-value'));
+            $('#undersampling_rate-slider').Link('lower').to($('#undersampling_rate'));
 
-            $('#undersampling_ratio-slider').Link('lower').to($('#undersampling_ratio-value'));
-            $('#undersampling_ratio-slider').Link('lower').to($('#undersampling_ratio'));
+            $('#oversampling_percentage-slider').noUiSlider({
+                start: [100],
+                step: 1,
+                connect: "lower",
+                range: {
+                    'min': [1],
+                    'max': [1000]
+                }
+            });
+            $('#oversampling_percentage-slider').Link('lower').to($('#oversampling_percentage-value'));
+            $('#oversampling_percentage-slider').Link('lower').to($('#oversampling_percentage'));
+
 
 
             $("#q1").qtip({
                 content: {
-                    text: 'Adjust class distribution by removing instances from the majority class.',
+                    text: 'Adjust class distribution by removing instances from the majority class. Select the desired amount of majority class instances to be used for training .',
                     title:'<i>Undersampling<\/i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
             });
             $("#q2").qtip({
                 content: {
-                    text: 'The desired ratio between majority : minority class instances.',
-                    title:'<i>Undersampling Ratio<\/i>'
+                    text: 'Use SMOTE to create synthetic instances of the minority class. Use the slider to select the percentage of new instances to create.',
+                    title:'<i>Oversampling <\/i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+
+            $('.i-checks').on('ifChecked', function(){
+                var parameter =  $(this).find(":checked").attr('name');
+                var value = $(this).find(":checked").val();
+                if (parameter=='undersampling'){
+                    if (value == 0){
+                        $('#undersampling_rate-slider').attr('disabled', 'disabled');
+                        $('#undersampling_rate-value').attr('class', "parameter_value_off");
+                        $('#undersampling_rate-value2').attr('class',  "parameter_value_off");
+                    }
+                    else{
+                        $('#undersampling_rate-slider').removeAttr('disabled');
+                        $('#undersampling_rate-value').attr('class',  "parameter_value");
+                        $('#undersampling_rate-value2').attr('class', "parameter_value");
+                    }
+                }
+                else if (parameter == 'oversampling'){
+                    if (value == 0){
+                        $('#oversampling_percentage-slider').attr('disabled', 'disabled');
+                        $('#oversampling_percentage-value').attr('class', "parameter_value_off");
+                        $('#oversampling_percentage-value2').attr('class',  "parameter_value_off");
+                    }
+                    else{
+                        $('#oversampling_percentage-slider').removeAttr('disabled');
+                        $('#oversampling_percentage-value').attr('class',  "parameter_value");
+                        $('#oversampling_percentage-value2').attr('class', "parameter_value");
+                    }
+                }
             });
 
         });

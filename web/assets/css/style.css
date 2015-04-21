@@ -5097,3 +5097,11 @@ a.profile-picture{
 #ranking_table tbody tr{
     cursor: pointer;
  }
+
+.parameter_value{
+    color:#1AB394
+}
+
+.parameter_value_off{
+    color:#676a6c
+}
