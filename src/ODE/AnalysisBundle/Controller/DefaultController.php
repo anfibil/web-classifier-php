@@ -24,6 +24,39 @@ class DefaultController extends Controller
 
         // Retrieve from model table a mapping parameter->parameter_type
         $model_params = $model->getParameters();
+        $preprocessing_params_types = array(
+            'undersampling' => 'bool',
+            'undersampling_rate' => 'int',
+            'oversampling' => 'bool',
+            'oversampling_percentage' => 'int',
+            'missing_data' => 'string',
+            'pca' => 'bool',
+            'n_components' => 'int',
+            'standardization' => 'bool',
+            'normalization' => 'bool',
+            'norm' => 'string',
+            'binarization' => 'bool',
+            'binarization_threshold' => 'float',
+            'outlier_detection' => 'bool',
+            'outlier_detection_method' => 'string'
+        );
+        $preprocessing_params = array();
+
+        foreach (array_keys($params) as $param){
+            if (array_key_exists($param,$preprocessing_params_types)){
+                if ($preprocessing_params_types[$param] == 'int'){
+                    $preprocessing_params[$param] = (int)$params[$param];
+                }elseif (($preprocessing_params_types[$param] == 'float')){
+                    $preprocessing_params[$param] = (float)$params[$param];
+                }elseif (($preprocessing_params_types[$param] == 'bool')){
+                    $preprocessing_params[$param] = (int)$params[$param];
+                }
+                else{
+                    $preprocessing_params[$param] = $params[$param];
+                }
+                unset($params[$param]);
+            }
+        }
 
         // Check to see if parameter list is empty (e.g., Naive Bayes)
         // If so, pass an empty object to represent that
@@ -48,6 +81,7 @@ class DefaultController extends Controller
         $result->setUser($this->getUser());
         $result->setModel($model);
         $result->setDataset($dataset);
+        $result->setPreprocessing_params($preprocessing_params);
         $result->setParams($params);
         //$result->setModel_name($model_name);
 

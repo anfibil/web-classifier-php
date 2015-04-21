@@ -49,14 +49,14 @@
                                         <label>Undersampling: <i class="fa fa-question-circle parameter_value_off" id="q1"></i></label>
 
                                         <div class="radio i-checks">
-                                            <label><input checked class="required" name="undersampling" type="radio" value="1"> True </label>
+                                            <label><input class="required" name="undersampling" type="radio" value="1"> True </label>
                                             <br>
-                                            <label><input class="required" name="undersampling" type="radio" value="0"> False </label>
+                                            <label><input checked class="required" name="undersampling" type="radio" value="0"> False </label>
                                         </div>
 
                                         <div class="row text-center">
-                                            <label>Undersampling Rate = <span class="example-val parameter_value" id="undersampling_rate-value"></span>
-                                                <span class="parameter_value" id="undersampling_rate-value2"> %</span>
+                                            <label>Undersampling Rate = <span class="example-val parameter_value_off" id="undersampling_rate-value"></span>
+                                                <span class="parameter_value_off" id="undersampling_rate-value2"> %</span>
                                             </label>
 
                                             <div class="col-lg-10 col-lg-offset-1">
@@ -68,14 +68,14 @@
                                         <label>Oversampling (SMOTE): <i class="fa fa-question-circle parameter_value_off" id="q2"></i></label>
 
                                         <div class="radio i-checks">
-                                            <label><input checked class="required" name="oversampling" type="radio" value="1"> True </label>
+                                            <label><input class="required" name="oversampling" type="radio" value="1"> True </label>
                                             <br>
-                                            <label><input class="required" name="oversampling" type="radio" value="0"> False </label>
+                                            <label><input checked class="required" name="oversampling" type="radio" value="0"> False </label>
                                         </div>
 
                                         <div class="row text-center">
-                                            <label>SMOTE Percentage = <span class="example-val parameter_value" id="oversampling_percentage-value"></span>
-                                                <span class="parameter_value" id="oversampling_percentage-value2"> %</span>
+                                            <label>SMOTE Percentage = <span class="example-val parameter_value_off" id="oversampling_percentage-value"></span>
+                                                <span class="parameter_value_off" id="oversampling_percentage-value2"> %</span>
                                             </label>
 
                                             <div class="col-lg-10 col-lg-offset-1">
@@ -83,8 +83,93 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3"></div>
-                                    <div class="col-lg-3"></div>
+                                    <div class="col-lg-3">
+                                        <label>Missing data handling: <i class="fa fa-question-circle parameter_value_off" id="q3"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="missing_data" type="radio" value="average"> Impute with average </label>
+                                            <br>
+                                            <label><input class="required" name="missing_data" type="radio" value="random"> Impute with random value </label>
+                                            <br>
+                                            <label><input checked class="required" name="missing_data" type="radio" value="default"> Impute with <i>-1</i> </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label>Principal Component Analysis: <i class="fa fa-question-circle parameter_value_off" id="q4"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="pca" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input checked class="required" name="pca" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <div class="row text-center">
+                                            <label>Number of Components = <span class="example-val parameter_value_off" id="n_components-value"></span></label>
+
+                                            <div class="col-lg-10 col-lg-offset-1">
+                                                <div id="pca-slider"></div><input id="n_components" name="n_components" type="hidden" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label>Standardization: <i class="fa fa-question-circle parameter_value_off" id="q5"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="standardization" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input checked class="required" name="standardization" type="radio" value="0"> False </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label>Normalization: <i class="fa fa-question-circle parameter_value_off" id="q6"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="normalization" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input checked class="required" name="normalization" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <span>norm:</span>
+                                        <select disabled class="form-control required" id="norm" name="norm">
+                                            <option value="l1"> L1 </option>
+                                            <option value="l2"> L2 </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label>Binarization: <i class="fa fa-question-circle parameter_value_off" id="q7"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="binarization" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input checked class="required" name="binarization" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <div class="row text-center">
+                                            <label>Threshold = <span class="example-val parameter_value_off" id="binarization_threshold-value"></span></label>
+
+                                            <div class="col-lg-10 col-lg-offset-1">
+                                                <div id="binarization-slider"></div><input id="binarization_threshold" name="binarization_threshold" type="hidden" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label>Outlier Detection: <i class="fa fa-question-circle parameter_value_off" id="q8"></i></label>
+
+                                        <div class="radio i-checks">
+                                            <label><input class="required" name="outlier_detection" type="radio" value="1"> True </label>
+                                            <br>
+                                            <label><input checked class="required" name="outlier_detection" type="radio" value="0"> False </label>
+                                        </div>
+
+                                        <span>method:</span>
+                                        <select disabled class="form-control required" id="outlier_detection_method" name="outlier_detection_method">
+                                            <option value="svm"> One-class SVM </option>
+                                            <option value="elliptic_envelope"> Elliptic Envelope </option>
+                                        </select>
+                                    </div>
                                 </div>
 
                             </section>
@@ -208,6 +293,9 @@
                     var form = $(this);
 
                     submitForm(form.serialize());
+                },
+                onContentLoaded: function () {
+                    // TODO: Write something to dynamically handle the height (comment out line 151 on jquery.steps.css afterwards)
                 }
             }).validate({
                 errorPlacement: function (error, element)
@@ -242,6 +330,8 @@
             });
             $('#undersampling_rate-slider').Link('lower').to($('#undersampling_rate-value'));
             $('#undersampling_rate-slider').Link('lower').to($('#undersampling_rate'));
+            $('#undersampling_rate-slider').attr('disabled', 'disabled');
+
 
             $('#oversampling_percentage-slider').noUiSlider({
                 start: [100],
@@ -254,7 +344,33 @@
             });
             $('#oversampling_percentage-slider').Link('lower').to($('#oversampling_percentage-value'));
             $('#oversampling_percentage-slider').Link('lower').to($('#oversampling_percentage'));
+            $('#oversampling_percentage-slider').attr('disabled', 'disabled');
 
+            $('#pca-slider').noUiSlider({
+                start: [5],
+                step: 1,
+                connect: "lower",
+                range: {
+                    'min': [1],
+                    'max': [10] // TODO: Replace this by NUM_FEATUERS
+                }
+            });
+            $('#pca-slider').Link('lower').to($('#n_components-value'));
+            $('#pca-slider').Link('lower').to($('#n_components'));
+            $('#pca-slider').attr('disabled', 'disabled');
+
+            $('#binarization-slider').noUiSlider({
+                start: [0],
+                step: 0.1,
+                connect: "lower",
+                range: {
+                    'min': [-1], // TODO: Replace this by -MAX(featurevalue)
+                    'max': [1] // TODO: Replace this by MAX(featurevalue)
+                }
+            });
+            $('#binarization-slider').Link('lower').to($('#binarization_threshold-value'));
+            $('#binarization-slider').Link('lower').to($('#binarization_threshold'));
+            $('#binarization-slider').attr('disabled', 'disabled');
 
 
             $("#q1").qtip({
@@ -268,6 +384,48 @@
                 content: {
                     text: 'Use SMOTE to create synthetic instances of the minority class. Use the slider to select the percentage of new instances to create.',
                     title:'<i>Oversampling <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q3").qtip({
+                content: {
+                    text: 'Select the strategy to be used for missing value imputation.',
+                    title:'<i>Handing of Missing Data <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q4").qtip({
+                content: {
+                    text: 'Linear dimensionality reduction using Singular Value Decomposition of the data and keeping only the most significant singular vectors to project the data to a lower dimensional space.',
+                    title:'<i>Principal Component Analysis <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q5").qtip({
+                content: {
+                    text: 'Standardize features by removing the mean and scaling to unit variance.',
+                    title:'<i>Standardization <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q6").qtip({
+                content: {
+                    text: 'Scale input vectors individually to unit norm (vector length).',
+                    title:'<i>Normalization <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q7").qtip({
+                content: {
+                    text: 'Binarize data (set feature values to 0 or 1) according to a threshold. Values greater than the threshold map to 1, while values less than or equal to the threshold map to 0. With the default threshold of 0, only positive values map to 1.',
+                    title:'<i>Binarization <\/i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+            });
+            $("#q8").qtip({
+                content: {
+                    text: 'Remove instances that are deemed \"polluting\".',
+                    title:'<i>Outlier Detection <\/i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
             });
@@ -297,6 +455,42 @@
                         $('#oversampling_percentage-slider').removeAttr('disabled');
                         $('#oversampling_percentage-value').attr('class',  "parameter_value");
                         $('#oversampling_percentage-value2').attr('class', "parameter_value");
+                    }
+                }
+                else if (parameter == 'pca'){
+                    if (value == 0){
+                        $('#pca-slider').attr('disabled', 'disabled');
+                        $('#n_components-value').attr('class', "parameter_value_off");
+                    }
+                    else{
+                        $('#pca-slider').removeAttr('disabled');
+                        $('#n_components-value').attr('class',  "parameter_value");
+                    }
+                }
+                else if (parameter == 'normalization'){
+                    if (value == 0){
+                        $('#norm').prop('disabled', 'disabled');
+                    }
+                    else{
+                        $('#norm').prop('disabled', false);
+                    }
+                }
+                else if (parameter == 'binarization'){
+                    if (value == 0){
+                        $('#binarization-slider').attr('disabled', 'disabled');
+                        $('#binarization_threshold-value').attr('class', "parameter_value_off");
+                    }
+                    else{
+                        $('#binarization-slider').removeAttr('disabled');
+                        $('#binarization_threshold-value').attr('class',  "parameter_value");
+                    }
+                }
+                else if (parameter == 'outlier_detection'){
+                    if (value == 0){
+                        $('#outlier_detection_method').prop('disabled', 'disabled');
+                    }
+                    else{
+                        $('#outlier_detection_method').prop('disabled', false);
                     }
                 }
             });

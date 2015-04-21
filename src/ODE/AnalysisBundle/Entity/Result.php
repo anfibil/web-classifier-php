@@ -48,6 +48,13 @@ class Result
     private $params;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="preprocessing_params", type="json_array", nullable=true)
+     */
+    private $preprocessing_params;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="runtime", type="float", nullable=true)
@@ -152,6 +159,29 @@ class Result
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * Set preprocessing_params
+     *
+     * @param array $preprocessing_params
+     * @return Result
+     */
+    public function setPreprocessing_params($preprocessing_params)
+    {
+        $this->preprocessing_params = $preprocessing_params;
+
+        return $this;
+    }
+
+    /**
+     * Get preprocessing_params
+     *
+     * @return array
+     */
+    public function getPreprocessing_params()
+    {
+        return $this->preprocessing_params;
     }
 
     /**
