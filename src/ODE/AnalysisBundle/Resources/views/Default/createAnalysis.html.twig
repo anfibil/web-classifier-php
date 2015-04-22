@@ -233,6 +233,18 @@
     <script>
         // Reference: https://github.com/rstaib/jquery-steps/wiki (lots of options to customize this form)
         $(document).ready(function(){
+
+            //Small Event that will resize the step content when the window width change
+            window.addEventListener('resize', function(event){
+                $("#form .body.current").each(function () {
+                    var bodyHeight = $(this).height();
+                    var padding = $(this).innerHeight() - bodyHeight;
+                    bodyHeight += padding;
+                    $(this).parent().css("height", bodyHeight+"px");
+                });
+            });
+
+
             $("#wizard").steps();
             $("#form").steps({
                 bodyTag: "section",
@@ -287,9 +299,6 @@
                     var form = $(this);
 
                     submitForm(form.serialize());
-                },
-                onContentLoaded: function () {
-                    // TODO: Write something to dynamically handle the height (comment out line 151 on jquery.steps.css afterwards)
                 }
             }).validate({
                 errorPlacement: function (error, element)
