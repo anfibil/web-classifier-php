@@ -2,16 +2,16 @@ import pymysql
 import sys
 import json
 import ast
-import random
 import pandas as pd
 import numpy as np
 import timeit
 import re
+import random
 import patsy
 
-#################################
-# Retrieving data from database #
-#################################
+#######################
+# Parameter Retrieval #
+#######################
 
 start = timeit.default_timer()
 
@@ -23,14 +23,153 @@ db = pymysql.connect(host="localhost", user="root", passwd="", db="symfony")
 cursor = db.cursor()
 
 # Find the current analysis object in the results database
-cursor.execute("SELECT dataset_id, params, model_id  FROM ode_results WHERE id="+analysisID)
+cursor.execute("SELECT dataset_id, preprocessing_params, params, model_id  FROM ode_results WHERE id="+analysisID)
 analysis = cursor.fetchone()
-
-print analysis
 
 # Find the dataset to be used by the current analysis
 cursor.execute("SELECT * FROM ode_dataset WHERE id="+str(analysis[0]))
 dataset = cursor.fetchone()
+
+
+#################################
+# Data Pre-processing Functions #
+#################################
+
+from sklearn.neighbors import NearestNeighbors
+
+preprocessing_params = json.loads(analysis[1])
+
+
+def undersample(x, y, ix, subsampling_rate=1.0):
+    """ Data undersampling.
+    
+    This function takes in a list or array indexes that will be used for training
+    and it performs subsampling in the majority class (c == 0) to enforce a certain ratio
+    between the two classes
+    Parameters
+    ----------
+    x : np.ndarray
+        The entire dataset as a ndarray
+    y : np.ndarray
+        The labels
+    ix : np.ndarray
+        The array indexes for the instances that will be used for training
+    subsampling_rate : float
+        The desired percentage of majority instances in the subsample
+    
+    Returns
+    --------
+    np.ndarray 
+        The new list of array indexes to be used for training
+    """
+
+    # Get indexes of instances that belong to classes 0 and 1
+    indexes_0 = [item for item in ix if y[item] == 0]
+    indexes_1 = [item for item in ix if y[item] == 1]
+
+    # Determine how large the new majority class set should be
+    sample_length = int(len(indexes_0)*subsampling_rate)
+    sample_indexes = random.sample(indexes_0, sample_length) + indexes_1
+
+    return sample_indexes
+
+def SMOTE(T, N, k, h = 1.0):
+    """ Synthetic minority oversampling.
+    Returns (N/100) * n_minority_samples synthetic minority samples.
+    Parameters
+    ----------
+    T : array-like, shape = [n_minority_samples, n_features]
+        Holds the minority samples
+    N : percetange of new synthetic samples: 
+        n_synthetic_samples = N/100 * n_minority_samples. Can be < 100.
+    k : int. Number of nearest neighbours. 
+    Returns
+    -------
+    S : Synthetic samples. array, 
+        shape = [(N/100) * n_minority_samples, n_features]. 
+    """    
+    n_minority_samples, n_features = T.shape
+    
+    if N < 100:
+        #create synthetic samples only for a subset of T.
+        #TODO: select random minortiy samples
+        N = 100
+        pass
+
+    if (N % 100) != 0:
+        raise ValueError("N must be < 100 or multiple of 100")
+    
+    N = N/100
+    n_synthetic_samples = N * n_minority_samples
+    S = np.zeros(shape=(n_synthetic_samples, n_features))
+    
+    #Learn nearest neighbours
+    neigh = NearestNeighbors(n_neighbors = k)
+    neigh.fit(T)
+    
+    #Calculate synthetic samples
+    for i in xrange(n_minority_samples):
+        nn = neigh.kneighbors(T[i], return_distance=False)
+        for n in xrange(N):
+            nn_index = random.choice(nn[0])
+            #NOTE: nn includes T[i], we don't want to select it 
+            while nn_index == i:
+                nn_index = random.choice(nn[0])
+                
+            dif = T[nn_index] - T[i]
+            gap = np.random.uniform(low = 0.0, high = h)
+            S[n + i * N, :] = T[i,:] + gap * dif[:]
+    
+    return S
+
+#########################################
+# Retrieving dataset and pre-processing #
+#########################################
+
+from sklearn import preprocessing, decomposition
+from scipy import stats
+
+df = pd.read_csv(currentDir+'../datasets/'+dataset[7]+'.csv')
+y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
+X = df.drop(df.columns[df.shape[1]-1], axis=1)
+
+# Fill in missing values
+if (preprocessing_params['missing_data'] == 'default'):
+    X = X.fillna(-1)
+elif(preprocessing_params['missing_data'] == 'average'):
+    X = X.fillna(X.mean())
+elif (preprocessing_params['missing_data'] == 'interpolation'):
+    X = X.interpolate()
+
+s = ' + '.join(X.columns) + ' -1' 
+# Note: The encoding below could create very large dataframes for datasets with many categorical features.
+X = patsy.dmatrix(s, X, return_type='dataframe').values
+
+
+# Remove outliers
+# TODO: Move this to traning step of K-fold so as to keep test untouched?
+if preprocessing_params['outlier_detection']:
+    non_outlier_idx = (np.abs(stats.zscore(X)) < 3).all(axis=1)
+    X = X[non_outlier_idx]
+    y = y[non_outlier_idx]
+
+# Perform standardization. TODO: Should this come before encoding?
+if preprocessing_params['standardization']:
+    X = preprocessing.scale(X)
+
+# Perform normalization. TODO: Check to make sure order doesn't matter
+if preprocessing_params['normalization']:
+    X = preprocessing.normalize(X, norm=preprocessing_params['norm'])
+
+# Perform binarization. TODO: Check to make sure order doesn't matter
+if preprocessing_params['binarization']:
+    binarizer = preprocessing.Binarizer(threshold=preprocessing_params['binarization_threshold']).fit(X)
+    X = binarizer.transform(X)
+
+# Apply PCA
+if preprocessing_params['pca']:
+    estimator = decomposition.PCA(n_components=preprocessing_params['n_components'])
+    X = estimator.fit_transform(X)
 
 ######################
 # Running Experiment #
@@ -41,7 +180,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn import cross_validation
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, confusion_matrix, classification_report
-from sklearn import preprocessing
 from scipy import interp
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -55,17 +193,10 @@ clfs = {
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 
-if (analysis[1]):
-	clf = clfs[analysis[2]].set_params(**ast.literal_eval(analysis[1]))
+if (analysis[2]):
+	clf = clfs[analysis[3]].set_params(**ast.literal_eval(analysis[2]))
 else:
-	clf = clfs[analysis[2]] 
-
-# Read and pre-process data
-df = pd.read_csv(currentDir+'../datasets/'+dataset[7]+'.csv')
-y = preprocessing.LabelEncoder().fit_transform(df.ix[:,df.shape[1]-1].values)
-X = df.drop(df.columns[df.shape[1]-1], axis=1)
-s = ' + '.join(X.columns) + ' -1' 
-X = patsy.dmatrix(s, X, return_type='dataframe').values
+	clf = clfs[analysis[3]] 
 
 # Run 10-fold cross validation and compute AUROC
 mean_tpr = 0.0
@@ -76,9 +207,25 @@ indexes = []
 y_original_values = []
 skf = cross_validation.StratifiedKFold(y, n_folds=10)
 
+
+from scipy.stats import itemfreq
 for train_index, test_index in skf:
-    probas_ = clf.fit(X[train_index], y[train_index]).predict_proba(X[test_index])
-    preds_ = clf.fit(X[train_index], y[train_index]).predict(X[test_index])
+    
+    if preprocessing_params['undersampling']:
+        train_index = undersample(X,y,train_index,float(preprocessing_params['undersampling_rate'])/100)
+
+    X_train = X[train_index]
+    y_train = y[train_index]
+
+    if preprocessing_params['oversampling']:
+        minority = X_train[np.where(y_train==1)]
+        smotted = SMOTE(minority, preprocessing_params['undersampling_rate'], 5)
+        X_train = np.vstack((X_train,smotted))
+        y_train = np.append(y_train,np.ones(len(smotted),dtype=np.int32))          
+
+    clf.fit(X_train, y_train)        
+    probas_ = clf.predict_proba(X[test_index])
+    preds_ = clf.predict(X[test_index])
     
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(y[test_index], probas_[:, 1])

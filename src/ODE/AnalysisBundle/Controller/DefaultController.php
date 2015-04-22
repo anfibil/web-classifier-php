@@ -37,8 +37,7 @@ class DefaultController extends Controller
             'norm' => 'string',
             'binarization' => 'bool',
             'binarization_threshold' => 'float',
-            'outlier_detection' => 'bool',
-            'outlier_detection_method' => 'string'
+            'outlier_detection' => 'bool'
         );
         $preprocessing_params = array();
 

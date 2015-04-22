@@ -89,7 +89,7 @@
                                         <div class="radio i-checks">
                                             <label><input class="required" name="missing_data" type="radio" value="average"> Impute with average </label>
                                             <br>
-                                            <label><input class="required" name="missing_data" type="radio" value="random"> Impute with random value </label>
+                                            <label><input class="required" name="missing_data" type="radio" value="interpolation"> Perform linear interpolation </label>
                                             <br>
                                             <label><input checked class="required" name="missing_data" type="radio" value="default"> Impute with <i>-1</i> </label>
                                         </div>
@@ -163,12 +163,6 @@
                                             <br>
                                             <label><input checked class="required" name="outlier_detection" type="radio" value="0"> False </label>
                                         </div>
-
-                                        <span>method:</span>
-                                        <select disabled class="form-control required" id="outlier_detection_method" name="outlier_detection_method">
-                                            <option value="svm"> One-class SVM </option>
-                                            <option value="elliptic_envelope"> Elliptic Envelope </option>
-                                        </select>
                                     </div>
                                 </div>
 
@@ -424,7 +418,7 @@
             });
             $("#q8").qtip({
                 content: {
-                    text: 'Remove instances that are deemed \"polluting\".',
+                    text: 'Remove rows that contain column values that are further than 3 standard deviations from mean.',
                     title:'<i>Outlier Detection <\/i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
