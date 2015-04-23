@@ -1,13 +1,14 @@
 {% extends 'base.html.twig'%}
 
 {% block stylesheets %}
+    {{ parent() }}
     {% stylesheets
         'assets/css/plugins/dataTables/dataTables.bootstrap.css'
         'assets/css/plugins/dataTables/dataTables.tableTools.css'
         'assets/css/plugins/dataTables/dataTables.responsive.css'
         'assets/css/plugins/qTip/jquery.qtip.css'
-    %}
-    <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
+    filter='cssrewrite' output='compiled/css/report.css' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -277,13 +278,14 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ parent() }}
     {% javascripts
         'assets/js/plugins/highcharts/highcharts.js'
         'assets/js/plugins/highcharts/exporting.js'
         'assets/js/plugins/dataTables/jquery.dataTables.js'
         'assets/js/plugins/dataTables/dataTables.bootstrap.js'
         'assets/js/plugins/dataTables/dataTables.tableTools.js'
-        'assets/js/plugins/qTip/jquery.qtip.js'
+        'assets/js/plugins/qTip/jquery.qtip.js' output='compiled/js/report.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}

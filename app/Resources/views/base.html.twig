@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}iCeNSA@ND | Data Analytics Portal{% endblock %}</title>
-    <link rel="shortcut icon" href="{{ asset('assets/images/icensa_ico.png') }}" type="image/png" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/icensa_ico.png') }}" type="image/png"/>
 
-    {# TODO: Use assetic for the stylesheets #}
-    <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/plugins/toastr/toastr.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/plugins/picedit/picedit.min.css') }}" rel="stylesheet">
-
-    {% javascripts
-        'assets/js/jquery-2.1.3.js'
-        'assets/js/plugins/toastr/toastr.js'
-        'assets/js/plugins/picedit/picedit.js'
-        'assets/js/bootstrap.js'
-        'assets/js/plugins/metisMenu/jquery.metisMenu.js'
-        'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
-        'assets/js/inspinia.js'
-        'assets/js/plugins/pace/pace.min.js'%}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    {# Stylesheets block for pages that need extra css #}
-    {% block stylesheets %}{% endblock %}
-
-    {# Scripts block for pages that need extra css #}
-    {% block scripts %}{% endblock %}
+    {# Stylesheets block#}
+    {% block stylesheets %}
+        {% stylesheets
+        'assets/css/bootstrap.min.css'
+        'assets/font-awesome/css/font-awesome.min.css'
+        'assets/css/animate.css'
+        'assets/css/plugins/toastr/toastr.min.css'
+        'assets/css/plugins/picedit/picedit.min.css'
+        'assets/css/style.css' filter='cssrewrite' output='compiled/css/app-base.css' %}
+        <link href="{{ asset_url }}" rel="stylesheet" type="text/css"/>
+        {% endstylesheets %}
+    {% endblock %}
 
     {% block welcome %}{% endblock %}
-
 </head>
 
 <body>
@@ -46,35 +32,45 @@
                     <div class="dropdown profile-element">
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                             <span>
-                                <a data-toggle="modal" data-target="#upProfPic" class="profile-picture" style="background: url({{ app.user.profilePicturePath }}) no-repeat center center">
+                                <a data-toggle="modal" data-target="#upProfPic" class="profile-picture"
+                                   style="background: url({{ app.user.profilePicturePath }}) no-repeat center center">
                                     <!-- <img alt="image" class="img-circle" src="{{ app.user.profilePicturePath }}" id="avatar" width="60" height="60"/> -->
                                 </a>
 
                             </span>
-                            <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog"  aria-hidden="true">
+                            <div class="modal inmodal" id="upProfPic" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
                                             <i class="fa fa-upload modal-icon"></i>
                                             <h4 class="modal-title">Profile picture</h4>
-                                            <small>Use the options below to upload and edit your profile picture.</small>
+                                            <small>Use the options below to upload and edit your profile picture.
+                                            </small>
                                         </div>
-                                        <form action="{{ path('ode_upload_profile_image') }}" method="post" id="avatarUploadForm" name="avatarUploadForm" enctype="multipart/form-data">
-                                        <div class="modal-body" style="text-align: center">
-                                            <input type="file" name="profilePictureFile" id="profilePictureFile">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                            <button type="submit" id="uploadButton" name="uploadButton" class="btn btn-primary">Upload Picture</button>
-                                        </div>
+                                        <form action="{{ path('ode_upload_profile_image') }}" method="post"
+                                              id="avatarUploadForm" name="avatarUploadForm"
+                                              enctype="multipart/form-data">
+                                            <div class="modal-body" style="text-align: center">
+                                                <input type="file" name="profilePictureFile" id="profilePictureFile">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close
+                                                </button>
+                                                <button type="submit" id="uploadButton" name="uploadButton"
+                                                        class="btn btn-primary">Upload Picture
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"><strong class="font-bold">{{app.user.firstname}} {{app.user.lastname}}</strong></span>
+                                    <span class="block m-t-xs"><strong
+                                                class="font-bold">{{ app.user.firstname }} {{ app.user.lastname }}</strong></span>
                                     <span class="text-muted text-xs block">Options<b class="caret"></b></span>
                                 </span>
                             </a>
@@ -86,7 +82,8 @@
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
                         {% else %}
-                            <span><img alt="image" class="img-circle" src="{{ asset('assets/images/anonymous.jpg') }}" width="60" height="60"/> </span>
+                            <span><img alt="image" class="img-circle" src="{{ asset('assets/images/anonymous.jpg') }}"
+                                       width="60" height="60"/> </span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs"> <strong class="font-bold">Anonymous User</strong></span>
@@ -100,7 +97,7 @@
                         {% endif %}
                     </div>
                     <div class="logo-element">
-                    iC+
+                        iC+
                     </div>
                 </li>
                 <li>
@@ -159,7 +156,8 @@
 
         <div class="footer">
             <div class="pull-right">
-                Developed by <strong><a href="http://www3.nd.edu/~eaguiar/" target="_blank">Everaldo Aguiar</a></strong> and <strong><a href="http://www3.nd.edu/~rjohns15/" target="_blank">Reid Johnson</a></strong>.
+                Developed by <strong><a href="http://www3.nd.edu/~eaguiar/" target="_blank">Everaldo Aguiar</a></strong>
+                and <strong><a href="http://www3.nd.edu/~rjohns15/" target="_blank">Reid Johnson</a></strong>.
             </div>
             <div>
                 <!--<strong>Copyright</strong> -->&copy; 2015 University of Notre Dame
@@ -169,25 +167,42 @@
     </div>
 </div>
 
-</body>
+{# Scripts block for pages that need extra js #}
+{% block scripts %}
+    {# All scripts must be before the tag </body> #}
+    {% javascripts
+    'assets/js/jquery-2.1.3.min.js'
+    'assets/js/plugins/toastr/toastr.min.js'
+    'assets/js/plugins/picedit/picedit.js'
+    'assets/js/bootstrap.min.js'
+    'assets/js/plugins/metisMenu/jquery.metisMenu.js'
+    'assets/js/plugins/slimscroll/jquery.slimscroll.min.js'
+    'assets/js/inspinia.js'
+    'assets/js/plugins/pace/pace.min.js' output='compiled/js/app-base.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-<script type="text/javascript">
-    $(function() {
-        $('#profilePictureFile').picEdit({
-            maxWidth: 530,
-            maxHeight: 'auto',
-            aspectRatio: true,
-            formSubmitted: function(){
-                window.setTimeout(function() {
-                    $('#upProfPic').modal('hide');
-                }, 1200);
-                var d = new Date();
-                $('a.profile-picture').css('background','url({{ app.user.profilePicturePath }}'+"?"+d.getTime()+')');
-            }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(function () {
+                $('#profilePictureFile').picEdit({
+                    maxWidth: 530,
+                    maxHeight: 'auto',
+                    aspectRatio: true,
+                    formSubmitted: function () {
+                        window.setTimeout(function () {
+                            $('#upProfPic').modal('hide');
+                        }, 1200);
+                        var d = new Date();
+                        $('a.profile-picture').css('background', 'url({{ app.user.profilePicturePath }}' + "?" + d.getTime() + ')');
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
 {% endif %}
-
+</body>
 </html>

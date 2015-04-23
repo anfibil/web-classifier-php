@@ -17,29 +17,34 @@
                         <div class="row" id="result" >
                             <h2>Please wait while your analysis is running.</h2>
                             <h1><i class="fa fa-spinner fa-pulse"></i></h1> <!-- TODO: https://github.com/tobiasahlin/SpinKit these are prettier -->
-                            <script>
-                                function checkIfDone(){
-                                    jQuery.ajax({
-                                        dataType: "json",
-                                        url: "/analysis/check?id="+ {{ id }},
-                                        data: "",
-                                        success: function(data){
-                                            if (data.finished){
-                                                window.location.href = '/analysis/report?id='+{{ id }}
-                                            } else {
-                                                setTimeout(checkIfDone,5000);
-                                            }
-                                        }
-                                    }).fail(function() {
-                                        alert("request fail");
-                                    });
-                                }
-                                checkIfDone();
-                            </script>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" >
+        function checkIfDone(){
+            jQuery.ajax({
+                dataType: "json",
+                url: "/analysis/check?id="+ {{ id }},
+                data: "",
+                success: function(data){
+                    if (data.finished){
+                        window.location.href = '/analysis/report?id='+{{ id }}
+                    } else {
+                        setTimeout(checkIfDone,5000);
+                    }
+                }
+            }).fail(function() {
+                alert("request fail");
+            });
+        }
+        checkIfDone();
+    </script>
 {% endblock %}

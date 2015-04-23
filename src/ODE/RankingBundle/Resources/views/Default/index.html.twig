@@ -1,167 +1,178 @@
-{% extends 'base.html.twig'%}
+{% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    {{ parent() }}
     {% stylesheets
     'assets/css/plugins/dataTables/dataTables.responsive.css'
     'assets/css/plugins/dataTables/dataTables.bootstrap.css'
-    %}
-    <link type="text/css" rel="stylesheet" href="{{ asset_url }}"/>
+    filter='cssrewrite' output='compiled/css/ranking.css' %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
-<div class="row  border-bottom white-bg dashboard-header">
-    <div class="col-sm-12 col-md-3">
-        <h2>Select the dataset</h2>
-        <div class="margin-bottom-20px"> <!-- old class: ibox-content -->
-            <select id="dataset" name="dataset" class="form-control required padding-bottom-20px ">
-                {% for dataset in datasets %}
-                    <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-9">
-        <div class="row white-bg">
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 navy-bg" id="top_accuracy_container" onclick="open_top_results(this)" data-result-id="0">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <i class="fa fa-line-chart fa-4x"></i>
-                        </div>
-                        <div class="col-sm-10 text-right">
-                            <span>Top Accuracy</span>
-                            <h3 class="font-bold" id="top_accuracy">&nbsp</h3>
-                            <span id="top_accuracy_username"><i>&nbsp</i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 blue-bg" id="top_auroc_container" onclick="open_top_results(this)" data-result-id="0">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <i class="fa fa-area-chart fa-4x"></i>
-                        </div>
-                        <div class="col-sm-10 text-right">
-                            <span>Top AUROC</span>
-                            <h3 class="font-bold" id="top_auroc">&nbsp</h3>
-                            <span id="top_auroc_username"><i>&nbsp</i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 yellow-bg" id="top_aupr_container" onclick="open_top_results(this)" data-result-id="0">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <i class="fa fa-area-chart fa-4x"></i>
-                        </div>
-                        <div class="col-sm-10 text-right">
-                            <span>Top AUPR</span>
-                            <h3 class="font-bold" id="top_aupr">&nbsp</h3>
-                            <span id="top_aupr_username"><i>&nbsp</i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-3">
-                <div class="widget style1 red-bg" id="top_runtime_container" onclick="open_top_results(this)" data-result-id="0">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <i class="fa fa-cogs fa-4x"></i>
-                        </div>
-                        <div class="col-sm-10 text-right">
-                            <span>Top Runtime</span>
-                            <h3 class="font-bold" id="top_runtime">&nbsp</h3>
-                            <span id="top_runtime_username"><i>&nbsp</i></span>
-                        </div>
-                    </div>
-                </div>
+    <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-sm-12 col-md-3">
+            <h2>Select the dataset</h2>
+
+            <div class="margin-bottom-20px"> <!-- old class: ibox-content -->
+                <select id="dataset" name="dataset" class="form-control required padding-bottom-20px ">
+                    {% for dataset in datasets %}
+                        <option value={{ dataset.id|e }}>{{ dataset.name|e }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-    </div>
-</div>
+        <div class="col-sm-12 col-md-9">
+            <div class="row white-bg">
+                <div class="col-xs-6 col-sm-6 col-md-3">
+                    <div class="widget style1 navy-bg" id="top_accuracy_container" onclick="open_top_results(this)"
+                         data-result-id="0">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <i class="fa fa-line-chart fa-4x"></i>
+                            </div>
+                            <div class="col-sm-10 text-right">
+                                <span>Top Accuracy</span>
 
-<div class="wrapper wrapper-content">
-    <div class="row">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Leaderboard</h5>
-            </div>
-            <div class="ibox-content ">
-                <div style="width: 100%">
-                <table class="table table-striped table-bordered table-hover table-responsive" id="ranking_table" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>User</th>
-                        <th>Classifier</th>
-                        <th>Accuracy</th>
-                        <th>AUROC</th>
-                        <th>AUPR</th>
-                        <th>Runtime</th>
-                        <th>Date</th>
-                    </tr>
-                    </thead>
+                                <h3 class="font-bold" id="top_accuracy">&nbsp</h3>
+                                <span id="top_accuracy_username"><i>&nbsp</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3">
+                    <div class="widget style1 blue-bg" id="top_auroc_container" onclick="open_top_results(this)"
+                         data-result-id="0">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <i class="fa fa-area-chart fa-4x"></i>
+                            </div>
+                            <div class="col-sm-10 text-right">
+                                <span>Top AUROC</span>
 
-                    <tfoot>
-                    <tr>
-                        <th>Rank</th>
-                        <th>User</th>
-                        <th>Classifier</th>
-                        <th>Accuracy</th>
-                        <th>AUROC</th>
-                        <th>AUPR</th>
-                        <th>Runtime</th>
-                        <th>Date</th>
-                    </tr>
-                    </tfoot>
-                </table>
+                                <h3 class="font-bold" id="top_auroc">&nbsp</h3>
+                                <span id="top_auroc_username"><i>&nbsp</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3">
+                    <div class="widget style1 yellow-bg" id="top_aupr_container" onclick="open_top_results(this)"
+                         data-result-id="0">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <i class="fa fa-area-chart fa-4x"></i>
+                            </div>
+                            <div class="col-sm-10 text-right">
+                                <span>Top AUPR</span>
+
+                                <h3 class="font-bold" id="top_aupr">&nbsp</h3>
+                                <span id="top_aupr_username"><i>&nbsp</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3">
+                    <div class="widget style1 red-bg" id="top_runtime_container" onclick="open_top_results(this)"
+                         data-result-id="0">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <i class="fa fa-cogs fa-4x"></i>
+                            </div>
+                            <div class="col-sm-10 text-right">
+                                <span>Top Runtime</span>
+
+                                <h3 class="font-bold" id="top_runtime">&nbsp</h3>
+                                <span id="top_runtime_username"><i>&nbsp</i></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    {% endblock %}
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Leaderboard</h5>
+                </div>
+                <div class="ibox-content ">
+                    <div style="width: 100%">
+                        <table class="table table-striped table-bordered table-hover table-responsive"
+                               id="ranking_table" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>User</th>
+                                <th>Classifier</th>
+                                <th>Accuracy</th>
+                                <th>AUROC</th>
+                                <th>AUPR</th>
+                                <th>Runtime</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
 
+                            <tfoot>
+                            <tr>
+                                <th>Rank</th>
+                                <th>User</th>
+                                <th>Classifier</th>
+                                <th>Accuracy</th>
+                                <th>AUROC</th>
+                                <th>AUPR</th>
+                                <th>Runtime</th>
+                                <th>Date</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
 
     {% block scripts %}
+        {{ parent() }}
         {% javascripts
         'assets/js/plugins/dataTables/jquery.dataTables.js'
         'assets/js/plugins/dataTables/dataTables.bootstrap.js'
         'assets/js/plugins/qTip/jquery.qtip.js'
         'assets/js/plugins/dataTables/dataTables.responsive.js'
-        %}
+        output='compiled/js/ranking.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
         <script type="text/javascript">
-            $(document).ready(function() {
-                var table = $('#ranking_table').DataTable( {
+            $(document).ready(function () {
+                var table = $('#ranking_table').DataTable({
                     "processing": true,
                     "ajax": {
                         url: "/ranking/getdata",
-                        data: function(d){
+                        data: function (d) {
                             d.dataset_id = $('#dataset').val()
                         }
                     },
                     "columnDefs": [
                         {
                             // Custom render to the user col
-                            "render": function ( data, type, row ) {
-                                var output = "<a href='/user/"+data.username+"'>";
+                            "render": function (data, type, row) {
+                                var output = "<a href='/user/" + data.username + "'>";
                                 if (data.picture) {
                                     output += "<img title='" + data.username + "' src='" + data.picture + "' alt='" + data.username + "' class='smalluserpicture' /> "; // Do not remove this last space
                                 }
-                                output += " <span class='hidden-sm hidden-xs'>"+data.username+"</span></a>";
+                                output += " <span class='hidden-sm hidden-xs'>" + data.username + "</span></a>";
                                 return output;
                             },
                             "targets": 1
                         },
-                        { "orderable": false, "targets": [1,2] },
-                        { "searchable": false, "orderable": false, "targets": 0 },
+                        {"orderable": false, "targets": [1, 2]},
+                        {"searchable": false, "orderable": false, "targets": 0},
 
                     ],
                     order: [[3, 'desc']],
@@ -169,89 +180,89 @@
                         null,
                         null,
                         null,
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "desc", "asc" ] },
-                        { "asSorting": [ "asc", "desc" ] },
+                        {"asSorting": ["desc", "asc"]},
+                        {"asSorting": ["desc", "asc"]},
+                        {"asSorting": ["desc", "asc"]},
+                        {"asSorting": ["asc", "desc"]},
                         null
                     ],
                     responsive: true, // TODO: This doesn't seem to be working
                     bSortClasses: false
-                } );
+                });
 
 
                 //This will make each row act like a link
-                $('#ranking_table tbody').on( 'click', 'tr', function () {
+                $('#ranking_table tbody').on('click', 'tr', function () {
                     var result_id = table.row(this).data()[8];
                     if (result_id > 0) {
                         window.location = "/analysis/report?id=" + result_id;
                     }
-                } );
+                });
 
 
                 // TODO: Edit below to reverse ranking if the user sort a column in ascending order
                 // Except maybe for run time where lower is better
                 // Note: We also need to account for ties here and display the same rank for them
-                table.on( 'order.dt search.dt', function () {
-                    table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                        cell.innerHTML = i+1;
-                    } );
-                } ).draw();
+                table.on('order.dt search.dt', function () {
+                    table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }).draw();
 
                 $('#dataset').on('change', function (e) {
                     getTop($('#dataset').val());
                     table.ajax.reload();
                 });
 
-                function getTop(dataset_id){
+                function getTop(dataset_id) {
                     jQuery.ajax({
                         async: true,
                         dataType: "json",
-                        url: "/ranking/gettop?dataset_id="+dataset_id,
+                        url: "/ranking/gettop?dataset_id=" + dataset_id,
                         data: "",
-                        success: function(data){
-                            if (data.accuracy){
+                        success: function (data) {
+                            if (data.accuracy) {
                                 $('#top_accuracy').text(parseFloat(data.accuracy.top).toFixed(4));
                                 $('#top_accuracy_username').text(data.accuracy.username);
-                                $('#top_accuracy_container').attr('data-result-id',data.accuracy.result_id);
-                            } else{
+                                $('#top_accuracy_container').attr('data-result-id', data.accuracy.result_id);
+                            } else {
                                 $('#top_accuracy').text("Unavailable");
                                 $('#top_accuracy_username').text("Unavailable");
-                                $('#top_accuracy_container').attr('data-result-id',0);
+                                $('#top_accuracy_container').attr('data-result-id', 0);
                             }
 
                             if (data.auroc) {
                                 $('#top_auroc').text(parseFloat(data.auroc.top).toFixed(4));
                                 $('#top_auroc_username').text(data.auroc.username);
-                                $('#top_auroc_container').attr('data-result-id',data.auroc.result_id);
-                            } else{
+                                $('#top_auroc_container').attr('data-result-id', data.auroc.result_id);
+                            } else {
                                 $('#top_auroc').text("Unavailable");
                                 $('#top_auroc_username').text("Unavailable");
-                                $('#top_auroc_container').attr('data-result-id',0);
+                                $('#top_auroc_container').attr('data-result-id', 0);
                             }
 
                             if (data.aupr) {
                                 $('#top_aupr').text(parseFloat(data.aupr.top).toFixed(4));
                                 $('#top_aupr_username').text(data.aupr.username);
-                                $('#top_aupr_container').attr('data-result-id',data.aupr.result_id);
-                            } else{
+                                $('#top_aupr_container').attr('data-result-id', data.aupr.result_id);
+                            } else {
                                 $('#top_aupr').text("Unavailable");
                                 $('#top_aupr_username').text("Unavailable");
-                                $('#top_aupr_container').attr('data-result-id',0);
+                                $('#top_aupr_container').attr('data-result-id', 0);
                             }
 
                             if (data.runtime) {
                                 $('#top_runtime').text(parseFloat(data.runtime.top).toFixed(4));
                                 $('#top_runtime_username').text(data.runtime.username);
-                                $('#top_runtime_container').attr('data-result-id',data.runtime.result_id);
-                            } else{
+                                $('#top_runtime_container').attr('data-result-id', data.runtime.result_id);
+                            } else {
                                 $('#top_runtime').text("Unavailable");
                                 $('#top_runtime_username').text("Unavailable");
-                                $('#top_runtime_container').attr('data-result-id',0);
+                                $('#top_runtime_container').attr('data-result-id', 0);
                             }
 
                         }
-                    }).fail(function() {
+                    }).fail(function () {
                         alert("Could not retrieve the top results.");
                     });
                 }
@@ -261,10 +272,10 @@
 
                 //This will appent to the event window resize the function that will resize the datatable
                 $(window).resize(function (evt) {
-                        if (setTimeout_resize_table_rankings !== false) {
-                            clearTimeout(setTimeout_resize_table_rankings);
-                        }
-                        setTimeout_resize_table_rankings = setTimeout(fn_resize_table_rankings, 300); //Time to update in miliseconds
+                    if (setTimeout_resize_table_rankings !== false) {
+                        clearTimeout(setTimeout_resize_table_rankings);
+                    }
+                    setTimeout_resize_table_rankings = setTimeout(fn_resize_table_rankings, 300); //Time to update in miliseconds
                 });
 
             });
@@ -276,18 +287,18 @@
             /**
              * This function will hide the colunm based on the window inner width
              */
-            function fn_resize_table_rankings(){
-                if (window.innerWidth== last_size_resize_table_rankings){
+            function fn_resize_table_rankings() {
+                if (window.innerWidth == last_size_resize_table_rankings) {
                     return;
                 }
                 last_size_resize_table_rankings = window.innerWidth;
                 try {
-                        $('#ranking_table').DataTable().column(2).visible(window.innerWidth > 1000, true);
-                        $('#ranking_table').DataTable().column(7).visible(window.innerWidth > 750, true);
-                        $('#ranking_table').DataTable().column(1).visible(window.innerWidth > 600, true);
+                    $('#ranking_table').DataTable().column(2).visible(window.innerWidth > 1000, true);
+                    $('#ranking_table').DataTable().column(7).visible(window.innerWidth > 750, true);
+                    $('#ranking_table').DataTable().column(1).visible(window.innerWidth > 600, true);
                 } catch (e) {
-                    if (console && console.log){
-                        console.log("Erro when resizing ranking datatable: "+ e);
+                    if (console && console.log) {
+                        console.log("Erro when resizing ranking datatable: " + e);
                     }
                 }
                 clearTimeout(setTimeout_resize_table_rankings);
@@ -299,10 +310,10 @@
              * THis function is used to open a top result
              * @param obj The html tag the user clicked
              */
-            function open_top_results(obj){
+            function open_top_results(obj) {
                 var result_id = $(obj).attr('data-result-id');
-                if (result_id > 0){
-                    window.location = "/analysis/report?id="+result_id;
+                if (result_id > 0) {
+                    window.location = "/analysis/report?id=" + result_id;
                 }
             }
 
