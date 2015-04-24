@@ -13,3 +13,5 @@
 /.idea/
 /web/assets/profilepictures/*
 !/web/assets/profilepictures/index.html
+/web/compiled/js/*
+/web/compiled/css/*
