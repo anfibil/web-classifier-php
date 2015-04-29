@@ -90,6 +90,27 @@ class Result
     private $accuracy;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="precision_score", type="float", nullable=true)
+     */
+    private $precision_score;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="recall_score", type="float", nullable=true)
+     */
+    private $recall_score;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="f1_score", type="float", nullable=true)
+     */
+    private $f1_score;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="report_data", type="json_array", nullable=true)
@@ -272,6 +293,75 @@ class Result
     public function setAccuracy($accuracy)
     {
         $this->accuracy = $accuracy;
+
+        return $this;
+    }
+
+    /**
+     * Get precision
+     *
+     * @return float
+     */
+    public function getPrecision_score()
+    {
+        return $this->precision_score;
+    }
+
+    /**
+     * Set precision_score
+     *
+     * @param float $precision_score
+     * @return Result
+     */
+    public function setPrecision_score($precision_score)
+    {
+        $this->precision_score = $precision_score;
+
+        return $this;
+    }
+
+    /**
+     * Get recall_score
+     *
+     * @return float
+     */
+    public function getRecall_score()
+    {
+        return $this->recall_score;
+    }
+
+    /**
+     * Set recall_score
+     *
+     * @param float $recall_score
+     * @return Result
+     */
+    public function setRecall_score($recall_score)
+    {
+        $this->recall_score = $recall_score;
+
+        return $this;
+    }
+
+    /**
+     * Get f1_score
+     *
+     * @return float
+     */
+    public function getF1_score()
+    {
+        return $this->f1_score;
+    }
+
+    /**
+     * Set f1_score
+     *
+     * @param float $f1_score
+     * @return Result
+     */
+    public function setF1_score($f1_score)
+    {
+        $this->f1_score = $f1_score;
 
         return $this;
     }

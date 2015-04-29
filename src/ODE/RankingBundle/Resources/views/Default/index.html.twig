@@ -111,6 +111,9 @@
                                 <th>Accuracy</th>
                                 <th>AUROC</th>
                                 <th>AUPR</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1 Score</th>
                                 <th>Runtime</th>
                                 <th>Date</th>
                             </tr>
@@ -124,6 +127,9 @@
                                 <th>Accuracy</th>
                                 <th>AUROC</th>
                                 <th>AUPR</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1 Score</th>
                                 <th>Runtime</th>
                                 <th>Date</th>
                             </tr>
@@ -173,6 +179,8 @@
                         },
                         {"orderable": false, "targets": [1, 2]},
                         {"searchable": false, "orderable": false, "targets": 0},
+                        { "width": "10%", "targets": 1 },
+                        { "width": "12%", "targets": 10 }
 
                     ],
                     order: [[3, 'desc']],
@@ -184,6 +192,9 @@
                         {"asSorting": ["desc", "asc"]},
                         {"asSorting": ["desc", "asc"]},
                         {"asSorting": ["asc", "desc"]},
+                        {"asSorting": ["desc", "asc"]},
+                        {"asSorting": ["desc", "asc"]},
+                        {"asSorting": ["desc", "asc"]},
                         null
                     ],
                     responsive: true, // TODO: This doesn't seem to be working

@@ -20,7 +20,7 @@ class DefaultController extends Controller
     public function getTableDataAction(Request $request)
     {
         $dataset_id = $request->query->get('dataset_id');
-        $fields = array('partial r.{id,user,model,accuracy,auroc,aupr,runtime,date}');
+        $fields = array('partial r.{id,user,model,accuracy,auroc,aupr,precision_score,recall_score,f1_score,runtime,date}');
         $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
         $results = $repository->createQueryBuilder('r')
             ->select($fields)
@@ -42,11 +42,14 @@ class DefaultController extends Controller
             $accuracy = $result->getAccuracy();
             $auroc = $result->getAuroc();
             $aupr = $result->getAupr();
+            $precision = $result->getPrecision_score();
+            $recall = $result->getRecall_score();
+            $f1_score = $result->getF1_score();
             $runtime = $result->getRuntime();
             $date = $result->getDate();
             $id = $result->getId();
 
-            $result = array($user,$model,$accuracy,$auroc,$aupr,$runtime,$date,$id);
+            $result = array($user,$model,$accuracy,$auroc,$aupr,$precision,$recall,$f1_score,$runtime,$date,$id);
 
             // Remove keys from array to comply with what datatables expects
             $result = array_values($result);

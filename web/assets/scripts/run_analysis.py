@@ -179,9 +179,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn import cross_validation
-from sklearn.metrics import roc_curve, auc, precision_recall_curve, confusion_matrix, classification_report
 from scipy import interp
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import *
 
 # Declare all classifiers (note that the keys here map to the keys on ode_models)
 clfs = {
@@ -273,6 +273,9 @@ confusion_matrix = str(confusion_matrix(y_original_values, y_pred).tolist()).rep
 # Store a list of the numeric values returned by classification_report()
 clf_report = re.sub(r'[^\d.]+', ', ', classification_report(y_original_values, y_pred))[5:-2]
 
+# Compute precision, recall and f1-score
+precision, recall, f1_score, support = precision_recall_fscore_support(y_original_values, y_pred)
+
 # Limit the number of instances saved to DB so report won't crash
 LAST_INDEX = 1000 if (len(indexes)>1000) else len(indexes)
 
@@ -292,7 +295,7 @@ report_data = json.dumps({'roc_points':roc_points, 'prc_points':prc_points, 'con
 
 # Update the entry in the database to reflect completion
 stop = timeit.default_timer()
-cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", aupr="+str(aupr)+", auroc="+str(auroc)+", accuracy="+str(accuracy)+", report_data=\'"+report_data+"\' WHERE id="+analysisID)
+cursor.execute("UPDATE ode_results SET finished=1, runtime="+str(stop-start)+", aupr="+str(aupr)+", auroc="+str(auroc)+", accuracy="+str(accuracy)+", precision_score="+str(precision[1])+", recall_score="+str(recall[1])+", f1_score="+str(f1_score[1])+", report_data=\'"+report_data+"\' WHERE id="+analysisID)
 db.commit()
 
 # Close connection with the database
