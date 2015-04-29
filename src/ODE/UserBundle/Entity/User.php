@@ -65,9 +65,9 @@ class User extends BaseUser
     protected $affiliation;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
      */
-    protected $lastEdited;
+    protected $member_since;
 
     /**
      * @Assert\File(maxSize="8192k")
@@ -93,6 +93,9 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->results = new ArrayCollection();
+
+        $objDateTime = new \DateTime('NOW');
+        $this->member_since = $objDateTime->format("F j, Y, g:i a T");
     }
 
     // --------------------//
@@ -139,6 +142,11 @@ class User extends BaseUser
     public function getAffiliation()
     {
         return $this->affiliation;
+    }
+
+    public function getMember_since()
+    {
+        return $this->member_since;
     }
 
     public function setAffiliation($affiliation)
@@ -226,30 +234,9 @@ class User extends BaseUser
     }
 
 
-    public function setLastEdited($lastEdited)
-    {
-        $this->lastEdited = $lastEdited;
-
-        return $this;
-    }
-
-    public function getLastEdited()
-    {
-        return $this->lastEdited;
-    }
-
     // --------------------//
     // Lifecycle Callbacks //
     // --------------------//
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function setLastEditedValueAsNow() {
-        //TODO: This does not seem to be updating the database
-        $this->setLastEdited(new \DateTime());
-    }
 
     /**
      * @ORM\PrePersist()
