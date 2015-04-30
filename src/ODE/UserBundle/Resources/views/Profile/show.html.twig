@@ -31,11 +31,11 @@
                         <h5>Profile Detail</h5>
                     </div>
                     <div>
-                        <div class="ibox-content no-padding border-left-right">
+                        <div class="ibox-content no-padding border-left-right text-center">
                             <img alt="image" class="img-responsive" src={{ app.user.profilePicturePath }}>
                         </div>
                         <div class="ibox-content profile-content">
-                            <h3><strong>{{ app.user.firstname }} {{ app.user.lastname }}</strong></h3>
+                            <h4><strong>{{ app.user.firstname }} {{ app.user.lastname }}</strong></h4>
                             <p><i class="fa fa-calendar"></i> <b>Member Since:</b> {{ app.user.member_since }}</p>
                             <p><i class="fa fa-university"></i> <b>Affiliation:</b> {{ app.user.affiliation }}</p>
                             <h5>
@@ -45,17 +45,21 @@
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
                             </p>
                             <div class="row m-t-lg">
-                                <div class="col-md-4">
+                                <div class="col-md-3 text-center">
                                     <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
-                                    <h5><strong>169</strong> Posts</h5>
+                                    <h5><strong><span id="n_analysis"></span></strong> Analysis</h5>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3 text-center">
                                     <span class="line">5,3,9,6,5,9,7,3,5,2</span>
-                                    <h5><strong>28</strong> Following</h5>
+                                    <h5><strong><span id="avg_auroc"></span></strong> Mean AUROC</h5>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3 text-center">
+                                    <span class="line">5,3,9,6,5,9,7,3,5,2</span>
+                                    <h5><strong><span id="avg_aupr"></span></strong> Mean AUPR</h5>
+                                </div>
+                                <div class="col-md-3 text-center">
                                     <span class="bar">5,3,2,-1,-3,-2,2,3,5,2</span>
-                                    <h5><strong>240</strong> Followers</h5>
+                                    <h5><strong><span id="total_runtime"></span></strong> Total Runtime</h5>
                                 </div>
                             </div>
                             <div class="user-button">
@@ -64,7 +68,7 @@
                                         <button type="button" class="btn btn-primary btn-sm btn-block"><i class="fa fa-envelope"></i> Send Message</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-default btn-sm btn-block"><i class="fa fa-coffee"></i> Buy a coffee</button>
+                                        <button type="button" class="btn btn-default btn-sm btn-block" onclick="window.location.href='/profile/edit'"><i class="fa fa-pencil-square-o"></i> Edit Profile</button>
                                     </div>
                                 </div>
                             </div>
@@ -76,4 +80,56 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    {% javascripts
+        'assets/js/plugins/peity/jquery.peity.min.js' output='compiled/js/show-profile.js'%}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function getUserInfo(user_id) {
+                jQuery.ajax({
+                    async: true,
+                    dataType: "json",
+                    url: "/profile/get-user-info?user_id=" + user_id,
+                    data: "",
+                    success: function (data) {
+                        $("#n_analysis").text(data.n_analysis);
+                        $("#avg_auroc").text(parseFloat(data.avg_auroc).toFixed(4));
+                        $("#avg_aupr").text(parseFloat(data.avg_aupr).toFixed(4));
+
+                        var totalSec = parseInt(data.total_runtime);
+                        var hours = parseInt( totalSec / 3600 ) % 24;
+                        var minutes = parseInt( totalSec / 60 ) % 60;
+                        var seconds = totalSec % 60;
+                        var total_runtime = (hours < 10 ? "0" + hours : hours) + "h " + (minutes < 10 ? "0" + minutes : minutes) + "m " + (seconds  < 10 ? "0" + seconds : seconds + "s");
+
+                        $("#total_runtime").text(total_runtime);
+                    }
+                }).fail(function () {
+                    alert("Could not retrieve usre information.");
+                });
+            }
+            getUserInfo({{ user.id }});
+
+        });
+
+        $(".line").peity("line",{
+            fill: '#1ab394',
+            stroke:'#169c81'
+        })
+
+        $(".bar").peity("bar", {
+            fill: ["#1ab394", "#d7d7d7"]
+        })
+
+        $(".bar_dashboard").peity("bar", {
+            fill: ["#1ab394", "#d7d7d7"],
+            width:100
+        })
+    </script>
 {% endblock %}

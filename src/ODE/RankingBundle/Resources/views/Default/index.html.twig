@@ -143,189 +143,189 @@
 
 {% endblock %}
 
-    {% block scripts %}
-        {{ parent() }}
-        {% javascripts
-        'assets/js/plugins/dataTables/jquery.dataTables.js'
-        'assets/js/plugins/dataTables/dataTables.bootstrap.js'
-        'assets/js/plugins/qTip/jquery.qtip.js'
-        'assets/js/plugins/dataTables/dataTables.responsive.js'
-        output='compiled/js/ranking.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+{% block scripts %}
+    {{ parent() }}
+    {% javascripts
+    'assets/js/plugins/dataTables/jquery.dataTables.js'
+    'assets/js/plugins/dataTables/dataTables.bootstrap.js'
+    'assets/js/plugins/qTip/jquery.qtip.js'
+    'assets/js/plugins/dataTables/dataTables.responsive.js'
+    output='compiled/js/ranking.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                var table = $('#ranking_table').DataTable({
-                    "processing": true,
-                    "bAutoWidth": false,
-                    "ajax": {
-                        url: "/ranking/getdata",
-                        data: function (d) {
-                            d.dataset_id = $('#dataset').val()
-                        }
-                    },
-                    "columnDefs": [
-                        {
-                            // Custom render to the user col
-                            "render": function (data, type, row) {
-                                var output = "<a href='/user/" + data.username + "'>";
-                                if (data.picture) {
-                                    output += "<img title='" + data.username + "' src='" + data.picture + "' alt='" + data.username + "' class='smalluserpicture' /> "; // Do not remove this last space
-                                }
-                                output += " <span class='hidden-sm hidden-xs'>" + data.username + "</span></a>";
-                                return output;
-                            },
-                            "targets": 1
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#ranking_table').DataTable({
+                "processing": true,
+                "bAutoWidth": false,
+                "ajax": {
+                    url: "/ranking/getdata",
+                    data: function (d) {
+                        d.dataset_id = $('#dataset').val()
+                    }
+                },
+                "columnDefs": [
+                    {
+                        // Custom render to the user col
+                        "render": function (data, type, row) {
+                            var output = "<a href='/user/" + data.username + "'>";
+                            if (data.picture) {
+                                output += "<img title='" + data.username + "' src='" + data.picture + "' alt='" + data.username + "' class='smalluserpicture' /> "; // Do not remove this last space
+                            }
+                            output += " <span class='hidden-sm hidden-xs'>" + data.username + "</span></a>";
+                            return output;
                         },
-                        {"orderable": false, "targets": [1, 2]},
-                        {"searchable": false, "orderable": false, "targets": 0}
-                    ],
-                    order: [[3, 'desc']],
-                    "aoColumns": [
-                        null,
-                        {"sWidth": "10%"},
-                        null,
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["desc", "asc"]},
-                        {"asSorting": ["asc", "desc"]},
-                        {"asSorting": ["desc", "asc"],  "sWidth": "11%"}
-                    ],
-                    responsive: true,
-                    bSortClasses: false
-                });
-
-
-                //This will make each row act like a link
-                $('#ranking_table tbody').on('click', 'tr', function () {
-                    var result_id = table.row(this).data()[11];
-                    if (result_id > 0) {
-                        window.location = "/analysis/report?id=" + result_id;
-                    }
-                });
-
-
-                // TODO: Edit below to reverse ranking if the user sort a column in ascending order
-                // Except maybe for run time where lower is better
-                // Note: We also need to account for ties here and display the same rank for them
-                table.on('order.dt search.dt', function () {
-                    table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
-                }).draw();
-
-                $('#dataset').on('change', function (e) {
-                    getTop($('#dataset').val());
-                    table.ajax.reload();
-                    table.columns.adjust().draw();
-                });
-
-                function getTop(dataset_id) {
-                    jQuery.ajax({
-                        async: true,
-                        dataType: "json",
-                        url: "/ranking/gettop?dataset_id=" + dataset_id,
-                        data: "",
-                        success: function (data) {
-                            if (data.accuracy) {
-                                $('#top_accuracy').text(parseFloat(data.accuracy.top).toFixed(4));
-                                $('#top_accuracy_username').text(data.accuracy.username);
-                                $('#top_accuracy_container').attr('data-result-id', data.accuracy.result_id);
-                            } else {
-                                $('#top_accuracy').text("Unavailable");
-                                $('#top_accuracy_username').text("Unavailable");
-                                $('#top_accuracy_container').attr('data-result-id', 0);
-                            }
-
-                            if (data.auroc) {
-                                $('#top_auroc').text(parseFloat(data.auroc.top).toFixed(4));
-                                $('#top_auroc_username').text(data.auroc.username);
-                                $('#top_auroc_container').attr('data-result-id', data.auroc.result_id);
-                            } else {
-                                $('#top_auroc').text("Unavailable");
-                                $('#top_auroc_username').text("Unavailable");
-                                $('#top_auroc_container').attr('data-result-id', 0);
-                            }
-
-                            if (data.aupr) {
-                                $('#top_aupr').text(parseFloat(data.aupr.top).toFixed(4));
-                                $('#top_aupr_username').text(data.aupr.username);
-                                $('#top_aupr_container').attr('data-result-id', data.aupr.result_id);
-                            } else {
-                                $('#top_aupr').text("Unavailable");
-                                $('#top_aupr_username').text("Unavailable");
-                                $('#top_aupr_container').attr('data-result-id', 0);
-                            }
-
-                            if (data.runtime) {
-                                $('#top_runtime').text(parseFloat(data.runtime.top).toFixed(4));
-                                $('#top_runtime_username').text(data.runtime.username);
-                                $('#top_runtime_container').attr('data-result-id', data.runtime.result_id);
-                            } else {
-                                $('#top_runtime').text("Unavailable");
-                                $('#top_runtime_username').text("Unavailable");
-                                $('#top_runtime_container').attr('data-result-id', 0);
-                            }
-
-                        }
-                    }).fail(function () {
-                        alert("Could not retrieve the top results.");
-                    });
-                }
-
-                getTop($('#dataset').val());
-
-
-                //This will appent to the event window resize the function that will resize the datatable
-                $(window).resize(function (evt) {
-                    if (setTimeout_resize_table_rankings !== false) {
-                        clearTimeout(setTimeout_resize_table_rankings);
-                    }
-                    setTimeout_resize_table_rankings = setTimeout(fn_resize_table_rankings, 300); //Time to update in miliseconds
-                });
-
+                        "targets": 1
+                    },
+                    {"orderable": false, "targets": [1, 2]},
+                    {"searchable": false, "orderable": false, "targets": 0}
+                ],
+                order: [[3, 'desc']],
+                "aoColumns": [
+                    null,
+                    {"sWidth": "10%"},
+                    null,
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["desc", "asc"]},
+                    {"asSorting": ["asc", "desc"]},
+                    {"asSorting": ["desc", "asc"],  "sWidth": "11%"}
+                ],
+                responsive: true,
+                bSortClasses: false
             });
 
-            // Some variables to control the resize events
-            var setTimeout_resize_table_rankings = false;
-            var last_size_resize_table_rankings = false;
 
-            /**
-             * This function will hide the colunm based on the window inner width
-             */
-            function fn_resize_table_rankings() {
-                if (window.innerWidth == last_size_resize_table_rankings) {
-                    return;
-                }
-                last_size_resize_table_rankings = window.innerWidth;
-                try {
-                    $('#ranking_table').DataTable().column(2).visible(window.innerWidth > 1000, true);
-                    $('#ranking_table').DataTable().column(7).visible(window.innerWidth > 750, true);
-                    $('#ranking_table').DataTable().column(1).visible(window.innerWidth > 600, true);
-                } catch (e) {
-                    if (console && console.log) {
-                        console.log("Erro when resizing ranking datatable: " + e);
-                    }
-                }
-                clearTimeout(setTimeout_resize_table_rankings);
-                setTimeout_resize_table_rankings = false;
-            }
-
-
-            /**
-             * THis function is used to open a top result
-             * @param obj The html tag the user clicked
-             */
-            function open_top_results(obj) {
-                var result_id = $(obj).attr('data-result-id');
+            //This will make each row act like a link
+            $('#ranking_table tbody').on('click', 'tr', function () {
+                var result_id = table.row(this).data()[11];
                 if (result_id > 0) {
                     window.location = "/analysis/report?id=" + result_id;
                 }
+            });
+
+
+            // TODO: Edit below to reverse ranking if the user sort a column in ascending order
+            // Except maybe for run time where lower is better
+            // Note: We also need to account for ties here and display the same rank for them
+            table.on('order.dt search.dt', function () {
+                table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+
+            $('#dataset').on('change', function (e) {
+                getTop($('#dataset').val());
+                table.ajax.reload();
+                table.columns.adjust().draw();
+            });
+
+            function getTop(dataset_id) {
+                jQuery.ajax({
+                    async: true,
+                    dataType: "json",
+                    url: "/ranking/gettop?dataset_id=" + dataset_id,
+                    data: "",
+                    success: function (data) {
+                        if (data.accuracy) {
+                            $('#top_accuracy').text(parseFloat(data.accuracy.top).toFixed(4));
+                            $('#top_accuracy_username').text(data.accuracy.username);
+                            $('#top_accuracy_container').attr('data-result-id', data.accuracy.result_id);
+                        } else {
+                            $('#top_accuracy').text("Unavailable");
+                            $('#top_accuracy_username').text("Unavailable");
+                            $('#top_accuracy_container').attr('data-result-id', 0);
+                        }
+
+                        if (data.auroc) {
+                            $('#top_auroc').text(parseFloat(data.auroc.top).toFixed(4));
+                            $('#top_auroc_username').text(data.auroc.username);
+                            $('#top_auroc_container').attr('data-result-id', data.auroc.result_id);
+                        } else {
+                            $('#top_auroc').text("Unavailable");
+                            $('#top_auroc_username').text("Unavailable");
+                            $('#top_auroc_container').attr('data-result-id', 0);
+                        }
+
+                        if (data.aupr) {
+                            $('#top_aupr').text(parseFloat(data.aupr.top).toFixed(4));
+                            $('#top_aupr_username').text(data.aupr.username);
+                            $('#top_aupr_container').attr('data-result-id', data.aupr.result_id);
+                        } else {
+                            $('#top_aupr').text("Unavailable");
+                            $('#top_aupr_username').text("Unavailable");
+                            $('#top_aupr_container').attr('data-result-id', 0);
+                        }
+
+                        if (data.runtime) {
+                            $('#top_runtime').text(parseFloat(data.runtime.top).toFixed(4));
+                            $('#top_runtime_username').text(data.runtime.username);
+                            $('#top_runtime_container').attr('data-result-id', data.runtime.result_id);
+                        } else {
+                            $('#top_runtime').text("Unavailable");
+                            $('#top_runtime_username').text("Unavailable");
+                            $('#top_runtime_container').attr('data-result-id', 0);
+                        }
+
+                    }
+                }).fail(function () {
+                    alert("Could not retrieve the top results.");
+                });
             }
 
-        </script>
-    {% endblock %}
+            getTop($('#dataset').val());
+
+
+            //This will appent to the event window resize the function that will resize the datatable
+            $(window).resize(function (evt) {
+                if (setTimeout_resize_table_rankings !== false) {
+                    clearTimeout(setTimeout_resize_table_rankings);
+                }
+                setTimeout_resize_table_rankings = setTimeout(fn_resize_table_rankings, 300); //Time to update in miliseconds
+            });
+
+        });
+
+        // Some variables to control the resize events
+        var setTimeout_resize_table_rankings = false;
+        var last_size_resize_table_rankings = false;
+
+        /**
+         * This function will hide the colunm based on the window inner width
+         */
+        function fn_resize_table_rankings() {
+            if (window.innerWidth == last_size_resize_table_rankings) {
+                return;
+            }
+            last_size_resize_table_rankings = window.innerWidth;
+            try {
+                $('#ranking_table').DataTable().column(2).visible(window.innerWidth > 1000, true);
+                $('#ranking_table').DataTable().column(7).visible(window.innerWidth > 750, true);
+                $('#ranking_table').DataTable().column(1).visible(window.innerWidth > 600, true);
+            } catch (e) {
+                if (console && console.log) {
+                    console.log("Erro when resizing ranking datatable: " + e);
+                }
+            }
+            clearTimeout(setTimeout_resize_table_rankings);
+            setTimeout_resize_table_rankings = false;
+        }
+
+
+        /**
+         * THis function is used to open a top result
+         * @param obj The html tag the user clicked
+         */
+        function open_top_results(obj) {
+            var result_id = $(obj).attr('data-result-id');
+            if (result_id > 0) {
+                window.location = "/analysis/report?id=" + result_id;
+            }
+        }
+
+    </script>
+{% endblock %}
