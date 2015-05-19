@@ -177,19 +177,20 @@ if preprocessing_params['pca']:
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import Perceptron, LogisticRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn import cross_validation
 from scipy import interp
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import *
 
 # Declare all classifiers (note that the keys here map to the keys on ode_models)
 clfs = {
             1 : DecisionTreeClassifier(),
             2 : GaussianNB(),
-            3 : Perceptron(),
-            4 : KNeighborsClassifier(),
-            5 : LogisticRegression()
+            3 : KNeighborsClassifier(),
+            4 : LogisticRegression(),
+            5 : SVC()
         }
 
 # Grab correct classifier and set the parameters based on what the user specified 

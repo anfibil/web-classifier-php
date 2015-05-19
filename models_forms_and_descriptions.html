@@ -4,7 +4,7 @@ DECISION TREE -- FORM
 
 <div class="row">
     <div class="col-lg-2">
-        <label>Criterion:</label>
+        <label>Criterion: <i class="fa fa-question-circle" style="color:#676a6c" id="q9"></i></label>
         <div class="radio i-checks">
             <label>
                 <input type="radio" value="gini" name="criterion" checked="" class="required"> Gini</label>
@@ -15,7 +15,7 @@ DECISION TREE -- FORM
         </div>
     </div>
     <div class="col-lg-2">
-        <label>Splitter:</label>
+        <label>Splitter: <i class="fa fa-question-circle" style="color:#676a6c" id="q10"></i></label>
         <div class="radio i-checks">
             <label>
                 <input type="radio" value="best" name="splitter" checked="" class="required"> Best</label>
@@ -26,7 +26,7 @@ DECISION TREE -- FORM
         </div>
     </div>
     <div class="col-lg-4 text-center">
-        <label>max_leaf_nodes = <span class="example-val" style="color:#1AB394" id="max_leaf_nodes-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q9"></i></label>
+        <label>max_leaf_nodes = <span class="example-val" style="color:#1AB394" id="max_leaf_nodes-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q11"></i></label>
         <div class="col-lg-10 col-lg-offset-1">
             <div id="max_leaf_nodes-slider"></div>
             <input type="hidden" name="max_leaf_nodes" id="max_leaf_nodes" value="">
@@ -34,7 +34,7 @@ DECISION TREE -- FORM
         </div>
     </div>
     <div class="col-lg-4 text-center">
-        <label>min_samples_leaf = <span class="example-val" style="color:#1AB394" id="min_samples_leaf-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q90"></i></label>
+        <label>min_samples_leaf = <span class="example-val" style="color:#1AB394" id="min_samples_leaf-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q12"></i></label>
         <div class="col-lg-10 col-lg-offset-1">
             <div id="min_samples_leaf-slider"></div>
             <input type="hidden" name="min_samples_leaf" id="min_samples_leaf" value="">
@@ -44,7 +44,7 @@ DECISION TREE -- FORM
 <div class="hr-line-dashed"></div>
 <div class="row">
     <div class="col-lg-4 text-center">
-        <label>max_features = <span class="example-val" style="color:#1AB394" id="max_features-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q91"></i></label>
+        <label>max_features = <span class="example-val" style="color:#1AB394" id="max_features-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q13"></i></label>
         <div class="col-lg-10 col-lg-offset-1">
             <div id="max_features-slider"></div>
             <input type="hidden" name="max_features" id="max_features" value="">
@@ -52,14 +52,14 @@ DECISION TREE -- FORM
         </div>
     </div>
     <div class="col-lg-4 text-center">
-        <label>min_samples_split = <span class="example-val" style="color:#1AB394" id="min_samples_split-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q92"></i></label>
+        <label>min_samples_split = <span class="example-val" style="color:#1AB394" id="min_samples_split-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q14"></i></label>
         <div class="col-lg-10 col-lg-offset-1">
             <div id="min_samples_split-slider"></div>
             <input type="hidden" name="min_samples_split" id="min_samples_split" value="">
         </div>
     </div>
     <div class="col-lg-4 text-center" style="display:inline-block; vertical-align: middle; float: none; margin-right:-4px;">
-        <label>max_depth = <span class="example-val" style="color:#1AB394" id="max_depth-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q93"></i></label>
+        <label>max_depth = <span class="example-val" style="color:#1AB394" id="max_depth-value"></span>  <i class="fa fa-question-circle" style="color:#676a6c" id="q15"></i></label>
         <div class="col-lg-10 col-lg-offset-1">
             <div id="max_depth-slider"></div>
             <input type="hidden" name="max_depth" id="max_depth" value="">
@@ -131,33 +131,47 @@ DECISION TREE -- FORM
 
         $("#q9").qtip({ 
                 content: {
+                    text: 'The function to measure the quality of a split. Supported criteria are “gini” for the Gini impurity and “entropy” for the information gain.',
+                    title:'<i>criterion </i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q10").qtip({ 
+                content: {
+                    text: 'The strategy used to choose the split at each node. Supported strategies are “best” to choose the best split and “random” to choose the best random split.',
+                    title:'<i>splitter</i>'
+                },
+                style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+        });
+        $("#q11").qtip({ 
+                content: {
                     text: 'Grow a tree with <i>max_leaf_nodes</i> in best-first fashion. Best nodes are defined as relative reduction in impurity. If <strong>0</strong> then unlimited number of leaf nodes. If not <strong>0</strong> then <i>max_depth</i> will be ignored.',
                     title:'<i>max_leaf_nodes</i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
-        $("#q90").qtip({ 
+        $("#q12").qtip({ 
                 content: {
                     text: 'The minimum number of samples required to be at a leaf node.',
                     title:'<i>min_samples_leaf</i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
-        $("#q91").qtip({ 
+        $("#q13").qtip({ 
                 content: {
                     text: 'The number of features to consider when looking for the best split.',
                     title:'<i>max_features</i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
-        $("#q92").qtip({ 
+        $("#q14").qtip({ 
                 content: {
                     text: 'The minimum number of samples required to split an internal node.',
                     title:'<i>min_samples_split</i>'
                 },
                 style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
-        $("#q93").qtip({ 
+        $("#q15").qtip({ 
                 content: {
                     text: 'The maximum depth of the tree. If <strong>0</strong>, then nodes are expanded until all leaves are pure or until all leaves contain less than <i>min_samples_split</i> samples. Ignored if <i>max_leaf_nodes</i> is not <strong>0</strong>.',
                     title:'<i>max_depth</i>'
@@ -834,4 +848,293 @@ LOGISTIC REGRESSION -- FORM
             style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
         });
     });
+</script>
+
+===========================================================================================================================================================================================================
+
+SVM -- DESCRIPTION
+
+<h4 class="m-b-xxs text-center">Suport Vector Machine <i class=
+"fa fa-line-chart"></i></h4>
+
+
+<p>Support vector machines are supervised learning models with associated learning algorithms that analyze data and recognize patterns. Given a set of training examples, each marked as belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples into one category or the other, making it a non-probabilistic binary linear classifier. <a href=
+"http://en.wikipedia.org/wiki/Support_vector_machine" target=
+"_blank">[ref]</a></p>
+
+
+<div class="col-xs-6">
+    <div>
+        <span>Complexity</span> <small class="pull-right">8/10</small>
+    </div>
+
+
+    <div class="progress progress-small">
+        <div class="progress-bar progress-bar-danger" style="width: 80%;">
+        </div>
+    </div>
+</div>
+
+
+<div class="col-xs-6">
+    <div>
+        <span>Interpretability</span> <small class="pull-right">7/10</small>
+    </div>
+
+
+    <div class="progress progress-small">
+        <div class="progress-bar" style="width: 80%;">
+        </div>
+    </div>
+</div>
+===========================================================================================================================================================================================================
+
+SVM -- FORM
+
+<input name="probability" type="hidden" value="1">
+<div class="row">
+    <div class="col-lg-2">
+        <label>Kernel: <i class="fa fa-question-circle" id="q9" style=
+        "color:#676a6c"></i></label> <select class="form-control required"
+        id="kernel" name="kernel">
+            <option value="linear">
+                Linear
+            </option>
+
+            <option value="poly">
+                Poly
+            </option>
+
+            <option value="rbf">
+                Rbf
+            </option>
+
+            <option value="sigmoid">
+                Sigmoid
+            </option>
+        </select>
+    </div>
+
+    <div class="col-lg-2">
+        <label>Shrinking: <i class="fa fa-question-circle" id="q10" style=
+        "color:#676a6c"></i></label>
+
+        <div class="radio i-checks">
+            <label><input checked class="required" name="shrinking" type=
+            "radio" value="1"> True</label>
+        </div>
+
+        <div class="radio i-checks">
+            <label><input class="required" name="shrinking" type="radio"
+            value="0"> False</label>
+        </div>
+    </div>
+
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>C = <span class="example-val" id="C-value" style=
+            "color:#1AB394"></span> <i class="fa fa-question-circle" id=
+            "q11" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="C-slider"></div><input id="C" name="C" type=
+                "hidden" value="">
+            </div>
+        </div><br>
+
+        <div class="row text-center">
+            <label>max_iter = <span class="example-val" id="max_iter-value"
+            style="color:#1AB394"></span> <i class="fa fa-question-circle"
+            id="q12" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="max_iter-slider"></div><input id="max_iter" name=
+                "max_iter" type="hidden" value="">
+            </div>
+        </div><br>
+
+        <div class="row text-center">
+            <label>random_state = <span class="example-val" id=
+            "random_state-value" style="color:#1AB394"></span> <i class=
+            "fa fa-question-circle" id="q13" style=
+            "color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="random_state-slider"></div><input id=
+                "random_state" name="random_state" type="hidden" value="">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 text-center">
+        <div class="row text-center">
+            <label>degree = <span class="parameter_value" id=
+            "degree-value"></span> <i class="fa fa-question-circle" id=
+            "q14" style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="degree-slider"></div><input id="degree" name=
+                "degree" type="hidden" value="">
+            </div>
+        </div><br>
+
+        <div class="row text-center">
+            <label>gamma = <span class="parameter_value_off" id=
+            "gamma-value"></span> <i class="fa fa-question-circle" id="q15"
+            style="color:#676a6c"></i></label>
+
+            <div class="col-lg-10 col-lg-offset-1">
+                <div id="gamma-slider"></div><input id="gamma" name="gamma"
+                type="hidden" value="">
+            </div>
+        </div>
+    </div>
+</div><script>
+$(document).ready(function() {
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+
+    $('#C-slider').noUiSlider({
+        start: [1],
+        step: 0.1,
+        connect: "lower",
+        range: {
+            'min': [0.1],
+            'max': [10]
+        }
+    });
+    $('#C-slider').Link('lower').to($('#C-value'));
+    $('#C-slider').Link('lower').to($('#C'));
+
+    $('#max_iter-slider').noUiSlider({
+        start: [100],
+        step: 1,
+        connect: "lower",
+        range: {
+            'min': [1],
+            'max': [1000]
+        }
+    });
+    $('#max_iter-slider').Link('lower').to($('#max_iter-value'));
+    $('#max_iter-slider').Link('lower').to($('#max_iter'));
+
+    $('#random_state-slider').noUiSlider({
+        start: [1],
+        step: 1,
+        connect: "lower",
+        range: {
+            'min': [1],
+            'max': [100]
+        }
+    });
+    $('#random_state-slider').Link('lower').to($('#random_state-value'));
+    $('#random_state-slider').Link('lower').to($('#random_state'));
+
+    $('#degree-slider').noUiSlider({
+        start: [1],
+        step: 1,
+        connect: "lower",
+        range: {
+            'min': [1],
+            'max': [10]
+        }
+    });
+    $('#degree-slider').Link('lower').to($('#degree-value'));
+    $('#degree-slider').Link('lower').to($('#degree'));
+
+    $('#gamma-slider').noUiSlider({
+        start: [1],
+        step: 0.1,
+        connect: "lower",
+        range: {
+            'min': [0.1],
+            'max': [10]
+        }
+    });
+    $('#gamma-slider').Link('lower').to($('#gamma-value'));
+    $('#gamma-slider').Link('lower').to($('#gamma'));
+    $('#gamma-slider').attr('disabled', 'disabled');
+
+
+    $("#q9").qtip({
+        content: {
+            text: 'Specifies the kernel type to be used in the algorithm. It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or a callable. If none is given, ‘rbf’ will be used. If a callable is given it is used to precompute the kernel matrix.',
+            title:'<i>Kernel<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q10").qtip({
+        content: {
+            text: 'Whether to use the shrinking heuristic.',
+            title:'<i>shrinking<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q11").qtip({
+        content: {
+            text: 'Penalty parameter C of the error term.',
+            title:'<i>c<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q12").qtip({
+        content: {
+            text: 'Hard limit on iterations within solver.',
+            title:'<i>max_iter<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q13").qtip({
+        content: {
+            text: 'The seed of the pseudo random number generator to use when shuffling the data for probability estimation.',
+            title:'<i>random_state<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q14").qtip({
+        content: {
+            text: 'Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.',
+            title:'<i>degree<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+    $("#q15").qtip({
+        content: {
+            text: 'Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’. If gamma is 0.0 then 1/n_features will be used instead.',
+            title:'<i>gamma<\/i>'
+        },
+        style: { classes: 'qtip-rounded qtip-shadow qtip-cream' }
+    });
+
+
+    $( "#kernel" ).change(function () {
+        var kernel_choice = "";
+        $( "select option:selected" ).each(function() {
+          kernel_choice = $( this ).val();
+        });
+        
+        if (kernel_choice == 'linear') {
+            $('#degree-slider').removeAttr('disabled');
+            $('#degree-value').attr('class', "parameter_value");
+        }
+        else {
+            $('#degree-slider').attr('disabled', 'disabled');   
+            $('#degree-value').attr('class', "parameter_value_off");
+        }
+
+        if (kernel_choice == 'rbf' || kernel_choice == 'poly' || kernel_choice == 'sigmoid') {
+            $('#gamma-slider').removeAttr('disabled');
+            $('#gamma-value').attr('class', "parameter_value");
+        }
+        else {
+            $('#gamma-slider').attr('disabled', 'disabled');   
+            $('#gamma-value').attr('class', "parameter_value_off");
+        }
+      
+    })
+    .change();
+});
+
 </script>
