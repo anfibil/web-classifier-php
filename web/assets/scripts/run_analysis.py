@@ -181,6 +181,7 @@ from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn import cross_validation
 from scipy import interp
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, GradientBoostingClassifier
 from sklearn.svm import SVC
 from sklearn.metrics import *
 
@@ -191,7 +192,10 @@ clfs = {
             3 : KNeighborsClassifier(),
             4 : LogisticRegression(),
             5 : SVC(),
-            6 : SGDClassifier()
+            6 : SGDClassifier(),
+            7 : RandomForestClassifier(),
+            8 : ExtraTreesClassifier(),
+            9 : GradientBoostingClassifier()
         }
 
 model_params = ast.literal_eval(analysis[2])

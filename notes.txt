@@ -66,3 +66,5 @@ TODO: On leaderboard, default to anonymous profile picture for users without one
 TODO: Profile picture no longer updating automatically when user uploads new image. Or is it? It did just now.
 TODO: Leaderboard table User column renders with a much larger width than other columns. Try to fix that.
 TODO: Display parameters on report page
+TODO: Adjust max_features to account for when dimentionality reduction is used
+TODO: Revise all parameter values for classifiers along with their corresponding defaults
