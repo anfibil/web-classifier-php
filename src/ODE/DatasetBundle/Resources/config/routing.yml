@@ -1,3 +1,7 @@
 ode_dataset_homepage:
     path:     /datasets/
     defaults: { _controller: ODEDatasetBundle:Default:index }
+
+ode_dataset_upload:
+    path:     /datasets/upload
+    defaults: { _controller: ODEDatasetBundle:Upload:upload }

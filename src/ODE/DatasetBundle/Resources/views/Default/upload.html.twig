@@ -1,0 +1,44 @@
+{% extends 'base.html.twig'%}
+
+{% block body %}
+    {% if not success %}
+    <div class="row" style="padding: 50px 100px 19px 50px;">
+        <form class="form" method="POST" enctype="multipart/form-data">
+            <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-left:15px; padding-right:15px;">
+                <div class="form-control" data-trigger="fileinput">
+                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                    <span class="fileinput-filename"></span>
+                </div>
+                <span class="input-group-addon btn btn-default btn-file">
+                    <span class="fileinput-new">Select file</span>
+                    <span class="fileinput-exists">Change</span>
+                    <input type="file" name="datafile">
+                </span>
+                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6">
+                <label for="dataname">Dataset Name:</label>
+                <input type="text" class="form-control" name="dataname" id="dataname">
+                </div>
+                <div class="col-lg-6">
+                <label for="datadesc">Dataset Description:</label>
+                <input type="text" class="form-control" name="datadesc" id="datadesc">
+                </div>
+            </div>
+            <br /><br />
+            <hr />
+            <div class="span7 text-center p-lg">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        <div class="row span12 text-center">
+            <h2>{{ message }}</h2>
+        </div>
+    </div>
+    {% else %}
+        <div class="row span12 text-center">
+            <h2>{{ message }}</h2>
+        </div>
+    {% endif %}
+{% endblock %}
