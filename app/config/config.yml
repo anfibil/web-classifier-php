@@ -36,7 +36,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ODEAnalysisBundle, ODERankingBundle]
+    bundles:        [ODEAnalysisBundle, ODERankingBundle, FOSUserBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

@@ -177,24 +177,36 @@ if preprocessing_params['pca']:
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import Perceptron, LogisticRegression
+from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn import cross_validation
 from scipy import interp
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, GradientBoostingClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import *
 
 # Declare all classifiers (note that the keys here map to the keys on ode_models)
 clfs = {
             1 : DecisionTreeClassifier(),
             2 : GaussianNB(),
-            3 : Perceptron(),
-            4 : KNeighborsClassifier(),
-            5 : LogisticRegression()
+            3 : KNeighborsClassifier(),
+            4 : LogisticRegression(),
+            5 : SVC(),
+            6 : SGDClassifier(),
+            7 : RandomForestClassifier(),
+            8 : ExtraTreesClassifier(),
+            9 : GradientBoostingClassifier()
         }
+
+model_params = ast.literal_eval(analysis[2])
+
+# This seems necessary to avoid "shuffle must be True or False error when using SGDClassifier"
+if (analysis[3] == 6):
+    model_params['shuffle'] = bool(model_params['shuffle'])
 
 # Grab correct classifier and set the parameters based on what the user specified 
 if (analysis[2]):
-	clf = clfs[analysis[3]].set_params(**ast.literal_eval(analysis[2]))
+	clf = clfs[analysis[3]].set_params(**model_params)
 else:
 	clf = clfs[analysis[3]] 
 

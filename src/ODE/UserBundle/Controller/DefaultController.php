@@ -5,7 +5,7 @@ namespace ODE\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-//use ODE\UserBundle\Form\Type\RegistrationFormType;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -29,5 +29,41 @@ class DefaultController extends Controller
         return new JsonResponse(array(
             'status'=>'success'
         ));
+    }
+
+    public function getUserInfoAction(Request $request){
+        $user_id = $request->query->get('user_id');
+        $repository = $this->getDoctrine()->getRepository('ODEAnalysisBundle:Result');
+
+        $n_analysis = $repository->createQueryBuilder('r')
+            ->select('COUNT(r.id)')
+            ->where('r.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $avg_auroc = $repository->createQueryBuilder('r')
+            ->select('AVG(r.auroc)')
+            ->where('r.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $avg_aupr = $repository->createQueryBuilder('r')
+            ->select('AVG(r.aupr)')
+            ->where('r.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $total_runtime = $repository->createQueryBuilder('r')
+            ->select('SUM(r.runtime)')
+            ->where('r.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return new Response(json_encode(array('n_analysis'=>$n_analysis,'avg_auroc'=>$avg_auroc,'avg_aupr'=>$avg_aupr, 'total_runtime'=>$total_runtime)));
+
     }
 }

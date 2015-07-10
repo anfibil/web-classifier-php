@@ -5,3 +5,7 @@ ode_upload_profile_image:
     path:     /upload-profile-image
     defaults: { _controller: ODEUserBundle:Default:uploadProfilePicture }
     methods: [POST]
+
+get_user_information:
+    path:     /profile/get-user-info
+    defaults: { _controller: ODEUserBundle:Default:getUserInfo }
