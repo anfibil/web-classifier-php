@@ -1,8 +1,29 @@
+To run the app:
+----------------------------------------------------------------------
+php app/console server:run
+
+
 Running on dev vs. prod modes:
 ----------------------------------------------------------------------
 1) http://127.0.0.1:8000/app_dev.php/hello/Everaldo -> Opens the page in development mode.
 2) http://127.0.0.1:8000/app.php/hello/Everaldo -> Opens the same page in production mode.
 3) http://127.0.0.1:8000/hello/Reid -> Default is to open in development mode.
+
+
+To see changes on the production ("prod") environment:
+----------------------------------------------------------------------
+php app/console cache:clear --env=prod
+php app/console cache:clear (clears the dev env)
+
+
+For the database, create a table named symfony (via SQL) and run:
+----------------------------------------------------------------------
+php app/console doctrine:schema:update --force
+
+
+To create bundles using the Symfony console:
+----------------------------------------------------------------------
+php app/console generate:bundle -> Follow the instructions.
 
 
 Symfony2 plugin for PhpStorm (really helpful!):
@@ -16,53 +37,33 @@ For templating:
 Look at page 38 of the Symfony book "Optional Step 3: Create the Template".
 
 
-To see changes on the production ("prod") environment:
-----------------------------------------------------------------------
-php app/console cache:clear --env=prod
-php app/console cache:clear (clears the dev env)
-
-
-To create bundles using the Symfony console:
-----------------------------------------------------------------------
-php app/console generate:bundle -> Follow the instructions.
-
-
-For the database, create a table named symfony (via SQL) and run:
-----------------------------------------------------------------------
-php app/console doctrine:schema:update --force
-
-
-To run the app:
----------------
-php app/console server:run
-
-
 Cheat Sheet
-------------
+----------------------------------------------------------------------
 http://www.symfony2cheatsheet.com/
 
 
 Doctrine data types for entity fields
--------------------------------------
+----------------------------------------------------------------------
 http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 
 
 Installing xdebug
------------------
+----------------------------------------------------------------------
 http://xdebug.org/wizard.php
 
 To run the app in prod:
------------------------
-php app/console cache:clear --env=prod &  php app/console assetic:dump --env=prod --no-debug & php app/console server:run --env=prod --no-debug
+----------------------------------------------------------------------
+php app/console cache:clear --env=prod & php app/console assetic:dump --env=prod --no-debug & php app/console server:run --env=prod --no-debug
 
 
 TODO: When user is using webcam and clicks "Upload picture" before the check tick, page gets stuck. Fix that.
-TODO: Compress and resize profile pictures before storing them
+TODO: Compress and resize profile pictures before storing them.
 
-TODO: Perceptron has no predict_proba
-TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT)
-TODO: Handle categorical features on python script (done -- monitor performance to make sure it won't explode [seems to be a problem with knn at times])
-TODO: On leaderboard, default to anonymous profile picture for users without one
+TODO: Perceptron has no predict_proba.
+TODO: Work on parameter logic (i.e., max_leaf_nodes and max_depth for DT).
+TODO: Handle categorical features on python script (done -- monitor performance to make sure it won't explode [seems to be a problem with knn at times]).
+TODO: On leaderboard, default to anonymous profile picture for users without one.
 TODO: Profile picture no longer updating automatically when user uploads new image. Or is it? It did just now.
 TODO: Leaderboard table User column renders with a much larger width than other columns. Try to fix that.
-TODO: Display parameters on report page
+TODO: Display parameters on report page.
+TODO: More intelligent management of potentially duplicate uploaded files.

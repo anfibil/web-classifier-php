@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new ODE\DatasetBundle\ODEDatasetBundle(),
             new ODE\AnalysisBundle\ODEAnalysisBundle(),
             new ODE\RankingBundle\ODERankingBundle(),
+            //new Vich\UploaderBundle\VichUploaderBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

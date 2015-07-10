@@ -36,7 +36,7 @@
                 data: "",
                 success: function(data){
                     if (data.finished){
-                        window.location.href = '/analysis/report?id='+{{ id }}
+                        window.location.href = '/analysis/report?id='+{{ id }};
                     } else {
                         setTimeout(checkIfDone,5000);
                     }
